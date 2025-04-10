@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Rubitter Feed</h1>
+
+  <%= form_with(model: @rubit, local: true) do |form| %>
+    <div class="mb-3">
+      <%= form.label :username, "Your Username" %>
+      <%= form.text_field :username, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :content, "What's on your mind?" %>
+      <%= form.text_area :content, class: "form-control", rows: 3 %>
+    </div>
+    <%= form.submit "Rubit!", class: "btn btn-primary" %>
+  <% end %>
+
+  <hr>
+
+  <% @rubits.each do |rubit| %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">@<%= rubit.user.username %></h5>
+        <p class="card-text"><%= rubit.content %></p>
+        <p class="text-muted small mb-0"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
+      </div>
+    </div>
+  <% end %>
+</div>

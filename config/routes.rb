@@ -11,4 +11,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  root "rubits#index"
+
+  resources :users, only: [:new, :create, :show]
+  resources :rubits, only: [:create]
 end
