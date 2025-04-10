@@ -12,10 +12,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
   root "rubits#index"
   get 'user', to: 'users#show', as: 'user'
-  
+
   resources :users, only: [:new, :create]
   resources :rubits, only: [:create]
 end

@@ -1,8 +1,11 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 
+body {
+  background-color: #fdfdff;
+
+}
 
 .navbar-icon{
     width: 50px; 
     height: auto;
-    fill: white;
   }
