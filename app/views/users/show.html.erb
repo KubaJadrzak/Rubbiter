@@ -1,0 +1,35 @@
+<h2>Welcome, <%= @user.email %>!</h2>
+
+<!-- Change Email Form -->
+<h3>Change your email:</h3>
+<%= form_for(@user, url: user_registration_path, html: { method: :put }) do |f| %>
+  <div class="mb-3">
+    <%= f.label :email, 'New Email' %>
+    <%= f.email_field :email, class: 'form-control' %>
+  </div>
+
+  <%= f.submit 'Update Email', class: 'btn btn-primary' %>
+<% end %>
+
+<!-- Change Password Form -->
+<h3>Change your password:</h3>
+<%= form_for(@user, url: user_registration_path, html: { method: :put }) do |f| %>
+  <div class="mb-3">
+    <%= f.label :current_password, 'Current Password' %>
+    <%= f.password_field :current_password, class: 'form-control' %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :password, 'New Password' %>
+    <%= f.password_field :password, class: 'form-control' %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :password_confirmation, 'Confirm New Password' %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
+  </div>
+  <%= f.submit 'Update Password', class: 'btn btn-primary' %>
+<% end %>
+
+<!-- Logout Button -->
+<%= button_to destroy_user_session_path, method: :delete, class: 'btn btn-danger mt-3' do %>
+  Logout
+<% end %>

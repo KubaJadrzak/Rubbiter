@@ -14,7 +14,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   root "rubits#index"
-
-  resources :users, only: [:new, :create, :show]
+  get 'user', to: 'users#show', as: 'user'
+  
+  resources :users, only: [:new, :create]
   resources :rubits, only: [:create]
 end
