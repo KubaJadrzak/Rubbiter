@@ -1,3 +1,5 @@
+# content: string
+
 class Rubit < ApplicationRecord
   belongs_to :user
 
