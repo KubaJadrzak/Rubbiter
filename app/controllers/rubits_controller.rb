@@ -1,36 +1,70 @@
 class RubitsController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create, :destroy]
+  before_action :set_rubit, only: [:show, :destroy]
 
   def index
-    @rubits = Rubit.where(parent_rubit_id: nil).order(created_at: :desc)  # Only posts (no parent)
+    @rubits = Rubit.root_rubits.order(created_at: :desc)
     @rubit = Rubit.new
   end
 
   def show
-    @rubit = Rubit.find(params[:id])
-    @comments = @rubit.child_rubits.order(created_at: :desc)  # Comments are child rubits of this rubit
-    @comment = Rubit.new
+    # The rubit is already set by the before_action
   end
 
   def create
     if params[:rubit][:parent_rubit_id].present?
-      # If parent_rubit_id is present, create a comment (child rubit)
       @rubit = current_user.rubits.new(rubit_params.merge(parent_rubit_id: params[:rubit][:parent_rubit_id]))
     else
-      # If no parent_rubit_id, create a regular rubit (post)
       @rubit = current_user.rubits.new(rubit_params)
     end
   
     if @rubit.save
-      redirect_to root_path, notice: 'Rubit added successfully!'
+      if @rubit.parent_rubit_id.present?
+        root_rubit = find_root_rubit(@rubit)
+        redirect_to rubit_path(root_rubit), notice: 'Comment added successfully!'
+      else
+        redirect_to root_path, notice: 'Rubit created successfully!'
+      end
     else
       render :index
     end
   end
 
+  def destroy
+    @rubit = Rubit.find(params[:id])
+    
+    if @rubit.user == current_user || current_user.admin?
+      if @rubit.parent_rubit_id.present?
+        # It's a comment (child rubit), mark it as removed
+        @rubit.update(status: :removed, content: 'This comment has been removed by the user.')
+  
+        # Find the root rubit and redirect there
+        root_rubit = find_root_rubit(@rubit)
+        redirect_to rubit_path(root_rubit), notice: 'Comment has been removed successfully!'
+      else
+        # It's a root rubit, mark it as removed
+        @rubit.update(status: :removed, content: 'This rubit has been removed by the user.')
+        redirect_to root_path, notice: 'Rubit has been removed successfully!'
+      end
+    else
+      redirect_to root_path, alert: 'You are not authorized to delete this rubit.'
+    end
+  end
+
   private
 
+  def set_rubit
+    @rubit = Rubit.find(params[:id])
+  end
+
   def rubit_params
-    params.require(:rubit).permit(:content, :rubit_id)
+    params.require(:rubit).permit(:content, :parent_rubit_id)
+  end
+
+  def find_root_rubit(rubit)
+    while rubit.parent_rubit.present?
+      rubit = rubit.parent_rubit
+    end
+    rubit
   end
 end

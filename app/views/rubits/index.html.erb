@@ -1,4 +1,4 @@
-<h1>Rubitter Feed</h1>
+<h1>Rubit Feed</h1>
 
 <%= form_with(model: @rubit, local: true) do |form| %>
   <div class="mb-3">
@@ -10,7 +10,7 @@
 
 <hr>
 
+<!-- Display the root rubits (those without parent rubit_id) -->
 <% @rubits.each do |rubit| %>
-  <!-- Render the partial for each rubit -->
   <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
 <% end %>

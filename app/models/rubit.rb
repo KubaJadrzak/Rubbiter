@@ -13,5 +13,13 @@ class Rubit < ApplicationRecord
   # A rubit can belong to a parent rubit (if it's a comment)
   belongs_to :parent_rubit, class_name: 'Rubit', optional: true
 
+  enum :status, { active: 0, removed: 1 }
+  
   validates :content, presence: true, length: { maximum: 204 }
+
+
+
+  def self.root_rubits
+    where(parent_rubit_id: nil)
+  end
 end

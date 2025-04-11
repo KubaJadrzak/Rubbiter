@@ -35,16 +35,17 @@
 
 <hr>
 
+<!-- Add the toggle between Rubits and Comments -->
 <h3>Your Rubits</h3>
 
-<% if @user.rubits.any? %>
-  <% @user.rubits.order(created_at: :desc).each do |rubit| %>
-    <div class="card mb-3" style="background-color: #fdfdff; color: white;">
-      <div class="card-body">
-        <p class="card-text"><%= rubit.content %></p>
-        <p class="text-muted small mb-0"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
-      </div>
-    </div>
+<div class="btn-group mb-3" role="group" aria-label="View Toggle">
+  <%= link_to 'My Rubits', user_path(@user, view: 'rubits'), class: "btn btn-secondary #{'active' if params[:view] != 'comments'}" %>
+  <%= link_to 'My Comments', user_path(@user, view: 'comments'), class: "btn btn-secondary #{'active' if params[:view] == 'comments'}" %>
+</div>
+
+<% if @rubits.any? %>
+  <% @rubits.each do |rubit| %>
+    <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
   <% end %>
 <% else %>
   <p class="text-muted">You haven't posted any rubits yet.</p>

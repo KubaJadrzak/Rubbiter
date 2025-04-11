@@ -1,0 +1,24 @@
+<div class="card mt-3 ml-3">
+  <div class="card-body">
+    <h5 class="card-title">@<%= rubit.user.email %></h5>
+    <p class="card-text"><%= rubit.content %></p>
+    <p class="text-muted small mb-0"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
+
+    <!-- Show Delete button only if rubit's status is active -->
+    <% if rubit.status == 'active' && (rubit.user == current_user || current_user.admin?) %>
+       <%= button_to "Delete", rubit_path(rubit), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+    <% end %>
+
+    <!-- Form to create a child rubit (comment) -->
+    <%= form_with(model: [rubit, Rubit.new], url: rubits_path, local: true) do |form| %>
+      <div class="mb-3 mt-3">
+        <%= form.text_area :content, rows: 2, class: "form-control", placeholder: "Write a comment..." %>
+        <%= form.hidden_field :parent_rubit_id, value: rubit.id %>
+        <%= form.submit "Comment", class: "btn btn-sm btn-primary mt-1" %>
+      </div>
+    <% end %>
+
+    <!-- Recursively render child rubits (comments) in order by created_at -->
+    <%= render partial: 'rubits/child_rubit', collection: rubit.child_rubits.order(created_at: :asc), as: :rubit %>
+  </div>
+</div>
