@@ -19,5 +19,5 @@ Rails.application.routes.draw do
   get 'user', to: 'users#show', as: 'user'
 
   resources :users, only: [:new, :create]
-  resources :rubits, only: [:create]
+  resources :rubits, only: [:index, :create]
 end
