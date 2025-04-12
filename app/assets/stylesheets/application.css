@@ -17,8 +17,8 @@ body {
   
   /* Make all .btn-danger (usually red) Ruby Red */
   .btn-danger {
-    background-color: purple !important; /* Ruby Red */
-    border-color: purple !important;    /* Ruby Red */
+    background-color: black !important; /* Ruby Red */
+    border-color: black !important;    /* Ruby Red */
   }
   
   /* Additional button colors (if needed) */

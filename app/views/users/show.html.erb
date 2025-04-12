@@ -1,53 +1,61 @@
-<h2>Welcome, <%= @user.username %>!</h2>
+<div data-controller="user-settings">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="list-group">
+        <button class="list-group-item list-group-item-action" 
+                data-action="click->user-settings#toggleEmailForm">
+          Change Email
+        </button>
+        <button class="list-group-item list-group-item-action" 
+                data-action="click->user-settings#togglePasswordForm">
+          Change Password
+        </button>
+      </div>
+    </div>
 
-<!-- Change Email Form -->
-<h3>Change your email:</h3>
-<%= form_for(@user, url: user_registration_path, html: { method: :put }) do |f| %>
-  <div class="mb-3">
-    <%= f.label :email, 'New Email' %>
-    <%= f.email_field :email, class: 'form-control' %>
+    <!-- Main Content Area -->
+    <div class="col-md-9">
+      <!-- Email Change Form -->
+      <div id="email-change-form" class="form-section" data-user-settings-target="emailForm">
+        <h3>Change Email</h3>
+        <%= form_for(current_user, url: user_registration_path, method: :put) do |f| %>
+          <div class="mb-3">
+            <%= f.label :email, "New Email" %>
+            <%= f.email_field :email, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :current_password, "Current Password" %>
+            <%= f.password_field :current_password, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.submit "Update Email", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+
+
+      <!-- Password Change Form -->
+      <div id="password-change-form" class="form-section d-none" data-user-settings-target="passwordForm">
+        <h3>Change Password</h3>
+        <%= form_for(current_user, url: user_registration_path, method: :put) do |f| %>
+          <div class="mb-3">
+            <%= f.label :current_password, "Current Password" %>
+            <%= f.password_field :current_password, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :password, "New Password" %>
+            <%= f.password_field :password, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :password_confirmation, "Confirm New Password" %>
+            <%= f.password_field :password_confirmation, class: "form-control", required: true %>
+          </div>
+          <div class="mb-3">
+            <%= f.submit "Update Password", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-
-  <%= f.submit 'Update Email', class: 'btn btn-primary' %>
-<% end %>
-
-<!-- Change Password Form -->
-<h3>Change your password:</h3>
-<%= form_for(@user, url: user_registration_path, html: { method: :put }) do |f| %>
-  <div class="mb-3">
-    <%= f.label :current_password, 'Current Password' %>
-    <%= f.password_field :current_password, class: 'form-control' %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :password, 'New Password' %>
-    <%= f.password_field :password, class: 'form-control' %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :password_confirmation, 'Confirm New Password' %>
-    <%= f.password_field :password_confirmation, class: 'form-control' %>
-  </div>
-  <%= f.submit 'Update Password', class: 'btn btn-primary' %>
-<% end %>
-
-<%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-danger mt-3' %>
-
-<%= button_to 'Delete Account', user_registration_path, method: :delete, data: { confirm: 'Are you sure you want to delete your account? This action cannot be undone.' }, class: 'btn btn-danger mt-3' %>
-
-<hr>
-
-<!-- Add the toggle between Rubits and Comments -->
-<h3>Your Rubits</h3>
-
-<div class="btn-group mb-3" role="group" aria-label="View Toggle">
-  <%= link_to 'My Rubits', user_path(@user, view: 'rubits'), class: "btn btn-secondary #{'active' if params[:view] == 'rubits' || params[:view].blank?}" %>
-  <%= link_to 'My Comments', user_path(@user, view: 'comments'), class: "btn btn-secondary #{'active' if params[:view] == 'comments'}" %>
-  <%= link_to 'Liked Rubits', user_path(@user, view: 'liked'), class: "btn btn-secondary #{'active' if params[:view] == 'liked'}" %>
 </div>
-
-<% if @rubits.any? %>
-  <% @rubits.each do |rubit| %>
-    <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
-  <% end %>
-<% else %>
-  <p class="text-muted">You haven't posted any rubits yet.</p>
-<% end %>

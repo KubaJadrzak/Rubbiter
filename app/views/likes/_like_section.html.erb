@@ -1,4 +1,4 @@
-<div id="rubit_<%= rubit.id %>_like_section">
+<div id="rubit_<%= rubit.id %>_like_section" class="d-flex align-items-center">
   <% if rubit.liked_by_users.include?(current_user) %>
     <% like = rubit.likes.find_by(user: current_user) %>
     <%= button_to rubit_like_path(rubit_id: rubit.id, id: like.id), method: :delete, class: "btn btn-sm btn-danger", data: { turbo_stream: true } do %>
@@ -10,8 +10,8 @@
     <% end %>
   <% end %>
 
-  <!-- Like counter -->
+  <!-- Like counter next to the button -->
   <span class="ms-2 text-muted">
-    👍 <%= rubit.likes.count %> <%= "Like".pluralize(rubit.likes.count) %>
+    <%= rubit.likes.count %> <%= "Like".pluralize(rubit.likes.count) %>
   </span>
 </div>
