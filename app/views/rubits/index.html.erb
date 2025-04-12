@@ -1,28 +1,45 @@
-<h1>Rubit Feed</h1>
-
-<%= form_with(model: @rubit, local: true) do |form| %>
-  <div class="mb-3">
-    <%= form.label :content, "What's on your mind?" %>
-    <%= form.text_area :content, rows: 3, class: "form-control" %>
+<div class="row">
+  <!-- Trending Users Section on the Left -->
+  <div class="col-md-3 d-flex flex-column align-items-center">
+    <h3 style="font-size: 1.2rem;">Trending Users</h3>
+    <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
+      <% @trending_users.each do |user| %>
+        <li>
+          <%= link_to user.username, user_path(user) %> 
+          - <%= user.total_likes %> likes  <!-- Use the total_likes method -->
+        </li>
+      <% end %>
+    </ul>
   </div>
-  <%= form.submit "Post Rubit", class: "btn btn-primary" %>
-<% end %>
 
-<hr>
+  <!-- Main Rubit Feed on the Center -->
+  <div class="col-md-6">
+    <%= form_with(model: @rubit, local: true) do |form| %>
+      <div class="mb-3">
+        <%= form.label :content, "What's on your mind?", style: "font-size: 1rem;" %>
+        <%= form.text_area :content, rows: 3, class: "form-control", style: "font-size: 0.9rem;" %>
+      </div>
+      <%= form.submit "Post Rubit", class: "btn btn-primary", style: "font-size: 1rem;" %>
+    <% end %>
 
-<!-- Display the root rubits (those without parent rubit_id) -->
-<% @rubits.each do |rubit| %>
-  <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
-<% end %>
+    <hr>
 
-<hr>
+    <!-- Display the root rubits (those without parent rubit_id) -->
+    <% @rubits.each do |rubit| %>
+      <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
+    <% end %>
+  </div>
 
-<h3>Trending Hashtags</h3>
-<ul>
-  <% @trending_hashtags.each do |hashtag| %>
-    <li>
-      <%= link_to "##{hashtag.name}", hashtag_path(hashtag) %> 
-      - <%= hashtag.count_likes %> likes
-    </li>
-  <% end %>
-</ul>
+  <!-- Trending Hashtags Section on the Right -->
+  <div class="col-md-3 d-flex flex-column align-items-center">
+    <h3 style="font-size: 1.2rem;">Trending Hashtags</h3>
+    <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
+      <% @trending_hashtags.each do |hashtag| %>
+        <li>
+          <%= link_to "##{hashtag.name}", hashtag_path(hashtag) %> 
+          - <%= hashtag.count_likes %> likes
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

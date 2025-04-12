@@ -9,3 +9,35 @@ body {
     width: 50px; 
     height: auto;
   }
+
+  .btn-primary {
+    background-color: #9B111E !important; /* Ruby Red */
+    border-color: #9B111E !important;    /* Ruby Red */
+  }
+  
+  /* Make all .btn-danger (usually red) Ruby Red */
+  .btn-danger {
+    background-color: purple !important; /* Ruby Red */
+    border-color: purple !important;    /* Ruby Red */
+  }
+  
+  /* Additional button colors (if needed) */
+  .btn-success {
+    background-color: green !important;
+    border-color: green !important;
+  }
+  
+  .btn-warning {
+    background-color: yellow !important;
+    border-color: yellow !important;
+  }
+  
+  .btn-info {
+    background-color: lightblue !important;
+    border-color: lightblue !important;
+  }
+  
+  /* Style the button hover effects as well */
+  .btn-primary:hover, .btn-danger:hover {
+    opacity: 0.8;
+  }
