@@ -1,5 +1,3 @@
-# content: string
-
 class Rubit < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
@@ -17,9 +15,13 @@ class Rubit < ApplicationRecord
   
   validates :content, presence: true, length: { maximum: 204 }
 
-
-
-  def self.root_rubits
+  # Scope to find root rubits
+  def self.find_root_rubits
     where(parent_rubit_id: nil)
+  end
+
+  # Method to check if a rubit is a child rubit (i.e., has a parent)
+  def is_child_rubit?
+    parent_rubit_id.present?
   end
 end

@@ -19,5 +19,7 @@ Rails.application.routes.draw do
   get 'user', to: 'users#show', as: 'user'
 
   resources :users, only: [:new, :create]
-  resources :rubits, only: [:index, :show, :create, :destroy]
+  resources :rubits, only: [:index, :show, :create, :destroy] do
+    resources :likes, only: [:create, :destroy]
+  end
 end
