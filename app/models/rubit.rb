@@ -15,10 +15,15 @@ class Rubit < ApplicationRecord
   
   validates :content, presence: true, length: { maximum: 204 }
 
+
+  scope :active, -> { where(status: 'active') }
+  
   # Scope to find root rubits
   def self.find_root_rubits
     where(parent_rubit_id: nil)
   end
+
+
 
   # Method to check if a rubit is a child rubit (i.e., has a parent)
   def is_child_rubit?

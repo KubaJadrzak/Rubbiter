@@ -39,8 +39,9 @@
 <h3>Your Rubits</h3>
 
 <div class="btn-group mb-3" role="group" aria-label="View Toggle">
-  <%= link_to 'My Rubits', user_path(@user, view: 'rubits'), class: "btn btn-secondary #{'active' if params[:view] != 'comments'}" %>
+  <%= link_to 'My Rubits', user_path(@user, view: 'rubits'), class: "btn btn-secondary #{'active' if params[:view] == 'rubits' || params[:view].blank?}" %>
   <%= link_to 'My Comments', user_path(@user, view: 'comments'), class: "btn btn-secondary #{'active' if params[:view] == 'comments'}" %>
+  <%= link_to 'Liked Rubits', user_path(@user, view: 'liked'), class: "btn btn-secondary #{'active' if params[:view] == 'liked'}" %>
 </div>
 
 <% if @rubits.any? %>

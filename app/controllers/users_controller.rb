@@ -1,12 +1,14 @@
 class UsersController < ApplicationController
   def show
     @user = current_user
-    
-    # Determine which rubits to show based on the view parameter
-    if params[:view] == 'comments'
-      @rubits = @user.comments.order(created_at: :desc) # Comments only
-    else
-      @rubits = @user.root_rubits.order(created_at: :desc) # Root rubits only
+
+    case params[:view]
+    when 'comments'
+      @rubits = @user.comments.active.order(created_at: :desc)
+    when 'liked'
+      @rubits = @user.liked_rubits.active.order(created_at: :desc)
+    else # 'rubits' or default
+      @rubits = @user.root_rubits.active.order(created_at: :desc)
     end
   end
 end
