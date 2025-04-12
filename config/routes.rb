@@ -22,4 +22,5 @@ Rails.application.routes.draw do
   resources :rubits, only: [:index, :show, :create, :destroy] do
     resources :likes, only: [:create, :destroy]
   end
+  resources :hashtags, only: [:show]
 end

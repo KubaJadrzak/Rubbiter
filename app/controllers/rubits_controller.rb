@@ -4,6 +4,7 @@ class RubitsController < ApplicationController
 
   def index
     @rubits = Rubit.find_root_rubits.order(created_at: :desc)
+    @trending_hashtags = Hashtag.trending # Fetch trending hashtags
     @rubit = Rubit.new
   end
 

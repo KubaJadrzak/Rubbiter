@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_11_205443) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_12_182303) do
   create_table "favorites", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "rubit_id", null: false
@@ -18,6 +18,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_11_205443) do
     t.datetime "updated_at", null: false
     t.index ["rubit_id"], name: "index_favorites_on_rubit_id"
     t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "hashtaggings", force: :cascade do |t|
+    t.integer "rubit_id", null: false
+    t.integer "hashtag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashtag_id"], name: "index_hashtaggings_on_hashtag_id"
+    t.index ["rubit_id", "hashtag_id"], name: "index_hashtaggings_on_rubit_id_and_hashtag_id", unique: true
+    t.index ["rubit_id"], name: "index_hashtaggings_on_rubit_id"
+  end
+
+  create_table "hashtags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_hashtags_on_name", unique: true
   end
 
   create_table "likes", force: :cascade do |t|
@@ -55,6 +72,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_11_205443) do
 
   add_foreign_key "favorites", "rubits"
   add_foreign_key "favorites", "users"
+  add_foreign_key "hashtaggings", "hashtags"
+  add_foreign_key "hashtaggings", "rubits"
   add_foreign_key "likes", "rubits"
   add_foreign_key "likes", "users"
   add_foreign_key "rubits", "rubits", column: "parent_rubit_id"

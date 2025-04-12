@@ -1,6 +1,5 @@
 <div id="rubit_<%= rubit.id %>_like_section">
   <% if rubit.liked_by_users.include?(current_user) %>
-    <% # Find the like object for the current user %>
     <% like = rubit.likes.find_by(user: current_user) %>
     <%= button_to rubit_like_path(rubit_id: rubit.id, id: like.id), method: :delete, class: "btn btn-sm btn-danger", data: { turbo_stream: true } do %>
       Unlike
@@ -10,4 +9,9 @@
       Like
     <% end %>
   <% end %>
+
+  <!-- Like counter -->
+  <span class="ms-2 text-muted">
+    👍 <%= rubit.likes.count %> <%= "Like".pluralize(rubit.likes.count) %>
+  </span>
 </div>

@@ -14,3 +14,15 @@
 <% @rubits.each do |rubit| %>
   <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
 <% end %>
+
+<hr>
+
+<h3>Trending Hashtags</h3>
+<ul>
+  <% @trending_hashtags.each do |hashtag| %>
+    <li>
+      <%= link_to "##{hashtag.name}", hashtag_path(hashtag) %> 
+      - <%= hashtag.count_likes %> likes
+    </li>
+  <% end %>
+</ul>
