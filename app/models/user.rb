@@ -23,10 +23,10 @@ class User < ApplicationRecord
   end
 
   def self.trending_users
-    joins(rubits: :likes)  # Join users, rubits, and likes tables
-      .where('likes.created_at >= ?', 24.hours.ago)  # Filter likes within the past 24 hours
-      .group('users.id')  # Group by user
-      .order('COUNT(likes.id) DESC')  # Order by the number of likes (descending)
-      .limit(5)  # Limit to top 5 trending users
+    joins(rubits: :likes) 
+      .where('likes.created_at >= ?', 24.hours.ago)
+      .group('users.id') 
+      .order('COUNT(likes.id) DESC') 
+      .limit(5) 
   end
 end

@@ -1,13 +1,11 @@
 <div class="row">
-  <!-- Trending Users Section -->
+
   <%= render 'shared/trending_users' %>
 
-  <!-- Main Rubit Detail + Comments -->
   <div class="col-md-6">
     <%= link_to 'Back to Feed', rubits_path, class: 'btn btn-sm btn-danger mt-1' %>
     <%= render 'rubits/child_rubit', rubit: @rubit %>
   </div>
 
-  <!-- Trending Hashtags Section -->
   <%= render 'shared/trending_hashtags' %>
 </div>

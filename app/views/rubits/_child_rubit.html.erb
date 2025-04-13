@@ -6,7 +6,7 @@
 
     <p class="card-text"><%= rubit.content %></p>
     <p class="text-muted small mb-0"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
-    <!-- Like + Delete buttons -->
+
     <div class="d-flex justify-content-between align-items-center p-0 m-0">
       <%= render 'likes/like_section', rubit: rubit %>
 
@@ -14,16 +14,13 @@
         <%= button_to rubit_path(rubit), method: :delete, 
                       data: { turbo_stream: true, confirm: "Are you sure?" }, 
                       class: "btn btn-sm text-dark p-1" do %>
-          <i class="bi bi-trash" style="font-size: 1.5rem; color: black;"></i> <!-- Black Trash Icon -->
+          <i class="bi bi-trash" style="font-size: 1.5rem; color: black;"></i> 
         <% end %>
       <% end %>
     </div>
 
-
-    <!-- Comment Form -->
     <%= render 'rubits/rubit_form', parent_rubit: rubit %>
 
-    <!-- Recursive Child Rubits (comments) -->
     <%= render partial: 'rubits/child_rubit', collection: rubit.child_rubits.order(created_at: :asc), as: :rubit %>
   </div>
 </div>
