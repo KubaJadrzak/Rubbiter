@@ -1,34 +1,13 @@
 <div class="row">
-  <!-- Trending Users Section on the Left -->
-  <div class="col-md-3 d-flex flex-column align-items-center">
-    <h3 style="font-size: 1.2rem;">Trending Users</h3>
-    <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
-      <% @trending_users.each do |user| %>
-        <li>
-          <%= link_to user.username, user_path(user) %>
-          - <%= user.total_likes %> likes
-        </li>
-      <% end %>
-    </ul>
-  </div>
+  <!-- Trending Users Section -->
+  <%= render 'shared/trending_users' %>
 
-  <!-- Main Rubit Detail + Comments in the Center -->
+  <!-- Main Rubit Detail + Comments -->
   <div class="col-md-6">
     <%= link_to 'Back to Feed', rubits_path, class: 'btn btn-sm btn-danger mt-1' %>
-    <!-- Display the single rubit (main rubit) -->
-    <%= render 'rubits/child_rubit', rubit: @rubit %>  <!-- Reuse the partial here -->
+    <%= render 'rubits/child_rubit', rubit: @rubit %>
   </div>
 
-  <!-- Trending Hashtags Section on the Right -->
-  <div class="col-md-3 d-flex flex-column align-items-center">
-    <h3 style="font-size: 1.2rem;">Trending Hashtags</h3>
-    <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
-      <% @trending_hashtags.each do |hashtag| %>
-        <li>
-          <%= link_to "##{hashtag.name}", hashtag_path(hashtag) %>
-          - <%= hashtag.count_likes %> likes
-        </li>
-      <% end %>
-    </ul>
-  </div>
+  <!-- Trending Hashtags Section -->
+  <%= render 'shared/trending_hashtags' %>
 </div>

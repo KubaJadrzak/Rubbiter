@@ -1,0 +1,11 @@
+<div class="col-md-3 d-flex flex-column align-items-center">
+  <h3 style="font-size: 1.2rem;">Trending Users</h3>
+  <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
+    <% @trending_users.each do |user| %>
+      <li>
+        <span style="color: #9B111E;"><%= user.username %></span>
+        - <%= user.total_likes %> likes
+      </li>
+    <% end %>
+  </ul>
+</div>

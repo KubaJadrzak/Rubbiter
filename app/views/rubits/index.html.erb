@@ -1,39 +1,16 @@
 <div class="row">
-  <!-- Trending Users Section on the Left -->
-  <div class="col-md-3 d-flex flex-column align-items-center">
-    <h3 style="font-size: 1.2rem;">Trending Users</h3>
-    <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
-      <% @trending_users.each do |user| %>
-        <li>
-          <%= link_to user.username, user_path(user) %> 
-          - <%= user.total_likes %> likes  <!-- Use the total_likes method -->
-        </li>
-      <% end %>
-    </ul>
-  </div>
+  <!-- Trending Users Section -->
+  <%= render 'shared/trending_users' %>
 
-  <!-- Main Rubit Feed on the Center -->
+  <!-- Main Rubit Feed -->
   <div class="col-md-6">
     <%= render 'rubits/rubit_form', parent_rubit: nil %>
-
     <hr>
-
-    <!-- Display the root rubits (those without parent rubit_id) -->
     <% @rubits.each do |rubit| %>
       <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
     <% end %>
   </div>
 
-  <!-- Trending Hashtags Section on the Right -->
-  <div class="col-md-3 d-flex flex-column align-items-center">
-    <h3 style="font-size: 1.2rem;">Trending Hashtags</h3>
-    <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
-      <% @trending_hashtags.each do |hashtag| %>
-        <li>
-          <%= link_to "##{hashtag.name}", hashtag_path(hashtag) %> 
-          - <%= hashtag.count_likes %> likes
-        </li>
-      <% end %>
-    </ul>
-  </div>
+  <!-- Trending Hashtags Section -->
+  <%= render 'shared/trending_hashtags' %>
 </div>
