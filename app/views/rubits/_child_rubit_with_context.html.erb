@@ -1,0 +1,38 @@
+<div class="card mt-3" id="rubit_<%= rubit.id %>">
+  <div class="card-body">
+
+    <%# Parent Rubit (context) %>
+    <% if rubit.parent_rubit.present? %>
+      <div class="mb-3 p-2 border rounded bg-light">
+        <strong>In reply to:</strong>
+        <div class="card mb-2">
+          <div class="card-body">
+            <h6 class="card-title">@<%= rubit.parent_rubit.user.email %></h6>
+            <p class="card-text"><%= rubit.parent_rubit.content %></p>
+            <p class="text-muted small">
+              <%= rubit.parent_rubit.created_at.strftime("%b %e, %Y %l:%M %p") %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Child Rubit (the comment) %>
+    <div>
+      <h6 class="card-title">@<%= rubit.user.email %></h6>
+      <p class="card-text"><%= rubit.content %></p>
+      <p class="text-muted small"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
+    </div>
+  </div>
+
+  <%# Footer: Like + Delete (if authorized) %>
+  <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
+    <%= render 'likes/like_section', rubit: rubit %>
+
+    <% if rubit.user == current_user %>
+      <%= button_to "Delete", rubit_path(rubit), method: :delete,
+                    data: { turbo_stream: true, confirm: "Are you sure?" },
+                    class: "btn btn-sm btn-danger" %>
+    <% end %>
+  </div>
+</div>

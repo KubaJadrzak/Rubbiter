@@ -52,11 +52,12 @@
       </div>
 
       <!-- Comments Section -->
-      <div id="comments-section" class="content-section d-none"  data-user-settings-target="commentsSection">
+      <div id="comments-section" class="content-section d-none" data-user-settings-target="commentsSection">
         <h3>Your Comments</h3>
+
         <% if @comments.any? %>
           <% @comments.each do |rubit| %>
-            <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
+            <%= render partial: 'rubits/child_rubit_with_context', locals: { rubit: rubit } %>
           <% end %>
         <% else %>
           <p>You don't have any comments yet.</p>

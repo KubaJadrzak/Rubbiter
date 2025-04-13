@@ -10,7 +10,8 @@ class RubitsController < ApplicationController
   end
 
   def show
-    # The rubit is already set by the before_action
+    @trending_hashtags = Hashtag.trending # Fetch trending hashtags
+    @trending_users = User.trending_users # Fetch trending users
   end
 
   def create
