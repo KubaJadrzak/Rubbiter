@@ -10,16 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_12_182303) do
-  create_table "favorites", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "rubit_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["rubit_id"], name: "index_favorites_on_rubit_id"
-    t.index ["user_id"], name: "index_favorites_on_user_id"
-  end
-
+ActiveRecord::Schema[8.0].define(version: 2025_04_12_234920) do
   create_table "hashtaggings", force: :cascade do |t|
     t.integer "rubit_id", null: false
     t.integer "hashtag_id", null: false
@@ -52,7 +43,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_12_182303) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "parent_rubit_id"
-    t.integer "status", default: 0
     t.index ["parent_rubit_id"], name: "index_rubits_on_parent_rubit_id"
     t.index ["user_id"], name: "index_rubits_on_user_id"
   end
@@ -70,8 +60,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_12_182303) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "favorites", "rubits"
-  add_foreign_key "favorites", "users"
   add_foreign_key "hashtaggings", "hashtags"
   add_foreign_key "hashtaggings", "rubits"
   add_foreign_key "likes", "rubits"

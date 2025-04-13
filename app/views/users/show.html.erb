@@ -3,6 +3,21 @@
     <!-- Sidebar -->
     <div class="col-md-3">
       <div class="list-group">
+
+        <!-- Sidebar Navigation -->
+        <button class="list-group-item list-group-item-action" 
+                data-action="click->user-settings#toggleRubitsSection">
+          Rubits
+        </button>
+        <button class="list-group-item list-group-item-action" 
+                data-action="click->user-settings#toggleCommentsSection">
+          Comments
+        </button>
+        <button class="list-group-item list-group-item-action" 
+                data-action="click->user-settings#toggleLikedRubitsSection">
+          Liked Rubits
+        </button>
+
         <button class="list-group-item list-group-item-action" 
                 data-action="click->user-settings#toggleEmailForm">
           Change Email
@@ -11,13 +26,57 @@
                 data-action="click->user-settings#togglePasswordForm">
           Change Password
         </button>
+        <!-- Logout Button -->
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, 
+                      class: "list-group-item list-group-item-action text-danger" %>
+        <!-- Delete Account Button -->
+        <%= button_to "Delete Account", user_registration_path, method: :delete, 
+                      data: { confirm: "Are you sure you want to delete your account? This action cannot be undone." },
+                      class: "list-group-item list-group-item-action text-danger" %>
+
       </div>
     </div>
 
     <!-- Main Content Area -->
     <div class="col-md-9">
+      <!-- Rubits Section -->
+      <div id="rubits-section" class="content-section"  data-user-settings-target="rubitsSection">
+        <h3>Your Rubits</h3>
+        <% if @rubits.any? %>
+          <% @rubits.each do |rubit| %>
+          <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
+          <% end %>
+        <% else %>
+          <p>You haven't posted any rubits yet.</p>
+        <% end %>
+      </div>
+
+      <!-- Comments Section -->
+      <div id="comments-section" class="content-section d-none"  data-user-settings-target="commentsSection">
+        <h3>Your Comments</h3>
+        <% if @comments.any? %>
+          <% @comments.each do |rubit| %>
+            <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
+          <% end %>
+        <% else %>
+          <p>You don't have any comments yet.</p>
+        <% end %>
+      </div>
+
+      <!-- Liked Rubits Section -->
+      <div id="liked-rubits-section" class="content-section d-none"  data-user-settings-target="likedRubitsSection">
+        <h3>Your Liked Rubits</h3>
+        <% if @liked_rubits.any? %>
+          <% @liked_rubits.each do |rubit| %>
+            <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
+          <% end %>
+        <% else %>
+          <p>You haven't liked any rubits yet.</p>
+        <% end %>
+      </div>
+
       <!-- Email Change Form -->
-      <div id="email-change-form" class="form-section" data-user-settings-target="emailForm">
+      <div id="email-change-form" class="form-section d-none" data-user-settings-target="emailForm">
         <h3>Change Email</h3>
         <%= form_for(current_user, url: user_registration_path, method: :put) do |f| %>
           <div class="mb-3">
@@ -33,7 +92,6 @@
           </div>
         <% end %>
       </div>
-
 
       <!-- Password Change Form -->
       <div id="password-change-form" class="form-section d-none" data-user-settings-target="passwordForm">

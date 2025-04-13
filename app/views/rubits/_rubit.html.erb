@@ -11,7 +11,7 @@
     <%= render partial: "likes/like_section", locals: { rubit: rubit } %>
 
     <!-- Delete button (only for owner and if rubit is active) -->
-    <% if rubit.user == current_user && rubit.active? %>
+    <% if rubit.user == current_user %>
       <%= button_to "Delete", rubit_path(rubit), method: :delete, 
                     data: { turbo_stream: true, confirm: "Are you sure?" }, 
                     class: "btn btn-sm btn-danger" %>

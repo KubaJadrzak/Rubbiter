@@ -2,23 +2,17 @@
   <div class="card-body">
     <h5 class="card-title">@<%= rubit.user.email %></h5>
     
-    <!-- Display removed content message if rubit is marked as removed -->
-    <% if rubit.status == 'removed' %>
-      <p class="text-muted">This comment has been removed by the user.</p>
-    <% else %>
-      <p class="card-text"><%= rubit.content %></p>
-      <p class="text-muted small mb-0"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
-    <% end %>
+
+    <p class="card-text"><%= rubit.content %></p>
+    <p class="text-muted small mb-0"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
 
     <!-- Like Section for Child Rubit -->
     <%= render 'likes/like_section', rubit: rubit %>
 
-    <!-- Show Delete button only if rubit's status is active -->
-    <% if rubit.status == 'active' && rubit.user == current_user %>
-      <%= button_to "Delete", rubit_path(rubit), method: :delete, 
+
+    <%= button_to "Delete", rubit_path(rubit), method: :delete, 
                     data: { turbo_stream: true, confirm: "Are you sure?" }, 
                     class: "btn btn-sm btn-danger" %>
-    <% end %>
 
     <!-- Form to create a child rubit (comment) -->
     <%= form_with(model: [rubit, Rubit.new], url: rubits_path, local: true) do |form| %>
