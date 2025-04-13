@@ -4,8 +4,8 @@ class RubitsController < ApplicationController
 
   def index
     @rubits = Rubit.find_root_rubits
-                    .joins(:likes)
-                    .where('likes.created_at >= ?', 24.hours.ago)
+                    .left_joins(:likes)  # Use LEFT JOIN to include rubits with no likes
+                    .where('likes.created_at >= ? OR likes.created_at IS NULL', 24.hours.ago)  # Include rubits with no likes
                     .group('rubits.id')
                     .order('COUNT(likes.id) DESC')
     @trending_hashtags = Hashtag.trending # Fetch trending hashtags
@@ -28,7 +28,7 @@ class RubitsController < ApplicationController
     if @rubit.save
       if @rubit.parent_rubit_id.present?
         root_rubit = find_root_rubit(@rubit)
-        redirect_to rubit_path(root_rubit), notice: 'Comment added successfully!'
+        redirect_to rubit_path(root_rubit), notice: 'Rubit added successfully!'
       else
         redirect_to root_path, notice: 'Rubit created successfully!'
       end
@@ -46,11 +46,11 @@ class RubitsController < ApplicationController
   
       respond_to do |format|
         if @rubit.parent_rubit_id.present?
-          flash.now[:notice] = 'Comment has been deleted successfully!'
+          flash.now[:notice] = 'Rubit has been deleted successfully!'
           format.turbo_stream
           format.html { redirect_to rubit_path(find_root_rubit(@rubit)) }
         else
-          flash.now[:notice] = 'Comment has been deleted successfully!'
+          flash.now[:notice] = 'Rubit has been deleted successfully!'
           format.turbo_stream
           format.html { redirect_to root_path } 
         end
