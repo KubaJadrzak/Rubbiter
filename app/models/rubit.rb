@@ -11,8 +11,13 @@ class Rubit < ApplicationRecord
 
   after_save :create_hashtags
 
-
-  # Scope to find root rubits
+  scope :ordered_by_likes, -> {
+    left_joins(:likes)
+    .group('rubits.id')
+    .order('COUNT(likes.id) DESC')
+    .where('likes.created_at >= ?', 24.hours.ago).or(where(likes: { id: nil }))
+  }
+  
   def self.find_root_rubits
     where(parent_rubit_id: nil)
   end
@@ -24,6 +29,10 @@ class Rubit < ApplicationRecord
       hashtag = Hashtag.find_or_create_by(name: hashtag_name)
       self.hashtags << hashtag unless self.hashtags.include?(hashtag)
     end
+  end
+
+  def likes_in_last_24_hours
+    likes.where('likes.created_at >= ?', 24.hours.ago).count
   end
 
   def extract_hashtags

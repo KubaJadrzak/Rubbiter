@@ -12,11 +12,11 @@ class Hashtag < ApplicationRecord
 
     scope :trending, -> {
         joins(:hashtaggings)
-        .joins("INNER JOIN rubits ON rubits.id = hashtaggings.rubit_id")  # Join rubits table
-        .joins("INNER JOIN likes ON likes.rubit_id = rubits.id")           # Join likes table
+        .joins("INNER JOIN rubits ON rubits.id = hashtaggings.rubit_id")
+        .joins("INNER JOIN likes ON likes.rubit_id = rubits.id")       
         .where('hashtaggings.created_at >= ?', 24.hours.ago)
         .group('hashtags.id')
-        .order('COUNT(likes.id) DESC')  # Count likes associated with the rubits
+        .order('COUNT(likes.id) DESC') 
         .limit(10)
     }
 end

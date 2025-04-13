@@ -3,7 +3,11 @@ class RubitsController < ApplicationController
   before_action :set_rubit, only: [:show, :destroy]
 
   def index
-    @rubits = Rubit.find_root_rubits.order(created_at: :desc)
+    @rubits = Rubit.find_root_rubits
+                    .joins(:likes)
+                    .where('likes.created_at >= ?', 24.hours.ago)
+                    .group('rubits.id')
+                    .order('COUNT(likes.id) DESC')
     @trending_hashtags = Hashtag.trending # Fetch trending hashtags
     @trending_users = User.trending_users # Fetch trending users
     @rubit = Rubit.new

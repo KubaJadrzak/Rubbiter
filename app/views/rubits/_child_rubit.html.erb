@@ -21,6 +21,6 @@
 
     <%= render 'rubits/rubit_form', parent_rubit: rubit %>
 
-    <%= render partial: 'rubits/child_rubit', collection: rubit.child_rubits.order(created_at: :asc), as: :rubit %>
+    <%= render partial: 'rubits/child_rubit', collection: rubit.child_rubits.ordered_by_likes, as: :rubit %>
   </div>
 </div>
