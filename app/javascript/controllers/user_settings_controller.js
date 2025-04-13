@@ -8,10 +8,6 @@ export default class extends Controller {
     "commentsSection", 
     "likedRubitsSection"
   ]
-
-  connect() {
-    console.log("User settings controller connected!")
-  }
   
   toggleRubitsSection() {
     this.toggleContent("rubits")

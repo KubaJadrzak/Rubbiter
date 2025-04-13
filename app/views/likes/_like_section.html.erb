@@ -1,12 +1,14 @@
 <div id="rubit_<%= rubit.id %>_like_section" class="d-flex align-items-center">
   <% if rubit.liked_by_users.include?(current_user) %>
     <% like = rubit.likes.find_by(user: current_user) %>
-    <%= button_to rubit_like_path(rubit_id: rubit.id, id: like.id), method: :delete, class: "btn btn-sm btn-danger", data: { turbo_stream: true } do %>
-      Unlike
+    <%= button_to rubit_like_path(rubit_id: rubit.id, id: like.id), method: :delete, class: "btn btn-sm text-danger", data: { turbo_stream: true } do %>
+      <!-- Filled Heart Icon (Liked) -->
+      <i class="bi bi-heart-fill" style="font-size: 1.5rem; color: #9B111E;"></i>
     <% end %>
   <% else %>
-    <%= button_to rubit_likes_path(rubit_id: rubit.id), method: :post, class: "btn btn-sm btn-primary", data: { turbo_stream: true } do %>
-      Like
+    <%= button_to rubit_likes_path(rubit_id: rubit.id), method: :post, class: "btn btn-sm text-muted", data: { turbo_stream: true } do %>
+      <!-- Outline Heart Icon (Unliked) -->
+      <i class="bi bi-heart" style="font-size: 1.5rem; color: #9B111E;"></i>
     <% end %>
   <% end %>
 

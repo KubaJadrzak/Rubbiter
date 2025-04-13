@@ -7,7 +7,9 @@
         <strong>In reply to:</strong>
         <div class="card mb-2">
           <div class="card-body">
-            <h6 class="card-title">@<%= rubit.parent_rubit.user.email %></h6>
+            <h5 class="card-title text-muted" style="font-size: 0.8rem;">
+              @<%= rubit.user.username %>
+            </h5>
             <p class="card-text"><%= rubit.parent_rubit.content %></p>
             <p class="text-muted small">
               <%= rubit.parent_rubit.created_at.strftime("%b %e, %Y %l:%M %p") %>
@@ -19,7 +21,9 @@
 
     <%# Child Rubit (the comment) %>
     <div>
-      <h6 class="card-title">@<%= rubit.user.email %></h6>
+      <h5 class="card-title text-muted" style="font-size: 0.8rem;">
+        @<%= rubit.user.username %>
+      </h5>
       <p class="card-text"><%= rubit.content %></p>
       <p class="text-muted small"><%= rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
     </div>

@@ -14,32 +14,12 @@
 
   <!-- Main Rubit Detail + Comments in the Center -->
   <div class="col-md-6">
-
-    <!-- Display the single rubit (parent rubit) -->
-    <div class="card mt-3 ml-3">
-      <div class="card-body">
-        <h5 class="card-title">@<%= @rubit.user.email %></h5>
-        <p class="card-text"><%= @rubit.content %></p>
-        <p class="text-muted small mb-0"><%= @rubit.created_at.strftime("%b %e, %Y %l:%M %p") %></p>
-
-        <!-- Form to create a child rubit (comment) -->
-        <%= form_with(model: [@rubit, Rubit.new], url: rubits_path, local: true) do |form| %>
-          <div class="mb-3 mt-3">
-            <%= form.text_area :content, rows: 2, class: "form-control", placeholder: "Write a comment..." %>
-            <%= form.hidden_field :parent_rubit_id, value: @rubit.id %>
-            <%= form.submit "Comment", class: "btn btn-sm btn-primary mt-1" %>
-          </div>
-        <% end %>
-
-        <!-- Recursively render child rubits (comments) in order by created_at -->
-        <%= render partial: 'rubits/child_rubit', collection: @rubit.child_rubits.order(created_at: :desc), as: :rubit %>
-      </div>
-    </div>
-
-    <%= link_to 'Back to Feed', rubits_path, class: 'btn btn-secondary mt-3' %>
+    <%= link_to 'Back to Feed', rubits_path, class: 'btn btn-sm btn-danger mt-1' %>
+    <!-- Display the single rubit (main rubit) -->
+    <%= render 'rubits/child_rubit', rubit: @rubit %>  <!-- Reuse the partial here -->
   </div>
 
-
+  <!-- Trending Hashtags Section on the Right -->
   <div class="col-md-3 d-flex flex-column align-items-center">
     <h3 style="font-size: 1.2rem;">Trending Hashtags</h3>
     <ul style="font-size: 0.9rem; list-style: none; padding: 0;">
@@ -51,8 +31,4 @@
       <% end %>
     </ul>
   </div>
-
-
-  <!-- Trending Hashtags Section on the Right -->
-
 </div>

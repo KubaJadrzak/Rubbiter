@@ -45,12 +45,14 @@ class RubitsController < ApplicationController
       respond_to do |format|
         if @rubit.parent_rubit_id.present?
           # It's a child rubit, so remove it from the page using Turbo
+          flash.now[:notice] = 'Comment has been deleted successfully!'
           format.turbo_stream
-          format.html { redirect_to rubit_path(find_root_rubit(@rubit)), notice: 'Comment has been deleted successfully!' }
+          format.html { redirect_to rubit_path(find_root_rubit(@rubit)) }
         else
-          # It's a root rubit, so remove it from the page using Turbo
+          # It's a root rubit, so remove it from the page using Turbo\
+          flash.now[:notice] = 'Comment has been deleted successfully!'
           format.turbo_stream
-          format.html { redirect_to root_path, notice: 'Rubit has been deleted successfully!' }
+          format.html { redirect_to root_path } 
         end
       end
     else

@@ -1,0 +1,15 @@
+<%= form_with(model: Rubit.new, url: rubits_path, local: true, class: "d-flex align-items-center gap-2") do |form| %>
+  <%= form.text_area :content,
+      rows: 1,
+      class: "form-control flex-grow-1",
+      placeholder: parent_rubit.present? ? "Rubit Something..." : "What's on your mind?",
+      required: true %>
+
+  <% if parent_rubit.present? %>
+    <%= form.hidden_field :parent_rubit_id, value: parent_rubit.id %>
+  <% end %>
+
+  <%= form.button type: "submit", class: "btn btn-comment", title: (parent_rubit.present? ? "Comment" : "Post Rubit") do %>
+    <i class="bi bi-check2"></i>
+  <% end %>
+<% end %>
