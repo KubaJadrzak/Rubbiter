@@ -32,7 +32,7 @@ gem "solid_cable"
 gem 'devise'
 gem 'hotwire-rails'
 gem 'rack-cors'
-
+gem 'kaminari'
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 

@@ -3,20 +3,17 @@ class RubitsController < ApplicationController
   before_action :set_rubit, only: [:show, :destroy]
 
   def index
-    # Fetch rubits in random order and convert to an array
-    @rubits = Rubit.find_root_rubits.order('RANDOM()').to_a  # Convert to an array
-  
-    # If the user is logged in, find the current user's most recent rubit
-    if current_user
-      current_user_rubit = Rubit.where(user: current_user).order(created_at: :desc).first
-  
-      # Place the current user's most recent rubit at the top of the list
-      @rubits.unshift(current_user_rubit) if current_user_rubit
-    end
+    # Fetch the paginated root rubits in random order (20 per page)
+    @rubits = Rubit.find_root_rubits.order('RANDOM()').page(params[:page]).per(20)
   
     @trending_hashtags = Hashtag.trending  # Fetch trending hashtags
     @trending_users = User.trending_users  # Fetch trending users
     @rubit = Rubit.new
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show
