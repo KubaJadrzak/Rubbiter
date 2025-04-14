@@ -10,7 +10,7 @@
       <%= render partial: 'rubits/rubit', collection: @rubits %>
 
       <% if @rubits.next_page %>
-        <%= link_to "Load more", rubits_path(page: @rubits.next_page),
+        <%= link_to "", rubits_path(page: @rubits.next_page),
                     data: { turbo_action: 'replace', turbo_stream: true, action: 'infinite-scroll#loadMore' },
                     id: 'load-more-link', class: 'd-block text-center my-4' %>
       <% end %>

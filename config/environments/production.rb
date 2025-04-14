@@ -24,8 +24,24 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
+  # Allow Rails to serve static files (assets) in production
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RAILS_ENV'] == 'production'
+
+  # Let Rails compile assets on demand if they are missing
+  config.assets.compile = true
+
+  # Compress JavaScripts and CSS
+  config.assets.js_compressor = :uglifier
+  config.assets.css_compressor = :sass
+
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   config.assume_ssl = true
+
+  # Enable serving of assets
+  config.public_file_server.enabled = true
+
+  # Set the assets prefix for production
+  config.assets.prefix = '/assets'
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
