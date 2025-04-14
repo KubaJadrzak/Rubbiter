@@ -1,7 +1,7 @@
 <div data-controller="user-settings">
   <div class="row">
     <!-- Sidebar -->
-    <div class="col-md-3">
+    <div class="col-md-3" style="margin-bottom: 20px;">
       <div class="list-group">
 
         <!-- Sidebar Navigation -->
@@ -37,11 +37,12 @@
       </div>
     </div>
 
+
     <!-- Main Content Area -->
     <div class="col-md-9">
       <!-- Rubits Section -->
       <div id="rubits-section" class="content-section"  data-user-settings-target="rubitsSection">
-        <h3>Your Rubits</h3>
+        <h4>Your Rubits</h4>
         <% if @rubits.any? %>
           <% @rubits.each do |rubit| %>
           <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
@@ -53,7 +54,7 @@
 
       <!-- Comments Section -->
       <div id="comments-section" class="content-section d-none" data-user-settings-target="commentsSection">
-        <h3>Your Comments</h3>
+        <h4>Your Comments</h4>
 
         <% if @comments.any? %>
           <% @comments.each do |rubit| %>
@@ -66,7 +67,7 @@
 
       <!-- Liked Rubits Section -->
       <div id="liked-rubits-section" class="content-section d-none"  data-user-settings-target="likedRubitsSection">
-        <h3>Your Liked Rubits</h3>
+        <h4>Your Liked Rubits</h4>
         <% if @liked_rubits.any? %>
           <% @liked_rubits.each do |rubit| %>
             <%= render partial: 'rubits/rubit', locals: { rubit: rubit } %>
@@ -78,7 +79,7 @@
 
       <!-- Email Change Form -->
       <div id="email-change-form" class="form-section d-none" data-user-settings-target="emailForm">
-        <h3>Change Email</h3>
+        <h4>Change Email</h4>
         <%= form_for(current_user, url: user_registration_path, method: :put) do |f| %>
           <div class="mb-3">
             <%= f.label :email, "New Email" %>
@@ -96,7 +97,7 @@
 
       <!-- Password Change Form -->
       <div id="password-change-form" class="form-section d-none" data-user-settings-target="passwordForm">
-        <h3>Change Password</h3>
+        <h4>Change Password</h4>
         <%= form_for(current_user, url: user_registration_path, method: :put) do |f| %>
           <div class="mb-3">
             <%= f.label :current_password, "Current Password" %>
