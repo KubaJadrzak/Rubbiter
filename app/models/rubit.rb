@@ -31,16 +31,17 @@ class Rubit < ApplicationRecord
     end
   end
 
-  def likes_in_last_24_hours
-    likes.where('likes.created_at >= ?', 24.hours.ago).count
-  end
-
   def extract_hashtags
     hashtag_names = content.scan(/#\w+/).uniq
     self.hashtags = hashtag_names.map { |name| Hashtag.find_or_create_by(name: name.downcase) }
   end
 
+  def likes_in_last_24_hours
+    likes.where('likes.created_at >= ?', 24.hours.ago).count
+  end
+
+
   def is_child_rubit?
-    parent_rubit_id.present?
+    parent_rubit.present?
   end
 end

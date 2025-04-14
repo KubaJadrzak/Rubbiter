@@ -9,7 +9,7 @@
     <%= form.hidden_field :parent_rubit_id, value: parent_rubit.id %>
   <% end %>
 
-  <%= form.button type: "submit", class: "btn btn-comment", title: (parent_rubit.present? ? "Comment" : "Post Rubit") do %>
+  <%= form.button type: "submit", class: "btn btn-comment" do %>
     <i class="bi bi-check2"></i>
   <% end %>
 <% end %>

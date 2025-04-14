@@ -1,23 +1,26 @@
 <div class="row">
   <%= render 'shared/trending_users' %>
 
-  <div class="col-md-6">
-    <%= render 'rubits/rubit_form', parent_rubit: nil %>
+  <div  class="col-md-6">
+    <div id="new_rubit_form">
+      <%= render 'form', parent_rubit: nil %>
+    </div>
     <hr>
 
-    <!-- Only rubits go inside here -->
     <div id="rubits-list" data-controller="infinite-scroll">
-      <%= render partial: 'rubits/rubit', collection: @rubits %>
+      <div id="rubits-list-item">
+        <%= render partial: 'rubits/rubit', collection: @rubits %>
+      </div>
 
       <% if @rubits.next_page %>
         <%= link_to "", rubits_path(page: @rubits.next_page),
                     data: { turbo_action: 'replace', turbo_stream: true, action: 'infinite-scroll#loadMore' },
                     id: 'load-more-link', class: 'd-block text-center my-4' %>
       <% end %>
+      
     </div>
   </div>
 
-    <%= render 'shared/trending_hashtags' %>
-
+  <%= render 'shared/trending_hashtags' %>
 
 </div>

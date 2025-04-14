@@ -3,8 +3,9 @@
   <%= render 'shared/trending_users' %>
 
   <div class="col-md-6">
-    <%= link_to 'Back to Feed', rubits_path, class: 'btn btn-sm btn-danger mt-1' %>
-    <%= render 'rubits/child_rubit', rubit: @rubit %>
+    <div id="rubit_<%= @rubit.id %>">
+      <%= render 'rubits/rubit', rubit: @rubit %>
+    </div>
   </div>
 
   <%= render 'shared/trending_hashtags' %>

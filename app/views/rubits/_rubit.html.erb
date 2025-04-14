@@ -18,4 +18,17 @@
       <% end %>
     <% end %>
   </div>
+
+
+  <% unless request.path == root_path%>
+    <%= render 'rubits/form', parent_rubit: rubit %>
+    <div id="rubits-list-item" class="ml-4">
+    <%= render partial: 'rubits/rubit', collection: rubit.child_rubits.ordered_by_likes, as: :rubit %>
+  </div>
+  <% end %>
+
+
+
+  <%# render child rubits%>
+  
 </div>

@@ -22,21 +22,24 @@ class RubitsController < ApplicationController
   end
 
   def create
-    if params[:rubit][:parent_rubit_id].present?
-      @rubit = current_user.rubits.new(rubit_params.merge(parent_rubit_id: params[:rubit][:parent_rubit_id]))
-    else
-      @rubit = current_user.rubits.new(rubit_params)
-    end
-  
-    if @rubit.save
-      if @rubit.parent_rubit_id.present?
-        root_rubit = find_root_rubit(@rubit)
-        redirect_to rubit_path(root_rubit), notice: 'Rubit added successfully!'
+    @rubit = current_user.rubits.new(rubit_params)
+
+    respond_to do |format|
+      if @rubit.save
+        if @rubit.parent_rubit.present?
+          # If parent rubit is present, redirect to the root rubit show page
+          flash.now[:notice] = 'Rubit added successfully!'
+          format.turbo_stream
+          format.html { redirect_to rubit_path(@rubit) }
+        else
+          # If parent rubit is not present, it means the creation occured from root page, redirect to root path
+          flash.now[:notice] = 'Rubit created successfully!'
+          format.turbo_stream
+          format.html { redirect_to root_path }
+        end
       else
-        redirect_to root_path, notice: 'Rubit created successfully!'
+        render :index
       end
-    else
-      render :index
     end
   end
 
@@ -44,11 +47,11 @@ class RubitsController < ApplicationController
     @rubit = Rubit.find(params[:id])
   
     if @rubit.user == current_user || current_user.admin?
-  
+
       @rubit.destroy
   
       respond_to do |format|
-        if @rubit.parent_rubit_id.present?
+        if @rubit.parent_rubit.present?
           flash.now[:notice] = 'Rubit has been deleted successfully!'
           format.turbo_stream
           format.html { redirect_to rubit_path(find_root_rubit(@rubit)) }
