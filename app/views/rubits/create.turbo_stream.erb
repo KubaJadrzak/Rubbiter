@@ -1,5 +1,5 @@
 <%= turbo_stream.prepend "rubits-list-item", partial: "rubits/rubit", locals: { rubit: @rubit } %>
 <%= turbo_stream.update "new_rubit_form" do %>
-  <%= render "form", parent_rubit: nil %>
+  <%= render "form", parent_rubit: @rubit.parent_rubit %>
 <% end %>
 <%= render 'shared/flash' %>
