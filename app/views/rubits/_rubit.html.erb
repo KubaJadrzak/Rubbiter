@@ -1,5 +1,5 @@
 <div class="card mt-3 ml-3" id="rubit_<%= rubit.id %>">
-  <%= link_to rubit_path(rubit), class: "card-body d-block text-decoration-none text-dark p-2" do %>
+  <%= link_to rubit_path(rubit), data: { turbo: false }, class: "card-body d-block text-decoration-none text-dark p-2" do %>
     <h5 class="card-title text-muted" style="font-size: 0.8rem;">
       @<%= rubit.user.username %>
     </h5>
@@ -19,16 +19,15 @@
     <% end %>
   </div>
 
-  <%# Conditinal check for path, the /rubits check is necessary turbo_stream create to properly display the form, as it will be coming from /rubits %>
-  <% unless request.path == root_path || request.path == '/rubits' %>
-    <%= render 'rubits/form', parent_rubit: rubit %>
-    <div id="rubits-list-item" class="ms-4">
-      <%= render partial: 'rubits/rubit', collection: rubit.child_rubits.ordered_by_likes, as: :rubit %>
+  <%# Check if the rubit is either the parent rubit or the current rubit to render child rubits %>
+  <% if rubit.id == params[:id].to_i %>
+    <%= turbo_frame_tag "new_rubit_form_#{rubit.id}" do %>
+      <%= render 'rubits/form', parent_rubit: rubit %>
+    <% end %>
+
+    <div id="rubits-list-<%= rubit.id %>" class="ms-4">
+      <%= render partial: 'rubits/rubit', collection: rubit.child_rubits, as: :rubit %>
     </div>
   <% end %>
-
-
-
-  <%# render child rubits%>
   
 </div>

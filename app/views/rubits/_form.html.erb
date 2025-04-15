@@ -1,6 +1,6 @@
-<%= form_with(model: Rubit.new, url: rubits_path, local: true, class: "d-flex align-items-center gap-2") do |form| %>
+<%= form_with(model: Rubit.new, url: rubits_path, class: "d-flex align-items-center gap-2") do |form| %>
   <%= form.text_area :content,
-      rows: 1,
+      rows: 2,
       class: "form-control flex-grow-1",
       placeholder: parent_rubit.present? ? "Rubit Something..." : "What's on your mind?",
       required: true %>

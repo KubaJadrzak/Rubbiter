@@ -2,13 +2,13 @@
   <%= render 'shared/trending_users' %>
 
   <div  class="col-md-6">
-    <div id="new_rubit_form">
+    <div id="new_rubit_form_root">
       <%= render 'form', parent_rubit: nil %>
     </div>
     <hr>
 
     <div id="rubits-list" data-controller="infinite-scroll">
-      <div id="rubits-list-item">
+      <div id="rubits-list-root">
         <%= render partial: 'rubits/rubit', collection: @rubits %>
       </div>
 

@@ -28,14 +28,10 @@ class RubitsController < ApplicationController
       if @rubit.save
         if @rubit.parent_rubit.present?
           # If parent rubit is present, redirect to the root rubit show page
-          flash.now[:notice] = 'Rubit added successfully!'
           format.turbo_stream
-          format.html { redirect_to rubit_path(@rubit) }
         else
           # If parent rubit is not present, it means the creation occured from root page, redirect to root path
-          flash.now[:notice] = 'Rubit created successfully!'
           format.turbo_stream
-          format.html { redirect_to root_path }
         end
       else
         render :index
@@ -52,13 +48,9 @@ class RubitsController < ApplicationController
   
       respond_to do |format|
         if @rubit.parent_rubit.present?
-          flash.now[:notice] = 'Rubit has been deleted successfully!'
           format.turbo_stream
-          format.html { redirect_to rubit_path(find_root_rubit(@rubit)) }
         else
-          flash.now[:notice] = 'Rubit has been deleted successfully!'
           format.turbo_stream
-          format.html { redirect_to root_path } 
         end
       end
     else
