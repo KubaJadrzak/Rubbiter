@@ -6,7 +6,8 @@
           <h3>Sign In</h3>
         </div>
         <div class="card-body">
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+     <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+
             <div class="form-group">
               <%= f.label :email, class: 'form-label' %>
               <%= f.email_field :email, autofocus: true, class: 'form-control' %>
@@ -45,7 +46,7 @@
 <script>
   function demoLogin() {
     document.querySelector('input[type="email"]').value = 'user1@example.com';
-    document.querySelector('input[type="password"]').value = 'password';
+    document.querySelector('input[type="password"]').value = 'qweasdzxc';
     document.querySelector('form').submit();
   }
 </script>
