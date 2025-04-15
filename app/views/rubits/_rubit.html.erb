@@ -19,12 +19,12 @@
     <% end %>
   </div>
 
-
-  <% unless request.path == root_path%>
+  <%# Conditinal check for path, the /rubits check is necessary turbo_stream create to properly display the form, as it will be coming from /rubits %>
+  <% unless request.path == root_path || request.path.include?('/rubits') %>
     <%= render 'rubits/form', parent_rubit: rubit %>
-    <div id="rubits-list-item" class="ml-4">
-    <%= render partial: 'rubits/rubit', collection: rubit.child_rubits.ordered_by_likes, as: :rubit %>
-  </div>
+    <div id="rubits-list-item" class="ms-4">
+      <%= render partial: 'rubits/rubit', collection: rubit.child_rubits.ordered_by_likes, as: :rubit %>
+    </div>
   <% end %>
 
 
