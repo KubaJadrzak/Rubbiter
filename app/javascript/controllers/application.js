@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+import UserSettingsController from "./controllers/user_settings_controller"
 
 const application = Application.start()
 

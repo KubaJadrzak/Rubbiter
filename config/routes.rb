@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:new, :create]
   resources :rubits, only: [:index, :show, :create, :destroy] do
+    post :mark_seen, on: :member
     resources :likes, only: [:create, :destroy]
   end
   resources :hashtags, only: [:show]

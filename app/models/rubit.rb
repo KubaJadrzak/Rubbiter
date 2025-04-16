@@ -6,6 +6,7 @@ class Rubit < ApplicationRecord
   has_many :child_rubits, class_name: 'Rubit', foreign_key: 'parent_rubit_id', dependent: :destroy
   has_many :hashtaggings, dependent: :destroy 
   has_many :hashtags, through: :hashtaggings
+  has_many :seen_rubits
 
   validates :content, presence: true, length: { maximum: 204 }
 

@@ -5,18 +5,26 @@ class RubitsController < ApplicationController
 
 
   def index
-    # Fetch the paginated root rubits in random order (20 per page)
-    @rubits = Rubit.find_root_rubits
-                .left_joins(:likes)
-                .group('rubits.id')
-                .order('COUNT(likes.id) DESC')
-                .page(params[:page])
-                .per(20)
+    # Fetch the paginated root rubits ordered by likes (20 per page) and exclude seen rubits
+    if current_user
+      seen_rubits = current_user.seen_rubits.select(:rubit_id)
+    else
+      seen_rubits = Rubit.none  # Returns an empty relation when user is nil
+    end
+  
+    @rubits = Rubit
+      .find_root_rubits
+      .where.not(id: seen_rubits)
+      .left_joins(:likes)
+      .group('rubits.id')
+      .order('COUNT(likes.id) DESC')
+      .page(params[:page])
+      .per(20)
   
     @trending_hashtags = Hashtag.trending  # Fetch trending hashtags
     @trending_users = User.trending_users  # Fetch trending users
     @rubit = Rubit.new
-
+  
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -65,7 +73,10 @@ class RubitsController < ApplicationController
     end
   end
   
-  
+  def mark_seen
+    SeenRubit.find_or_create_by(user: current_user, rubit_id: params[:id])
+    head :ok
+  end
   
   private
 

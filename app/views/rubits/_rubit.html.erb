@@ -1,4 +1,4 @@
-<div class="card mt-3 ml-3" id="rubit_<%= rubit.id %>">
+<div class="card mt-3 ml-3" data-controller="seen-rubit" data-rubit-id="<%= rubit.id %>" id="rubit_<%= rubit.id %>">
   <%= link_to rubit_path(rubit), data: { turbo: false }, class: "card-body d-block text-decoration-none text-dark p-2" do %>
     <h5 class="card-title text-muted" style="font-size: 0.8rem;">
       @<%= rubit.user.username %>
