@@ -1,10 +1,17 @@
 class RubitsController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :rubit_not_found
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :set_rubit, only: [:show, :destroy]
 
+
   def index
     # Fetch the paginated root rubits in random order (20 per page)
-    @rubits = Rubit.find_root_rubits.order('RANDOM()').page(params[:page]).per(20)
+    @rubits = Rubit.find_root_rubits
+                .left_joins(:likes)
+                .group('rubits.id')
+                .order('COUNT(likes.id) DESC')
+                .page(params[:page])
+                .per(20)
   
     @trending_hashtags = Hashtag.trending  # Fetch trending hashtags
     @trending_users = User.trending_users  # Fetch trending users
@@ -75,5 +82,9 @@ class RubitsController < ApplicationController
       rubit = rubit.parent_rubit
     end
     rubit
+  end
+  def rubit_not_found
+    flash[:alert] = "Rubit not found."
+    redirect_to root_path
   end
 end

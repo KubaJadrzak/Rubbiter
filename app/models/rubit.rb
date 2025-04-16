@@ -10,13 +10,6 @@ class Rubit < ApplicationRecord
   validates :content, presence: true, length: { maximum: 204 }
 
   after_save :create_hashtags
-
-  scope :ordered_by_likes, -> {
-    left_joins(:likes)
-    .group('rubits.id')
-    .order('COUNT(likes.id) DESC')
-    .where('likes.created_at >= ?', 24.hours.ago).or(where(likes: { id: nil }))
-  }
   
   def self.find_root_rubits
     where(parent_rubit_id: nil)

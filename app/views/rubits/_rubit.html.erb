@@ -18,16 +18,11 @@
       <% end %>
     <% end %>
   </div>
-
-  <%# Check if the rubit is either the parent rubit or the current rubit to render child rubits %>
+  
   <% if rubit.id == params[:id].to_i %>
     <%= turbo_frame_tag "new_rubit_form_#{rubit.id}" do %>
       <%= render 'rubits/form', parent_rubit: rubit %>
     <% end %>
-
-    <div id="rubits-list-<%= rubit.id %>" class="ms-4">
-      <%= render partial: 'rubits/rubit', collection: rubit.child_rubits, as: :rubit %>
-    </div>
   <% end %>
   
 </div>
