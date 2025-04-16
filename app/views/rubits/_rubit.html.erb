@@ -20,9 +20,9 @@
   </div>
   
   <% if rubit.id == params[:id].to_i %>
-    <%= turbo_frame_tag "new_rubit_form_#{rubit.id}" do %>
-      <%= render 'rubits/form', parent_rubit: rubit %>
-    <% end %>
+    <div id="new_rubit_form_<%= @rubit.id %>">
+      <%= render 'rubits/form', parent_rubit: rubit%>
+    </div>
   <% end %>
   
 </div>

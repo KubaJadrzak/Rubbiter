@@ -49,7 +49,7 @@ class RubitsController < ApplicationController
           format.turbo_stream
         end
       else
-        render :index
+        format.html { render :index }
       end
     end
   end
