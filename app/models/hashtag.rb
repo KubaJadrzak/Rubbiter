@@ -1,7 +1,6 @@
 class Hashtag < ApplicationRecord
   has_many :hashtaggings
   has_many :rubits, through: :hashtaggings
-  has_many :likes, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 

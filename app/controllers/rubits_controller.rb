@@ -56,15 +56,11 @@ class RubitsController < ApplicationController
   def destroy
     @rubit = Rubit.find(params[:id])
 
-    if @rubit.user == current_user || current_user.admin?
+    if @rubit.user == current_user
       @rubit.destroy
 
       respond_to do |format|
-        if @rubit.parent_rubit.present?
-          format.turbo_stream
-        else
-          format.turbo_stream
-        end
+        format.turbo_stream
       end
     else
       redirect_to root_path, alert: "You are not authorized to delete this rubit."

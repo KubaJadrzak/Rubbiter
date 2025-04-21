@@ -6,13 +6,23 @@ class Rubit < ApplicationRecord
   has_many :liked_by_users, through: :likes, source: :user
   has_many :hashtaggings, dependent: :destroy
   has_many :hashtags, through: :hashtaggings
-  has_many :seen_rubits
+  has_many :seen_rubits, dependent: :destroy
+  has_many :seen_by_users, through: :seen_rubits, source: :user
 
   validates :content, presence: true, length: { maximum: 204 }
 
   after_save :create_hashtags
+  after_destroy :remove_empty_hashtags
 
   scope :root_rubits, -> { where(parent_rubit_id: nil) }
+
+  def remove_empty_hashtags
+    hashtags.each do |hashtag|
+      if hashtag.rubits.count == 0
+        hashtag.destroy
+      end
+    end
+  end
 
   def create_hashtags
     hashtags_in_content = content.scan(/#\w+/).map { |hashtag| hashtag.downcase.delete("#") }
