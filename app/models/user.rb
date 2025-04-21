@@ -11,8 +11,6 @@ class User < ApplicationRecord
   has_many :seen_rubits_list, through: :seen_rubits, source: :rubit
   validates :username, presence: true, uniqueness: true
 
-
-
   def root_rubits
     rubits.where(parent_rubit_id: nil)
   end
@@ -22,14 +20,13 @@ class User < ApplicationRecord
   end
 
   def total_likes
-    rubits.joins(:likes).where('likes.created_at >= ?', 24.hours.ago).count
+    rubits.joins(:likes).count
   end
 
   def self.trending_users
-    joins(rubits: :likes) 
-      .where('likes.created_at >= ?', 24.hours.ago)
-      .group('users.id') 
-      .order('COUNT(likes.id) DESC') 
-      .limit(5) 
+    joins(rubits: :likes)
+      .group("users.id")
+      .order("COUNT(likes.id) DESC")
+      .limit(5)
   end
 end

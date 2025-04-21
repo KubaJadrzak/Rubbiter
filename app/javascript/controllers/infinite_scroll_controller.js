@@ -35,11 +35,11 @@ export default class extends Controller {
     fetch(url, {
       headers: { "Accept": "text/vnd.turbo-stream.html" }
     })
-    .then(response => response.text())
-    .then(html => {
-      const container = document.getElementById('rubits-list-root');
-      container.insertAdjacentHTML('beforeend', html);
-      link.style.display = 'none';
-    });
+      .then(response => response.text())
+      .then(html => {
+        const container = document.getElementById('rubits-list-root');
+        container.insertAdjacentHTML('beforeend', html);
+        link.style.display = 'none';
+      });
   }
 }

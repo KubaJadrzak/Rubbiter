@@ -3,7 +3,6 @@ class RubitsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :set_rubit, only: [:show, :destroy]
 
-
   def index
     # Fetch the paginated root rubits ordered by likes (20 per page) and exclude seen rubits
     if current_user
@@ -11,20 +10,20 @@ class RubitsController < ApplicationController
     else
       seen_rubits = Rubit.none  # Returns an empty relation when user is nil
     end
-  
+
     @rubits = Rubit
-      .find_root_rubits
+      .root_rubits
       .where.not(id: seen_rubits)
       .left_joins(:likes)
-      .group('rubits.id')
-      .order('COUNT(likes.id) DESC')
+      .group("rubits.id")
+      .order("COUNT(likes.id) DESC")
       .page(params[:page])
       .per(20)
-  
+
     @trending_hashtags = Hashtag.trending  # Fetch trending hashtags
     @trending_users = User.trending_users  # Fetch trending users
     @rubit = Rubit.new
-  
+
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -56,11 +55,10 @@ class RubitsController < ApplicationController
 
   def destroy
     @rubit = Rubit.find(params[:id])
-  
-    if @rubit.user == current_user || current_user.admin?
 
+    if @rubit.user == current_user || current_user.admin?
       @rubit.destroy
-  
+
       respond_to do |format|
         if @rubit.parent_rubit.present?
           format.turbo_stream
@@ -69,15 +67,15 @@ class RubitsController < ApplicationController
         end
       end
     else
-      redirect_to root_path, alert: 'You are not authorized to delete this rubit.'
+      redirect_to root_path, alert: "You are not authorized to delete this rubit."
     end
   end
-  
+
   def mark_seen
     SeenRubit.find_or_create_by(user: current_user, rubit_id: params[:id])
     head :ok
   end
-  
+
   private
 
   def set_rubit
@@ -94,6 +92,7 @@ class RubitsController < ApplicationController
     end
     rubit
   end
+
   def rubit_not_found
     flash[:alert] = "Rubit not found."
     redirect_to root_path

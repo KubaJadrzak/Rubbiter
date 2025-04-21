@@ -28,7 +28,6 @@ export default class extends Controller {
   toggleEmailForm() {
     // Hide other sections and show email change form
     this.hideAllSections();
-    console.log("You are connected!"); // Log the message to the console
     this.emailFormTarget.classList.remove("d-none");
   }
 

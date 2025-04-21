@@ -1,7 +1,7 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Rubit, type: :model do
-  let(:user) { User.create(email: 'test@example.com', password: 'password') }
+  let(:user) { User.create(email: "test@example.com", password: "password") }
 
   it "is valid with valid attributes" do
     rubit = Rubit.new(content: "Hello #rails", user: user)
@@ -27,5 +27,4 @@ RSpec.describe Rubit, type: :model do
     rubit = Rubit.create(content: "Testing #RSpec #rails", user: user)
     expect(rubit.hashtags.map(&:name)).to include("rspec", "rails")
   end
-  
 end

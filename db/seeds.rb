@@ -5,46 +5,46 @@ user = []
 20.times do |i|
   user << User.create!(
     email: "user#{i + 1}@example.com",
-    password: 'password',
-    password_confirmation: 'password',
-    username: "user#{i + 1}"
+    password: "password",
+    password_confirmation: "password",
+    username: "user#{i + 1}",
   )
 end
 
-  rubit1 = user[1].rubits.create!(content: "Finally figured out how to debug in #rails! Now I feel like a wizard 🧙‍♂️")
-  rubit2 = user[1].rubits.create!(content: "Can we just talk about how #JavaScript’s async/await made my life easier? #Blessed")
-  rubit3 = user[1].rubits.create!(content: "Just got into #machinelearning and I feel like I’m in over my head. Anyone else? 🤖")
-  rubit4 = user[1].rubits.create!(content: "I’ve been trying to use #Docker for 2 days now and I swear, it’s like taming a lion. 🦁")
-  rubit5 = user[1].rubits.create!(content: "It’s crazy how many #gems I’m discovering for #rails! The community really is amazing!")
-  
-  # Rubits for user[2]
-  rubit6 = user[2].rubits.create!(content: "Can’t decide whether I should stick to #React or dive into #Vue. Both are so tempting. 🤔")
-  rubit7 = user[2].rubits.create!(content: "Finally got #GraphQL working after hours of struggle. Never been more proud of myself. 🙌")
-  rubit8 = user[2].rubits.create!(content: "The #Redux pattern is giving me a headache, but I’m determined to get it right. #FrontEndDev")
-  rubit9 = user[2].rubits.create!(content: "Trying to optimize my #NodeJS backend, but these bugs are driving me crazy! 🐞")
-  rubit10 = user[2].rubits.create!(content: "Is anyone else obsessed with #webpack? Or am I the only one? 😬")
-  
-  # Rubits for user[3]
-  rubit11 = user[3].rubits.create!(content: "Just finished building my first app with #Django! That framework is smooth! 🚀")
-  rubit12 = user[3].rubits.create!(content: "Learning #Python is a game changer, it’s like the Swiss army knife of programming languages. 🛠️")
-  rubit13 = user[3].rubits.create!(content: "Getting into #AI has my brain in knots. But I think I’m finally starting to understand it. 🤯")
-  rubit14 = user[3].rubits.create!(content: "Spent the last 2 hours debugging code… then I realized I forgot a semicolon. Classic. 😩")
-  rubit15 = user[3].rubits.create!(content: "Just installed #TensorFlow. I feel like I’m about to change the world or break something important. 🤖")
-  
-  # Rubits for user[4]
-  rubit16 = user[4].rubits.create!(content: "Why do I always seem to break things when I use #Webpack? It’s supposed to make my life easier, right?")
-  rubit17 = user[4].rubits.create!(content: "Spent an hour trying to figure out #Sass variables. Finally got it, but why is CSS this confusing? 😅")
-  rubit18 = user[4].rubits.create!(content: "Can we talk about how frustrating it is to work with #RESTAPIs? Like, why are they so inconsistent?")
-  rubit19 = user[4].rubits.create!(content: "Just spent a full day learning about #CI/CD pipelines. It’s all coming together. Next stop: DevOps! 🚀")
-  rubit20 = user[4].rubits.create!(content: "Found a bug in my code after 3 hours of staring at the screen. The bug? A missing comma. 🤦‍♂️")
-  
-  # Rubits for user[5]
-  rubit21 = user[5].rubits.create!(content: "Spent way too much time making my app look pretty with #CSS. Who knew design could be so hard?")
-  rubit22 = user[5].rubits.create!(content: "Learning about #Kubernetes and it feels like I’m trying to solve a Rubik’s Cube while blindfolded. 🧩")
-  rubit23 = user[5].rubits.create!(content: "Trying out #TypeScript and so far, it feels like learning a new dialect of JavaScript. 😬")
-  rubit24 = user[5].rubits.create!(content: "Why do I always feel like I’m behind on new technology? #ImposterSyndrome")
-  rubit25 = user[5].rubits.create!(content: "Just got a #React app to finally deploy. It’s a miracle, but I’ll take it. 🎉")
-  
+rubit1 = user[1].rubits.create!(content: "Finally figured out how to debug in #rails! Now I feel like a wizard 🧙‍♂️")
+rubit2 = user[1].rubits.create!(content: "Can we just talk about how #JavaScript’s async/await made my life easier? #Blessed")
+rubit3 = user[1].rubits.create!(content: "Just got into #machinelearning and I feel like I’m in over my head. Anyone else? 🤖")
+rubit4 = user[1].rubits.create!(content: "I’ve been trying to use #Docker for 2 days now and I swear, it’s like taming a lion. 🦁")
+rubit5 = user[1].rubits.create!(content: "It’s crazy how many #gems I’m discovering for #rails! The community really is amazing!")
+
+# Rubits for user[2]
+rubit6 = user[2].rubits.create!(content: "Can’t decide whether I should stick to #React or dive into #Vue. Both are so tempting. 🤔")
+rubit7 = user[2].rubits.create!(content: "Finally got #GraphQL working after hours of struggle. Never been more proud of myself. 🙌")
+rubit8 = user[2].rubits.create!(content: "The #Redux pattern is giving me a headache, but I’m determined to get it right. #FrontEndDev")
+rubit9 = user[2].rubits.create!(content: "Trying to optimize my #NodeJS backend, but these bugs are driving me crazy! 🐞")
+rubit10 = user[2].rubits.create!(content: "Is anyone else obsessed with #webpack? Or am I the only one? 😬")
+
+# Rubits for user[3]
+rubit11 = user[3].rubits.create!(content: "Just finished building my first app with #Django! That framework is smooth! 🚀")
+rubit12 = user[3].rubits.create!(content: "Learning #Python is a game changer, it’s like the Swiss army knife of programming languages. 🛠️")
+rubit13 = user[3].rubits.create!(content: "Getting into #AI has my brain in knots. But I think I’m finally starting to understand it. 🤯")
+rubit14 = user[3].rubits.create!(content: "Spent the last 2 hours debugging code… then I realized I forgot a semicolon. Classic. 😩")
+rubit15 = user[3].rubits.create!(content: "Just installed #TensorFlow. I feel like I’m about to change the world or break something important. 🤖")
+
+# Rubits for user[4]
+rubit16 = user[4].rubits.create!(content: "Why do I always seem to break things when I use #Webpack? It’s supposed to make my life easier, right?")
+rubit17 = user[4].rubits.create!(content: "Spent an hour trying to figure out #Sass variables. Finally got it, but why is CSS this confusing? 😅")
+rubit18 = user[4].rubits.create!(content: "Can we talk about how frustrating it is to work with #RESTAPIs? Like, why are they so inconsistent?")
+rubit19 = user[4].rubits.create!(content: "Just spent a full day learning about #CI/CD pipelines. It’s all coming together. Next stop: DevOps! 🚀")
+rubit20 = user[4].rubits.create!(content: "Found a bug in my code after 3 hours of staring at the screen. The bug? A missing comma. 🤦‍♂️")
+
+# Rubits for user[5]
+rubit21 = user[5].rubits.create!(content: "Spent way too much time making my app look pretty with #CSS. Who knew design could be so hard?")
+rubit22 = user[5].rubits.create!(content: "Learning about #Kubernetes and it feels like I’m trying to solve a Rubik’s Cube while blindfolded. 🧩")
+rubit23 = user[5].rubits.create!(content: "Trying out #TypeScript and so far, it feels like learning a new dialect of JavaScript. 😬")
+rubit24 = user[5].rubits.create!(content: "Why do I always feel like I’m behind on new technology? #ImposterSyndrome")
+rubit25 = user[5].rubits.create!(content: "Just got a #React app to finally deploy. It’s a miracle, but I’ll take it. 🎉")
+
 # Create Rubits for user[6]
 rubit26 = user[6].rubits.create!(content: "Just tried out #elixir and I’m amazed. Such a cool language!")
 rubit27 = user[6].rubits.create!(content: "Learning #flutter for cross-platform mobile apps, but it’s so overwhelming!")
@@ -92,7 +92,6 @@ rubit57 = user[12].rubits.create!(content: "I think I’m finally starting to un
 rubit58 = user[12].rubits.create!(content: "Getting into #flutter but am still struggling with the Dart syntax.")
 rubit59 = user[12].rubits.create!(content: "I feel like every #vuejs tutorial I watch leads me to a rabbit hole.")
 rubit60 = user[12].rubits.create!(content: "Playing around with #tailwindcss but it’s making me rethink my entire approach to design.")
-
 
 # Create Rubits for user[13]
 rubit61 = user[13].rubits.create!(content: "Who else is obsessed with #firebase? It’s got everything you need for web and mobile.")
@@ -149,7 +148,6 @@ rubit98 = user[0].rubits.create!(content: "Diving into #mongodb for the first ti
 rubit99 = user[0].rubits.create!(content: "Learning about the #eventloop in #nodejs. Still wrapping my head around it.")
 rubit100 = user[0].rubits.create!(content: "Exploring #vuex for state management in #vuejs. Can’t decide if I love it or hate it.")
 
-
 users = User.all.to_a
 rubits = Rubit.all.to_a
 
@@ -158,7 +156,6 @@ rubits.each do |rubit|
   likers = users.sample(rand(0..10))  # Randomly pick unique users to like this rubit
 
   likers.each do |user|
-
     rubit.likes.create!(user: user)
   end
 end

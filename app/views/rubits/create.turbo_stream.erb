@@ -1,10 +1,8 @@
 <%= turbo_stream.prepend(
-      "rubits-list-#{@rubit.parent_rubit_id || 'root'}",
-      partial: "rubits/rubit",
-      locals: { rubit: @rubit }
-    ) %>
-<%= turbo_stream.update "new_rubit_form_#{@rubit.parent_rubit_id || 'root' }" do %>
+     "rubits-list-#{@rubit.parent_rubit_id || "root"}",
+     partial: "rubits/rubit",
+     locals: { rubit: @rubit },
+   ) %>
+<%= turbo_stream.update "new_rubit_form_#{@rubit.parent_rubit_id || "root"}" do %>
   <%= render "rubits/form", parent_rubit: @rubit.parent_rubit %>
 <% end %>
-
-

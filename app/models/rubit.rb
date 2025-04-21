@@ -1,20 +1,18 @@
 class Rubit < ApplicationRecord
   belongs_to :user
-  belongs_to :parent_rubit, class_name: 'Rubit', optional: true
+  belongs_to :parent_rubit, class_name: "Rubit", optional: true
+  has_many :child_rubits, class_name: "Rubit", foreign_key: "parent_rubit_id", dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_by_users, through: :likes, source: :user
-  has_many :child_rubits, class_name: 'Rubit', foreign_key: 'parent_rubit_id', dependent: :destroy
-  has_many :hashtaggings, dependent: :destroy 
+  has_many :hashtaggings, dependent: :destroy
   has_many :hashtags, through: :hashtaggings
   has_many :seen_rubits
 
   validates :content, presence: true, length: { maximum: 204 }
 
   after_save :create_hashtags
-  
-  def self.find_root_rubits
-    where(parent_rubit_id: nil)
-  end
+
+  scope :root_rubits, -> { where(parent_rubit_id: nil) }
 
   def create_hashtags
     hashtags_in_content = content.scan(/#\w+/).map { |hashtag| hashtag.downcase.delete("#") }
@@ -29,11 +27,6 @@ class Rubit < ApplicationRecord
     hashtag_names = content.scan(/#\w+/).uniq
     self.hashtags = hashtag_names.map { |name| Hashtag.find_or_create_by(name: name.downcase) }
   end
-
-  def likes_in_last_24_hours
-    likes.where('likes.created_at >= ?', 24.hours.ago).count
-  end
-
 
   def is_child_rubit?
     parent_rubit.present?

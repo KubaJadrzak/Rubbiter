@@ -11,9 +11,9 @@
     <%= render partial: "likes/like_section", locals: { rubit: rubit } %>
     
     <% if rubit.user == current_user %>
-      <%= button_to rubit_path(rubit), method: :delete, 
-                    data: { turbo_stream: true, confirm: "Are you sure?" }, 
-                    class: "btn btn-sm text-dark p-1" do %>
+      <%= button_to rubit_path(rubit), method: :delete,
+                                       data: { turbo_stream: true, confirm: "Are you sure?" },
+                                       class: "btn btn-sm text-dark p-1" do %>
         <i class="bi bi-trash" style="font-size: 1.5rem; color: black;"></i>
       <% end %>
     <% end %>
@@ -21,7 +21,7 @@
   
   <% if rubit.id == params[:id].to_i %>
     <div id="new_rubit_form_<%= @rubit.id %>">
-      <%= render 'rubits/form', parent_rubit: rubit%>
+      <%= render "rubits/form", parent_rubit: rubit %>
     </div>
   <% end %>
   

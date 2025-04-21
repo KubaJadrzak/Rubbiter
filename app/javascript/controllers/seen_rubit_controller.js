@@ -7,7 +7,6 @@ export default class extends Controller {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const rubitId = this.element.dataset.rubitId
-            console.log(`👀 Rubit ${rubitId} is visible, marking as seen`)
 
             fetch(`/rubits/${rubitId}/mark_seen`, {
               method: "POST",

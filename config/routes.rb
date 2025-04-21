@@ -13,10 +13,10 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   devise_for :users, controllers: {
-    registrations: 'users/registrations'
-  }
+            registrations: "users/registrations",
+          }
   root "rubits#index"
-  get 'user', to: 'users#show', as: 'user'
+  get "user", to: "users#show", as: "user"
 
   resources :users, only: [:new, :create]
   resources :rubits, only: [:index, :show, :create, :destroy] do

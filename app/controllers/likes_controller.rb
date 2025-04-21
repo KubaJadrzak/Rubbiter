@@ -9,7 +9,7 @@ class LikesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace("rubit_#{@rubit.id}_like_section", partial: "likes/like_section", locals: { rubit: @rubit })
         end
-        format.html { redirect_to root_path, notice: 'Rubit liked!' }
+        format.html { redirect_to root_path, notice: "Rubit liked!" }
       end
     end
   end
@@ -21,7 +21,7 @@ class LikesController < ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace("rubit_#{@rubit.id}_like_section", partial: "likes/like_section", locals: { rubit: @rubit })
       end
-      format.html { redirect_to root_path, notice: 'Rubit unliked!' }
+      format.html { redirect_to root_path, notice: "Rubit unliked!" }
     end
   end
 
