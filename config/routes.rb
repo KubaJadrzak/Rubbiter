@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   devise_for :users, controllers: {
-            registrations: "users/registrations",
-          }
+                       registrations: "users/registrations",
+                     }
   root "rubits#index"
   get "user", to: "users#show", as: "user"
 
@@ -24,4 +24,6 @@ Rails.application.routes.draw do
     resources :likes, only: [:create, :destroy]
   end
   resources :hashtags, only: [:show]
+
+  get "users/dev_login", to: "users/sessions#dev_login" if Rails.env.development?
 end
