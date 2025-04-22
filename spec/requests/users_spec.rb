@@ -53,6 +53,11 @@ RSpec.describe "User session management", type: :request do
     expect(response).to redirect_to(new_user_session_path)
   end
 
+  it "redirects to root page when user is logged in and tries to access login form" do
+    get "/users/sign_in"
+    expect(response).to redirect_to("/")
+  end
+
   it "signs out a User and redirect to root page" do
     get "/user"
     expect(response).to render_template("users/show")
