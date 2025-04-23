@@ -11,6 +11,3 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 # Bootstrap CDN
 pin "bootstrap", to: "https://cdn.skypack.dev/bootstrap@5.3.0-alpha1"
-
-# Pin your local controllers directory
-pin_all_from "app/javascript/controllers", under: "controllers"

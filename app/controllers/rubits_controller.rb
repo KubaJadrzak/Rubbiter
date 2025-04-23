@@ -40,15 +40,10 @@ class RubitsController < ApplicationController
 
     respond_to do |format|
       if @rubit.save
-        if @rubit.parent_rubit.present?
-          # If parent rubit is present, redirect to the root rubit show page
-          format.turbo_stream
-        else
-          # If parent rubit is not present, it means the creation occured from root page, redirect to root path
-          format.turbo_stream
-        end
+        flash.now[:notice] = "Rubit created successfully."
+        format.turbo_stream
       else
-        format.html { render :index }
+        redirect_to root_path, flash[:alert] = "Failed to create Rubit"
       end
     end
   end
@@ -58,12 +53,12 @@ class RubitsController < ApplicationController
 
     if @rubit.user == current_user
       @rubit.destroy
-
+      flash.now[:notice] = "Rubit deleted successfully."
       respond_to do |format|
         format.turbo_stream
       end
     else
-      redirect_to root_path, alert: "You are not authorized to delete this rubit."
+      redirect_to root_path, flash[:alert] = "You are not authorized to delete this rubit."
     end
   end
 
@@ -90,7 +85,6 @@ class RubitsController < ApplicationController
   end
 
   def rubit_not_found
-    flash[:alert] = "Rubit not found."
-    redirect_to root_path
+    redirect_to root_path, flash[:alert] = "Rubit not found."
   end
 end

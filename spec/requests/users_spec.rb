@@ -67,4 +67,11 @@ RSpec.describe "User session management", type: :request do
     follow_redirect!
     expect(response).to render_template("rubits/index")
   end
+
+  RSpec.describe "User account managment", type: :request do
+    let(:user) { create(:user) }
+    before do
+      sign_in user
+    end
+  end
 end

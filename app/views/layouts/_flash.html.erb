@@ -1,0 +1,16 @@
+<turbo-frame id="flash">
+  <div
+    data-controller="flash"
+    data-flash-target="flash"
+    class="position-fixed top-0 start-50 translate-middle-x mt-3 z-3"
+    style="width: 100%; max-width: 500px;"
+  >
+    <% flash.each do |type, message| %>
+      <div class="custom-flash-message mb-2 px-4 py-3 rounded shadow text-white
+        <%= "bg-success" if type == "notice" %>
+        <%= "bg-danger" if type == "alert" || type == "error" %>">
+        <%= message %>
+      </div>
+    <% end %>
+  </div>
+</turbo-frame>

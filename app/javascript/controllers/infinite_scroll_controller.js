@@ -6,7 +6,6 @@ export default class extends Controller {
   connect() {
     this.handleScroll = this.checkScroll.bind(this);
     window.addEventListener("scroll", this.handleScroll);
-    console.log("You are connected!"); // Log the message to the console
 
     if (this.hasLoadMoreLinkTarget) {
       this.loadMoreLinkTarget.style.display = 'none';

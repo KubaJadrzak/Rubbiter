@@ -1,3 +1,4 @@
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>
 <%= turbo_stream.prepend(
      "rubits-list-#{@rubit.parent_rubit_id || "root"}",
      partial: "rubits/rubit",
