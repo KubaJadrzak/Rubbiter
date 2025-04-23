@@ -26,4 +26,6 @@ Rails.application.routes.draw do
   resources :hashtags, only: [:show]
 
   get "users/dev_login", to: "users/sessions#dev_login" if Rails.env.development?
+
+  get "*unmatched_route", to: redirect("/")
 end
