@@ -1,9 +1,8 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:show]
+  before_action :authenticate_user!, only: [:profile]
 
-  def show
+  def profile
     @user = current_user
-
     @rubits = current_user.root_rubits.order(created_at: :desc)
     @comments = current_user.comments.order(created_at: :desc)
     @liked_rubits = Rubit.joins(:likes)

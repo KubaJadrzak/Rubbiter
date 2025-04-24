@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "User account creation management", type: :request do
   it "creates a User with valid attributes and redirects to root page" do
-    get "/users/sign_up"
+    get new_user_registration_path
     expect(response).to render_template("devise/registrations/new")
 
     post "/users", params: {
@@ -14,13 +14,13 @@ RSpec.describe "User account creation management", type: :request do
                      },
                    }
     expect(User.count).to eq(1)
-    expect(response).to redirect_to("/")
+    expect(response).to redirect_to(root_path)
     follow_redirect!
     expect(response).to render_template("rubits/index")
   end
 
   it "does not create a User with invalid attributes and re-renders sign up page" do
-    get "/users/sign_up"
+    get new_user_registration_path
     expect(response).to render_template("devise/registrations/new")
 
     post "/users", params: {
@@ -43,35 +43,28 @@ RSpec.describe "User session management", type: :request do
   end
 
   it "displays user show page when user is logged in" do
-    get "/user"
-    expect(response).to render_template("users/show")
+    get profile_path
+    expect(response).to render_template("users/profile")
   end
 
   it "redirects to sign_in page when user is not logged in" do
     sign_out user
-    get "/user"
+    get profile_path
     expect(response).to redirect_to(new_user_session_path)
   end
 
   it "redirects to root page when user is logged in and tries to access login form" do
-    get "/users/sign_in"
+    get new_user_session_path
     expect(response).to redirect_to("/")
   end
 
   it "signs out a User and redirect to root page" do
-    get "/user"
-    expect(response).to render_template("users/show")
+    get profile_path
+    expect(response).to render_template("users/profile")
 
-    delete "/users/sign_out"
-    expect(response).to redirect_to("/")
+    delete destroy_user_session_path
+    expect(response).to redirect_to(root_path)
     follow_redirect!
     expect(response).to render_template("rubits/index")
-  end
-
-  RSpec.describe "User account managment", type: :request do
-    let(:user) { create(:user) }
-    before do
-      sign_in user
-    end
   end
 end

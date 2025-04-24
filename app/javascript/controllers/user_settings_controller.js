@@ -6,13 +6,12 @@ export default class extends Controller {
 
   }
   static targets = [
-    "emailForm", 
-    "passwordForm", 
-    "rubitsSection", 
-    "commentsSection", 
+    "emailForm",
+    "rubitsSection",
+    "commentsSection",
     "likedRubitsSection"
   ]
-  
+
   toggleRubitsSection() {
     this.toggleContent("rubits")
   }
@@ -25,17 +24,6 @@ export default class extends Controller {
     this.toggleContent("likedRubits")
   }
 
-  toggleEmailForm() {
-    // Hide other sections and show email change form
-    this.hideAllSections();
-    this.emailFormTarget.classList.remove("d-none");
-  }
-
-  togglePasswordForm() {
-    // Hide other sections and show password change form
-    this.hideAllSections();
-    this.passwordFormTarget.classList.remove("d-none");
-  }
 
   toggleContent(contentType) {
     // Hide all content sections first
@@ -56,7 +44,5 @@ export default class extends Controller {
     this.rubitsSectionTarget.classList.add("d-none");
     this.commentsSectionTarget.classList.add("d-none");
     this.likedRubitsSectionTarget.classList.add("d-none");
-    this.emailFormTarget.classList.add("d-none");
-    this.passwordFormTarget.classList.add("d-none");
   }
 }

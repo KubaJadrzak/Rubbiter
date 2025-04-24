@@ -16,7 +16,7 @@ Rails.application.routes.draw do
                        registrations: "users/registrations",
                      }
   root "rubits#index"
-  get "user", to: "users#show", as: "user"
+  get "profile", to: "users#profile", as: "profile"
 
   resources :users, only: [:new, :create]
   resources :rubits, only: [:index, :show, :create, :destroy] do
