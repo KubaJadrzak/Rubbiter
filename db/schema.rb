@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_16_165305) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_26_124238) do
+  create_table "cart_items", force: :cascade do |t|
+    t.integer "cart_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_id_and_product_id", unique: true
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
   create_table "hashtaggings", force: :cascade do |t|
     t.integer "rubit_id", null: false
     t.integer "hashtag_id", null: false
@@ -35,6 +54,39 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_16_165305) do
     t.datetime "updated_at", null: false
     t.index ["rubit_id"], name: "index_likes_on_rubit_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity"
+    t.decimal "price_at_purchase"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.decimal "total_price"
+    t.string "status"
+    t.string "payment_status"
+    t.text "shipping_address"
+    t.datetime "ordered_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "order_number", null: false
+    t.index ["order_number"], name: "index_orders_on_order_number", unique: true
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "content"
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "rubits", force: :cascade do |t|
@@ -69,10 +121,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_16_165305) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "carts", "users"
   add_foreign_key "hashtaggings", "hashtags"
   add_foreign_key "hashtaggings", "rubits"
   add_foreign_key "likes", "rubits"
   add_foreign_key "likes", "users"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "users"
   add_foreign_key "rubits", "rubits", column: "parent_rubit_id"
   add_foreign_key "rubits", "users"
   add_foreign_key "seen_rubits", "rubits"

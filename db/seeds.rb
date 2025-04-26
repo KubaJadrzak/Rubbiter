@@ -3,12 +3,17 @@
 user = []
 
 20.times do |i|
-  user << User.create!(
+  new_user = User.create!(
     email: "user#{i + 1}@example.com",
     password: "password",
     password_confirmation: "password",
     username: "user#{i + 1}",
   )
+
+  # Create a cart for each user
+  new_user.create_cart!
+
+  user << new_user
 end
 
 rubit1 = user[1].rubits.create!(content: "Finally figured out how to debug in #rails! Now I feel like a wizard 🧙‍♂️")
@@ -159,5 +164,65 @@ rubits.each do |rubit|
     rubit.likes.create!(user: user)
   end
 end
+
+Product.create!(
+  title: "Rubitter T-shirt",
+  content: "A comfy and stylish t-shirt featuring the iconic Rubitter logo. Perfect for showing off your Rubitter pride wherever you go.",
+  price: 29.99,
+)
+
+Product.create!(
+  title: "Rubitter Mug",
+  content: "Start your day right with a Rubitter-themed mug. Ideal for sipping coffee or tea while coding.",
+  price: 12.50,
+)
+
+Product.create!(
+  title: "Rubitter Hoodie",
+  content: "Stay warm and cozy with the Rubitter hoodie. A must-have for Rubitter enthusiasts during those late-night coding sessions.",
+  price: 39.99,
+)
+
+Product.create!(
+  title: "Rubitter Hat",
+  content: "This stylish Rubitter beanie will keep your head warm while showing your love for Rubitter programming.",
+  price: 15.00,
+)
+
+Product.create!(
+  title: "Rubitter Stickers",
+  content: "Decorate your laptop, water bottle, or anywhere with these high-quality Rubitter-themed stickers. Perfect for any Rubitter fan.",
+  price: 3.99,
+)
+
+Product.create!(
+  title: "Rubitter Keychain",
+  content: "A durable Rubitter-themed keychain that makes it easy to carry your love for Rubitter everywhere you go.",
+  price: 7.49,
+)
+
+Product.create!(
+  title: "Rubitter Socks",
+  content: "Comfortable and warm Rubitter socks to keep your feet cozy while you work on your next Rubitter project.",
+  price: 9.99,
+)
+
+Product.create!(
+  title: "Rubitter Poster",
+  content: "Bring Rubitter to your walls with this sleek, modern poster. Ideal for any Rubitter developer's office or home.",
+  price: 14.00,
+)
+
+Product.create!(
+  title: "Rubitter Tote Bag",
+  content: "Show off your Rubitter spirit with this eco-friendly, spacious tote bag. Perfect for carrying your laptop and other essentials.",
+  price: 19.99,
+)
+
+Product.create!(
+  title: "Rubitter Phone Case",
+  content: "Protect your phone with a Rubitter-inspired case, designed to fit most modern smartphones while showing off your love for the language.",
+  price: 16.49,
+)
 
 puts "Seed data created!"
