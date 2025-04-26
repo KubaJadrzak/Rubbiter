@@ -14,5 +14,14 @@
         <%= image_tag "account.png", alt: "Login", class: "navbar-icon" %>
       </a>
     <% end %>
+    <% if user_signed_in? %>
+      <a class="navbar-brand" href="<%= profile_path %>">
+        <%= image_tag "account.png", alt: "Account", class: "navbar-icon" %>
+      </a>
+    <% else %>
+      <a class="navbar-brand" href="<%= new_user_session_path %>">
+        <%= image_tag "account.png", alt: "Login", class: "navbar-icon" %>
+      </a>
+    <% end %>
   </div>
 </nav>
