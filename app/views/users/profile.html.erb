@@ -3,7 +3,7 @@
     <!-- Sidebar -->
     <div class="col-md-3" style="margin-bottom: 20px;">
       <div class="list-group">
-        <%= button_to "PURCHASE MERCHANDISE (SALE!!!)", products_path, method: :get,
+        <%= button_to "PURCHASE MERCHANDISE", products_path, method: :get,
                                                                  class: "list-group-item list-group-item-action text-white btn btn-primary" %>
         <!-- Sidebar Navigation -->
         <button class="list-group-item list-group-item-action" 
@@ -19,6 +19,8 @@
           Liked Rubits
         </button>
         <%= button_to "Edit Account", edit_user_registration_path, method: :get,
+                                                                      class: "list-group-item list-group-item-action" %>
+        <%= button_to "Order History", orders_path, method: :get,
                                                                       class: "list-group-item list-group-item-action" %>
         <!-- Logout Button -->
         <%= button_to "Logout", destroy_user_session_path, method: :delete,

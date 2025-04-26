@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   end
   resources :hashtags, only: [:show]
   resources :products, only: [:index]
+  resources :cart_items, only: [:destroy]
+  resources :orders, only: [:index, :show, :new, :create]
 
   get "cart", to: "carts#show", as: "cart"
   post "add_to_cart/:product_id", to: "cart_items#create", as: "add_to_cart"
