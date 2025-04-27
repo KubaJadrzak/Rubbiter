@@ -6,7 +6,7 @@
           <h3>Order Information</h3>
         </div>
         <div class="card-body">
-          <%= form_with model: @order, url: orders_path, method: :post do |form| %>
+          <%= form_with model: @order, url: orders_path,  data: { turbo: false }, method: :post do |form| %>
             <!-- Email -->
             <div class="form-group mb-3">
               <%= form.label :email, "Email", class: "form-label" %>
