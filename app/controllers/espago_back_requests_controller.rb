@@ -2,16 +2,15 @@ class EspagoBackRequestsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:handle_back_request]
   before_action :authenticate_espago!
 
-  # Handle the back request from Espago
   def handle_back_request
-    # Read the request body
     payload = JSON.parse(request.body.read)
 
     order_number = extract_order_number(payload["description"])
 
-    # Find the order based on the extracted order number (not the id)
+    # Find the order based on the order number
     order = Order.find_by(order_number: order_number)
 
+    # Assign payment_status and status to order
     if order
       case payload["state"]
       when "executed"
@@ -61,11 +60,11 @@ class EspagoBackRequestsController < ApplicationController
 
   def extract_order_number(description)
     # Find the part of the string starting with '#'
-    match = description.match(/#\w+/)  # Match any word starting with '#'
+    match = description.match(/#\w+/)
 
     # If a match is found, return the order number without the '#'
     if match
-      match[0][1..-1]  # Remove the first character ('#') from the matched string
+      match[0][1..-1]
     else
       nil
     end

@@ -15,7 +15,6 @@
                   <div class="col-md-6">
                     <div class="d-flex justify-content-between">
                       <span><strong>Status:</strong></span>
-                      <!-- Badge with dynamically assigned class and text -->
                       <span class="badge <%= order_status_badge(order)[:class] %> w-50 text-center">
                         <%= order_status_badge(order)[:text] %>
                       </span>
@@ -25,7 +24,6 @@
                   <div class="col-md-6">
                     <div class="d-flex justify-content-between">
                       <span><strong>Payment Status:</strong></span>
-                      <!-- Use helper method to get class and text for badge -->
                       <% badge = payment_status_badge(order) %>
                       <span class="badge <%= badge[:class] %> w-50 text-center">
                         <%= order.payment_status.present? ? badge[:text] : "Pending" %>

@@ -22,15 +22,14 @@ class OrdersController < ApplicationController
       ordered_at: Time.current,
     )
 
-    # Build order items from the current user's cart
+    # Build order items from the current user cart
     @order.build_order_items_from_cart(current_user.cart)
 
     if @order.save
       # Clear the cart after saving the order
       current_user.cart.cart_items.destroy_all
-      Rails.logger.info "Order created, redirecting to payment"
 
-      # Redirect to the payment creation (where the payment gateway is called)
+      # Redirect to the payment creation
       redirect_to start_payment_path(order_id: @order.id)
     else
       render :new

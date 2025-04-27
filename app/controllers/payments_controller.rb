@@ -11,6 +11,7 @@ class PaymentsController < ApplicationController
     if response.is_a?(Net::HTTPSuccess)
       # if response contains Espago redirect url, redirect user there
       data = JSON.parse(response.body)
+      @order.update(payment_id: data["id"])
       redirect_to data["redirect_url"], allow_other_host: true
     else
       # if response doesn't contain Espago redirect url, redirect user to root
