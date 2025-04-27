@@ -26,11 +26,14 @@ Rails.application.routes.draw do
   resources :hashtags, only: [:show]
   resources :products, only: [:index]
   resources :cart_items, only: [:destroy]
-  resources :orders, only: [:index, :show, :new, :create] do
-    member do
-      get :pay
-    end
-  end
+  resources :orders, only: [:index, :show, :new, :create]
+
+  # start Espago payment flow for specific order
+  get "payments/start_payment/:order_id", to: "payments#start_payment", as: "start_payment"
+  # handle redirect from Espago site after success
+  get "payment_success", to: "payments#payment_success"
+  # handle redirect from Espago site after failure
+  get "payment_failure", to: "payments#payment_failure"
 
   get "cart", to: "carts#show", as: "cart"
   post "add_to_cart/:product_id", to: "cart_items#create", as: "add_to_cart"

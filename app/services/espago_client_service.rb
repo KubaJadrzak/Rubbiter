@@ -2,7 +2,7 @@ require "net/http"
 require "uri"
 require "json"
 
-class EspagoClient
+class EspagoClientService
   def initialize(user:, password:)
     @user = user
     @password = password

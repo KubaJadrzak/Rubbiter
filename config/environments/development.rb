@@ -52,6 +52,7 @@ Rails.application.configure do
 
   config.hosts << "rubitter.net"
   config.hosts << "ruling-special-liger.ngrok-free.app"
+  config.web_console.permissions = "109.173.211.78"
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
