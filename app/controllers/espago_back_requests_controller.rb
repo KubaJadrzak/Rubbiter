@@ -5,12 +5,9 @@ class EspagoBackRequestsController < ApplicationController
   def handle_back_request
     payload = JSON.parse(request.body.read)
 
-    order_number = extract_order_number(payload["description"])
+    payment_id = payload["id"]
+    order = Order.find_by(payment_id: payment_id)
 
-    # Find the order based on the order number
-    order = Order.find_by(order_number: order_number)
-
-    # Assign payment_status and status to order
     if order
       case payload["state"]
       when "executed"
@@ -19,32 +16,15 @@ class EspagoBackRequestsController < ApplicationController
         order.update(payment_status: "rejected", status: "Failed")
       when "failed"
         order.update(payment_status: "failed", status: "Failed")
-      when "preauthorized"
-        order.update(payment_status: "preauthorized", status: "Waiting for Payment")
-      when "tds2_challenge"
-        order.update(payment_status: "tds2_challenge", status: "Waiting for Payment")
-      when "tds_redirected"
-        order.update(payment_status: "tds_redirected", status: "Waiting for Payment")
-      when "dcc_decision"
-        order.update(payment_status: "dcc_decision", status: "Waiting for Payment")
-      when "resigned"
-        order.update(payment_status: "resigned", status: "Failed")
-      when "reversed"
-        order.update(payment_status: "reversed", status: "Failed")
-      when "refunded"
-        order.update(payment_status: "refunded", status: "Failed")
-      when "blik_redirected"
-        order.update(payment_status: "blik_redirected", status: "Waiting for Payment")
-      when "transfer_redirected"
-        order.update(payment_status: "transfer_redirected", status: "Waiting for Payment")
+      when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected"
+        order.update(payment_status: payload["state"], status: "Waiting for Payment")
+      when "resigned", "reversed", "refunded"
+        order.update(payment_status: payload["state"], status: "Failed")
       else
-        # Handle unknown state if necessary
       end
     else
-      # Handle case where the order is not found
     end
 
-    # Respond with HTTP 200 OK as per the API documentation
     head :ok
   end
 
