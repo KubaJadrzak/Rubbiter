@@ -51,6 +51,7 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
   config.hosts << "rubitter.net"
+  config.hosts << "ruling-special-liger.ngrok-free.app"
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
