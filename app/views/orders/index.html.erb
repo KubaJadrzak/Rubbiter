@@ -15,9 +15,9 @@
                   <div class="col-md-6">
                     <div class="d-flex justify-content-between">
                       <span><strong>Status:</strong></span>
-                      <!-- Badge with manually specified color -->
-                      <span class="badge <%= order.status == 'completed' ? 'bg-success' : 'bg-warning' %> w-50 text-center">
-                        <%= order.status.capitalize %>
+                      <!-- Badge with dynamically assigned class and text -->
+                      <span class="badge <%= order_status_badge(order)[:class] %> w-50 text-center">
+                        <%= order_status_badge(order)[:text] %>
                       </span>
                     </div>
                   </div>
@@ -25,9 +25,10 @@
                   <div class="col-md-6">
                     <div class="d-flex justify-content-between">
                       <span><strong>Payment Status:</strong></span>
-                      <!-- Manually specify the color for payment status -->
-                      <span class="badge <%= order.payment_status == 'payed' ? 'bg-success' : (order.payment_status == 'failed' ? 'bg-danger' : 'bg-secondary') %> w-50 text-center">
-                        <%= order.payment_status.present? ? order.payment_status.capitalize : "Pending" %>
+                      <!-- Use helper method to get class and text for badge -->
+                      <% badge = payment_status_badge(order) %>
+                      <span class="badge <%= badge[:class] %> w-50 text-center">
+                        <%= order.payment_status.present? ? badge[:text] : "Pending" %>
                       </span>
                     </div>
                   </div>

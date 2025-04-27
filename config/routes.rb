@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
                        registrations: "users/registrations",
                      }
+
   root "rubits#index"
-  get "profile", to: "users#profile", as: "profile"
 
   resources :users, only: [:new, :create]
   resources :rubits, only: [:index, :show, :create, :destroy] do
@@ -28,17 +28,20 @@ Rails.application.routes.draw do
   resources :cart_items, only: [:destroy]
   resources :orders, only: [:index, :show, :new, :create]
 
-  # start Espago payment flow for specific order
+  get "profile", to: "users#profile", as: "profile"
+
+  # Start Espago payment flow for specific order
   get "payments/start_payment/:order_id", to: "payments#start_payment", as: "start_payment"
-  # handle redirect from Espago site after success
-  get "payment_success", to: "payments#payment_success"
-  # handle redirect from Espago site after failure
-  get "payment_failure", to: "payments#payment_failure"
+  # Handle redirect from Espago site after success
+  get "payments/payment_success", to: "payments#payment_success", as: "payment_success"
+  # Handle redirect from Espago site after failure
+  get "payments/payment_failure", to: "payments#payment_failure", as: "payment_failure"
+  # Handle back requests received from Espago
+  post "/back_request", to: "espago_back_requests#handle_back_request", as: "espago_back_request"
 
   get "cart", to: "carts#show", as: "cart"
   post "add_to_cart/:product_id", to: "cart_items#create", as: "add_to_cart"
 
   get "users/dev_login", to: "users/sessions#dev_login" if Rails.env.development?
-
   get "*unmatched_route", to: redirect("/")
 end

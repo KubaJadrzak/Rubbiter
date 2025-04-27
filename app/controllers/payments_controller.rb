@@ -3,9 +3,9 @@ class PaymentsController < ApplicationController
     # find order for which payment should be initilized
     @order = Order.find(params[:order_id])
 
-    # register payment
+    # register payment for order
     payment_service = EspagoPaymentService.new(@order)
-    # assign response received from Espago to response
+    # assign response received from Espago
     response = payment_service.create_payment
 
     if response.is_a?(Net::HTTPSuccess)
