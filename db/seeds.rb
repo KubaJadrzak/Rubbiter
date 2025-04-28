@@ -31,4 +31,16 @@ FactoryBot.create(:product, title: "Rubitter Poster", content: "Bring Rubitter t
 FactoryBot.create(:product, title: "Rubitter Tote Bag", content: "Show off your Rubitter spirit with this eco-friendly, spacious tote bag. Perfect for carrying your laptop and other essentials.", price: 19.99)
 FactoryBot.create(:product, title: "Rubitter Phone Case", content: "Protect your phone with a Rubitter-inspired case, designed to fit most modern smartphones while showing off your love for the language.", price: 16.49)
 
-puts "Seed data created!"
+first_user = User.first
+
+products = Product.limit(3)
+
+products.each do |product|
+  FactoryBot.create(
+    :cart_item,
+    cart: first_user.cart,
+    product: product,
+    quantity: rand(1..3),
+    price: product.price,
+  )
+end

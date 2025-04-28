@@ -13,9 +13,9 @@ class EspagoBackRequestsController < ApplicationController
       when "executed"
         order.update(payment_status: payload["state"], status: "Preparing for Shipment")
       when "rejected"
-        order.update(ayment_status: payload["state"], status: "Failed")
+        order.update(payment_status: payload["state"], status: "Failed")
       when "failed"
-        order.update(ayment_status: payload["state"], status: "Failed")
+        order.update(payment_status: payload["state"], status: "Failed")
       when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected"
         order.update(payment_status: payload["state"], status: "Waiting for Payment")
       when "resigned", "reversed", "refunded"
