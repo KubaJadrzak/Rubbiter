@@ -20,8 +20,8 @@ class RubitsController < ApplicationController
       .page(params[:page])
       .per(20)
 
-    @trending_hashtags = Hashtag.trending  # Fetch trending hashtags
-    @trending_users = User.trending_users  # Fetch trending users
+    @trending_hashtags = Hashtag.trending
+    @trending_users = User.trending_users
     @rubit = Rubit.new
 
     respond_to do |format|
@@ -31,8 +31,8 @@ class RubitsController < ApplicationController
   end
 
   def show
-    @trending_hashtags = Hashtag.trending # Fetch trending hashtags
-    @trending_users = User.trending_users # Fetch trending users
+    @trending_hashtags = Hashtag.trending
+    @trending_users = User.trending_users
   end
 
   def create

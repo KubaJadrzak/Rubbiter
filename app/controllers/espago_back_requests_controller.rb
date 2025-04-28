@@ -11,11 +11,11 @@ class EspagoBackRequestsController < ApplicationController
     if order
       case payload["state"]
       when "executed"
-        order.update(payment_status: "executed", status: "Preparing for Shipment")
+        order.update(payment_status: payload["state"], status: "Preparing for Shipment")
       when "rejected"
-        order.update(payment_status: "rejected", status: "Failed")
+        order.update(ayment_status: payload["state"], status: "Failed")
       when "failed"
-        order.update(payment_status: "failed", status: "Failed")
+        order.update(ayment_status: payload["state"], status: "Failed")
       when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected"
         order.update(payment_status: payload["state"], status: "Waiting for Payment")
       when "resigned", "reversed", "refunded"
@@ -30,23 +30,10 @@ class EspagoBackRequestsController < ApplicationController
 
   private
 
-  # Basic Auth for security
   def authenticate_espago!
     authenticate_or_request_with_http_basic do |username, password|
       username == Rails.application.credentials.dig(:espago, :app_id) &&
       password == Rails.application.credentials.dig(:espago, :password)
-    end
-  end
-
-  def extract_order_number(description)
-    # Find the part of the string starting with '#'
-    match = description.match(/#\w+/)
-
-    # If a match is found, return the order number without the '#'
-    if match
-      match[0][1..-1]
-    else
-      nil
     end
   end
 end

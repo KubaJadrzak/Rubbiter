@@ -35,9 +35,6 @@ class EspagoPaymentService
       },
     )
 
-    # Log the response for debugging
-    Rails.logger.info "Espago Response: #{response.code} - #{response.body}"
-
     response
   end
 end

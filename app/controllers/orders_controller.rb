@@ -10,10 +10,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    # Construct shipping address
     shipping_address = "#{params[:order][:country]}, #{params[:order][:street]}, #{params[:order][:postal_code]}"
 
-    # Create a new order object for the current user
     @order = current_user.orders.new(
       shipping_address: shipping_address,
       total_price: current_user.cart.total_price,
@@ -22,14 +20,10 @@ class OrdersController < ApplicationController
       ordered_at: Time.current,
     )
 
-    # Build order items from the current user cart
     @order.build_order_items_from_cart(current_user.cart)
 
     if @order.save
-      # Clear the cart after saving the order
       current_user.cart.cart_items.destroy_all
-
-      # Redirect to the payment creation
       redirect_to start_payment_path(order_id: @order.id)
     else
       render :new
