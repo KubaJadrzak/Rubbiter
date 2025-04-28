@@ -13,6 +13,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "cypress": "^14.3.2",
+    "cypress-on-rails": "^0.1.0",
     "postcss": "^8.5.3"
   },
   "version": "1.0.0",
