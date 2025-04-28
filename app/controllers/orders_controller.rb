@@ -20,8 +20,8 @@ class OrdersController < ApplicationController
     @order = current_user.orders.new(
       shipping_address: shipping_address,
       total_price: current_user.cart.total_price,
-      status: "created",
-      payment_status: "pending",
+      status: "Created",
+      payment_status: "Pending",
       ordered_at: Time.current,
     )
 

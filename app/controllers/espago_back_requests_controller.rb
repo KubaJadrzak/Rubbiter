@@ -11,18 +11,16 @@ class EspagoBackRequestsController < ApplicationController
     if order
       case payload["state"]
       when "executed"
-        order.update(payment_status: payload["state"], status: "Preparing for Shipment")
-      when "rejected"
-        order.update(payment_status: payload["state"], status: "Failed")
-      when "failed"
-        order.update(payment_status: payload["state"], status: "Failed")
+        order.update(payment_status: "Paid", status: "Preparing for Shipment")
+      when "rejected", "failed", "resigned", "reversed"
+        order.update(payment_status: "Failed", status: "Payment Failed")
       when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected"
-        order.update(payment_status: payload["state"], status: "Waiting for Payment")
-      when "resigned", "reversed", "refunded"
-        order.update(payment_status: payload["state"], status: "Failed")
+        order.update(payment_status: "Pending", status: "Waiting for Payment")
+      when "refunded"
+        order.update(payment_status: "Refunded", status: "Payment Refunded")
       else
+        # Handle unknown states if necessary
       end
-    else
     end
 
     head :ok
