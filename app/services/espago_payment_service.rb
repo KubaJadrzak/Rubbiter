@@ -32,6 +32,8 @@ class EspagoPaymentService
         session_id: session_id,
         title: "Order ##{@order.order_number}",
         checksum: checksum,
+        positive_url: "https://ruling-special-liger.ngrok-free.app/payments/payment_success?order_number=#{@order.order_number}",
+        negative_url: "https://ruling-special-liger.ngrok-free.app/payments/payment_failure?order_number=#{@order.order_number}",
       },
     )
 

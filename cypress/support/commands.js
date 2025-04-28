@@ -23,3 +23,12 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('devLogin', () => {
+    cy.request('GET', '/users/dev_login')  // This hits your development login route
+        .then((response) => {
+            // Optionally, you can store cookies, headers, or tokens if necessary
+            // Example for storing a session token (if your app uses JWT):
+            // window.localStorage.setItem('auth_token', response.body.token);
+        });
+});

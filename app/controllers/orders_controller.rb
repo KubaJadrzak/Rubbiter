@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:index]
+  before_action :set_order, only: [:show]
 
   def new
     @order = Order.new
@@ -7,6 +8,10 @@ class OrdersController < ApplicationController
 
   def index
     @orders = current_user.orders.order(ordered_at: :desc)
+  end
+
+  def show
+    @order
   end
 
   def create
@@ -31,6 +36,10 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def set_order
+    @order = Order.find_by!(id: params[:id])
+  end
 
   def order_params
     params.require(:order).permit(:country, :street, :postal_code)

@@ -16,11 +16,23 @@ class PaymentsController < ApplicationController
 
   # handle user redirect from Espago payment site after success (positive_url)
   def payment_success
-    redirect_to orders_path, notice: "Payment successful!"
+    @order = Order.find_by(order_number: params[:order_number])
+
+    if @order
+      redirect_to order_path(@order), notice: "Payment successful!"
+    else
+      redirect_to orders_path, alert: "Order not found."
+    end
   end
 
-  # handle user redirect from Espago payment site after failure (negative_url)
+  # Handle user redirect from Espago payment site after failure (negative_url)
   def payment_failure
-    redirect_to orders_path, alert: "Payment failed. Please try again."
+    @order = Order.find_by(order_number: params[:order_number])
+
+    if @order
+      redirect_to order_path(@order), alert: "Payment failed. Please try again."
+    else
+      redirect_to orders_path, alert: "Order not found."
+    end
   end
 end
