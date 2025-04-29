@@ -44,8 +44,6 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-gem "factory_bot_rails"
-gem "faker"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -54,7 +52,10 @@ group :development, :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers", "~> 5.0"
   gem "capybara"
-  gem "webdrivers"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "cuprite"
+
   gem "selenium-webdriver", "~> 4.31"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false

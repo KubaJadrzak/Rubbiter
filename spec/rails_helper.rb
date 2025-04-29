@@ -28,22 +28,24 @@ require "rspec/rails"
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 require "capybara/rspec"
-require "webdrivers"
+require "capybara/cuprite"
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
-RSpec.configure do |config|
 
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_paths = [
-    Rails.root.join("spec/fixtures"),
-  ]
-  config.before(:each, type: :system) do
-    driven_by :selenium_chrome_headless # Or :selenium_chrome for visible browser
-  end
+Capybara.register_driver :cuprite do |app|
+  Capybara::Cuprite::Driver.new(app, { headless: true })
+end
+
+Capybara.default_driver = :cuprite
+Capybara.javascript_driver = :cuprite
+
+RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  config.include Warden::Test::Helpers
+  config.after(:each, type: :system) { Warden.test_reset! }
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

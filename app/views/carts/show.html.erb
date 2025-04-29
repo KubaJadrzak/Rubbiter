@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <% @cart.cart_items.each do |item| %>
-          <tr>
+          <tr class="cart-item">
             <td><%= item.product.title %></td>
             <td>$<%= item.price %></td>
             <td><%= item.quantity %></td>
@@ -26,6 +26,7 @@
             </td>
           </tr>
         <% end %>
+
       </tbody>
     </table>
     <div class="text-right">

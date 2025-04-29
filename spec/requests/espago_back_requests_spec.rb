@@ -46,7 +46,7 @@ RSpec.describe "EspagoBackRequests", type: :request do
   end
 
   describe "POST /back_request with invalid authorization" do
-    it "returns a 401 Unauthorized" do
+    it "returns a 401 Unauthorized and doesn't update order status and payment status" do
       order.update(payment_id: "pay_12345")
 
       valid_payload = {

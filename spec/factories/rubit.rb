@@ -4,6 +4,6 @@ FactoryBot.define do
       sentence = Faker::Lorem.sentence(word_count: 9)
       sentence + " ##{Faker::Lorem.word}"
     end
-    user
+    association :user
   end
 end
