@@ -19,7 +19,6 @@ class EspagoBackRequestsController < ApplicationController
       when "refunded"
         order.update(payment_status: "Refunded", status: "Payment Refunded")
       else
-        # Handle unknown states if necessary
       end
     end
 

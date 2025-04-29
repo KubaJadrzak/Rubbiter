@@ -12,9 +12,8 @@ class PaymentsController < ApplicationController
       @order.update(payment_id: data["id"])
       redirect_to data["redirect_url"], allow_other_host: true
     else
-      Rails.logger.error "Espago Payment Error Response: #{response.body}"
       @order.update(payment_status: "Failed", status: "Payment Failed")
-      redirect_to root_path, alert: "There was an issue with the payment gateway."
+      redirect_to order_path(@order), alert: "Payment failed. Please try again."
     end
   end
 
@@ -22,6 +21,7 @@ class PaymentsController < ApplicationController
     @order = Order.find_by(order_number: params[:order_number])
 
     if @order
+      @order.update(payment_status: "Paid", status: "Preparing for Shipment")
       redirect_to order_path(@order), notice: "Payment successful!"
     else
       redirect_to orders_path, alert: "Order not found."
@@ -32,6 +32,7 @@ class PaymentsController < ApplicationController
     @order = Order.find_by(order_number: params[:order_number])
 
     if @order
+      @order.update(payment_status: "Failed", status: "Payment Failed")
       redirect_to order_path(@order), alert: "Payment failed. Please try again."
     else
       redirect_to orders_path, alert: "Order not found."

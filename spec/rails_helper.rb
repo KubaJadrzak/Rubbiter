@@ -27,6 +27,10 @@ require "rspec/rails"
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
+require "capybara/rspec"
+require "webdrivers"
+
+Webdrivers::Chromedriver.required_version = "134.0.0"
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -38,6 +42,9 @@ RSpec.configure do |config|
   config.fixture_paths = [
     Rails.root.join("spec/fixtures"),
   ]
+  config.before(:each, type: :system) do
+    driven_by :selenium_chrome # Or :selenium_chrome for visible browser
+  end
   config.include FactoryBot::Syntax::Methods
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
