@@ -202,7 +202,7 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
-    nokogiri (1.18.7-x86_64-linux-gnu)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
@@ -421,7 +421,7 @@ DEPENDENCIES
   rails-controller-testing
   rspec-rails
   rubocop-rails-omakase
-  selenium-webdriver
+  selenium-webdriver (~> 4.31)
   shoulda-matchers (~> 5.0)
   solid_cable
   solid_cache

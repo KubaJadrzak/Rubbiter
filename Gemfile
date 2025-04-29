@@ -54,8 +54,8 @@ group :development, :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers", "~> 5.0"
   gem "capybara"
-  gem "selenium-webdriver"
   gem "webdrivers"
+  gem "selenium-webdriver", "~> 4.31"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 

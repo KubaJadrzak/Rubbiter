@@ -29,8 +29,6 @@ require "rspec/rails"
 # If you are not using ActiveRecord, you can remove these lines.
 require "capybara/rspec"
 require "webdrivers"
-
-Webdrivers::Chromedriver.required_version = "134.0.0"
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -43,7 +41,7 @@ RSpec.configure do |config|
     Rails.root.join("spec/fixtures"),
   ]
   config.before(:each, type: :system) do
-    driven_by :selenium_chrome # Or :selenium_chrome for visible browser
+    driven_by :selenium_chrome_headless # Or :selenium_chrome for visible browser
   end
   config.include FactoryBot::Syntax::Methods
 
