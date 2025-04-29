@@ -5,16 +5,19 @@ class PaymentsController < ApplicationController
     payment_service = EspagoPaymentService.new(@order)
     response = payment_service.create_payment
 
+    Rails.logger.info "Espago Payment Response: #{response.inspect}"
+
     if response.is_a?(Net::HTTPSuccess)
       data = JSON.parse(response.body)
       @order.update(payment_id: data["id"])
       redirect_to data["redirect_url"], allow_other_host: true
     else
+      Rails.logger.error "Espago Payment Error Response: #{response.body}"
+      @order.update(payment_status: "Failed", status: "Payment Failed")
       redirect_to root_path, alert: "There was an issue with the payment gateway."
     end
   end
 
-  # handle user redirect from Espago payment site after success (positive_url)
   def payment_success
     @order = Order.find_by(order_number: params[:order_number])
 
@@ -25,7 +28,6 @@ class PaymentsController < ApplicationController
     end
   end
 
-  # Handle user redirect from Espago payment site after failure (negative_url)
   def payment_failure
     @order = Order.find_by(order_number: params[:order_number])
 

@@ -5,15 +5,26 @@ FactoryBot.define do
     status { "Created" }
     payment_status { "Initialized" }
     ordered_at { Time.current }
-    order_number { SecureRandom.hex(10) }
     payment_id { nil }
+    total_price { 0 }
 
-    total_price { order_items.sum(&:price_at_purchase) }
+    trait :without_items do
+      after(:create) do |order|
+        order.calculate_total_price
+        order.save!
+      end
+    end
 
-    after(:create) do |order|
-      create_list(:order_item, 3, order: order)
+    trait :with_items do
+      after(:create) do |order|
+        product1 = create(:product, price: 10)
+        product2 = create(:product, price: 20)
+        create(:order_item, order: order, product: product1, quantity: 2, price_at_purchase: product1.price)
+        create(:order_item, order: order, product: product2, quantity: 1, price_at_purchase: product2.price)
 
-      order.update(total_price: order.order_items.sum(&:price_at_purchase))
+        order.calculate_total_price
+        order.save!
+      end
     end
   end
 end

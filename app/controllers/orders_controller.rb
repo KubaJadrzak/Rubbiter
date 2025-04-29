@@ -21,7 +21,7 @@ class OrdersController < ApplicationController
       shipping_address: shipping_address,
       total_price: current_user.cart.total_price,
       status: "Created",
-      payment_status: "Pending",
+      payment_status: "Initialized",
       ordered_at: Time.current,
     )
 
