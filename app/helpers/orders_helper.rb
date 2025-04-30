@@ -15,17 +15,19 @@ module OrdersHelper
   end
 
   def payment_status_badge(order)
-    case order.payment_status
+    case order.user_facing_payment_status
     when "Paid"
-      { class: "bg-success", text: order.payment_status }
+      { class: "bg-success", text: order.user_facing_payment_status }
     when "Failed"
-      { class: "bg-danger", text: order.payment_status }
-    when "Pending"
-      { class: "bg-warning", text: order.payment_status }
+      { class: "bg-danger", text: order.user_facing_payment_status }
+    when "Awaiting Confirmation"
+      { class: "bg-warning", text: order.user_facing_payment_status }
     when "Refunded"
-      { class: "bg-primary", text: order.payment_status }
+      { class: "bg-primary", text: order.user_facing_payment_status }
+    when "Processing"
+      { class: "bg-secondary", text: order.user_facing_payment_status }
     else
-      { class: "bg-secondary", text: order.payment_status }
+      { class: "bg-warning", text: order.user_facing_payment_status }
     end
   end
 end

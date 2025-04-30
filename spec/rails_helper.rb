@@ -29,6 +29,17 @@ require "rspec/rails"
 # If you are not using ActiveRecord, you can remove these lines.
 require "capybara/rspec"
 require "capybara/cuprite"
+require "webmock/rspec"
+RSpec.configure do |config|
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      WebMock.allow_net_connect!
+    else
+      WebMock.disable_net_connect!(allow_localhost: true)
+    end
+  end
+end
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e

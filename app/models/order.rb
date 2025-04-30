@@ -22,6 +22,23 @@ class Order < ApplicationRecord
     end
   end
 
+  def user_facing_payment_status
+    case payment_status
+    when "executed"
+      "Paid"
+    when "rejected", "failed", "resigned", "reversed", "connection failed"
+      "Failed"
+    when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected", "new"
+      "Awaiting Confirmation"
+    when "refunded"
+      "Refunded"
+    when "Processing"
+      "Processing"
+    else
+      "Unkown"
+    end
+  end
+
   private
 
   def generate_order_number

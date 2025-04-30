@@ -55,6 +55,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "cuprite"
+  gem "webmock"
 
   gem "selenium-webdriver", "~> 4.31"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]

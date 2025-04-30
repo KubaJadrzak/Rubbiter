@@ -5,18 +5,19 @@ RSpec.describe "EspagoBackRequests", type: :request do
 
   describe "POST /back_request with correct authorization" do
     states = {
-      "executed" => { status: "Preparing for Shipment", payment_status: "Paid" },
-      "rejected" => { status: "Payment Failed", payment_status: "Failed" },
-      "failed" => { status: "Payment Failed", payment_status: "Failed" },
-      "preauthorized" => { status: "Waiting for Payment", payment_status: "Pending" },
-      "tds2_challenge" => { status: "Waiting for Payment", payment_status: "Pending" },
-      "tds_redirected" => { status: "Waiting for Payment", payment_status: "Pending" },
-      "dcc_decision" => { status: "Waiting for Payment", payment_status: "Pending" },
-      "blik_redirected" => { status: "Waiting for Payment", payment_status: "Pending" },
-      "transfer_redirected" => { status: "Waiting for Payment", payment_status: "Pending" },
-      "resigned" => { status: "Payment Failed", payment_status: "Failed" },
-      "reversed" => { status: "Payment Failed", payment_status: "Failed" },
-      "refunded" => { status: "Payment Refunded", payment_status: "Refunded" },
+      "executed" => { status: "Preparing for Shipment", payment_status: "executed" },
+      "rejected" => { status: "Payment Failed", payment_status: "rejected" },
+      "failed" => { status: "Payment Failed", payment_status: "failed" },
+      "preauthorized" => { status: "Waiting for Payment", payment_status: "preauthorized" },
+      "tds2_challenge" => { status: "Waiting for Payment", payment_status: "tds2_challenge" },
+      "tds_redirected" => { status: "Waiting for Payment", payment_status: "tds_redirected" },
+      "dcc_decision" => { status: "Waiting for Payment", payment_status: "dcc_decision" },
+      "blik_redirected" => { status: "Waiting for Payment", payment_status: "blik_redirected" },
+      "transfer_redirected" => { status: "Waiting for Payment", payment_status: "transfer_redirected" },
+      "resigned" => { status: "Payment Failed", payment_status: "resigned" },
+      "reversed" => { status: "Payment Failed", payment_status: "reversed" },
+      "refunded" => { status: "Payment Refunded", payment_status: "refunded" },
+      "new" => { status: "Waiting for Payment", payment_status: "new" },
     }
 
     states.each do |state, expected_values|
@@ -66,7 +67,7 @@ RSpec.describe "EspagoBackRequests", type: :request do
       expect(response).to have_http_status(:unauthorized)
 
       order.reload
-      expect(order.payment_status).not_to eq("Paid")
+      expect(order.payment_status).not_to eq("executed")
       expect(order.status).not_to eq("Preparing for Shipment")
     end
   end

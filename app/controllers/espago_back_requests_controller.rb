@@ -4,21 +4,24 @@ class EspagoBackRequestsController < ApplicationController
 
   def handle_back_request
     payload = JSON.parse(request.body.read)
+    Rails.logger.info("Received Espago response: #{payload.inspect}")
 
     payment_id = payload["id"]
+    state = payload["state"]
     order = Order.find_by(payment_id: payment_id)
 
     if order
-      case payload["state"]
+      case state
       when "executed"
-        order.update(payment_status: "Paid", status: "Preparing for Shipment")
+        order.update(payment_status: state, status: "Preparing for Shipment")
       when "rejected", "failed", "resigned", "reversed"
-        order.update(payment_status: "Failed", status: "Payment Failed")
-      when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected"
-        order.update(payment_status: "Pending", status: "Waiting for Payment")
+        order.update(payment_status: state, status: "Payment Failed")
+      when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected", "new"
+        order.update(payment_status: state, status: "Waiting for Payment")
       when "refunded"
-        order.update(payment_status: "Refunded", status: "Payment Refunded")
+        order.update(payment_status: state, status: "Payment Refunded")
       else
+        order.update(payment_status: state)
       end
     end
 

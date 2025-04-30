@@ -12,8 +12,8 @@ class PaymentsController < ApplicationController
       @order.update(payment_id: data["id"])
       redirect_to data["redirect_url"], allow_other_host: true
     else
-      @order.update(payment_status: "Failed", status: "Payment Failed")
-      redirect_to order_path(@order), alert: "Payment failed. Please try again."
+      @order.update(payment_id: data["id"], payment_status: "connection failed", status: "Payment Failed")
+      redirect_to order_path(@order), alert: "We are experiencing an issue with payment service"
     end
   end
 
@@ -21,10 +21,9 @@ class PaymentsController < ApplicationController
     @order = Order.find_by(order_number: params[:order_number])
 
     if @order
-      @order.update(payment_status: "Paid", status: "Preparing for Shipment")
       redirect_to order_path(@order), notice: "Payment successful!"
     else
-      redirect_to orders_path, alert: "Order not found."
+      redirect_to orders_path, alert: "We are experiencing an issue with your order"
     end
   end
 
@@ -32,10 +31,9 @@ class PaymentsController < ApplicationController
     @order = Order.find_by(order_number: params[:order_number])
 
     if @order
-      @order.update(payment_status: "Failed", status: "Payment Failed")
-      redirect_to order_path(@order), alert: "Payment failed. Please try again."
+      redirect_to order_path(@order), alert: "Payment failed!"
     else
-      redirect_to orders_path, alert: "Order not found."
+      redirect_to orders_path, alert: "We are experiencing an issue with your order"
     end
   end
 end

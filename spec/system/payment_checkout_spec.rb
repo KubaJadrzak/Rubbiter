@@ -17,56 +17,148 @@ RSpec.describe "Payment Flow", type: :system do
     fill_in "Country", with: "France"
     fill_in "Street Address", with: "123 Rails Ave"
     fill_in "Postal Code", with: "75001"
-
     click_button "Purchase"
-    expect(current_url).to match(/secure_web_page/)
+    Order.first
+  end
 
-    order = Order.last
-    expect(page).to have_content(order.order_number)
-    expect(page).to have_content(order.total_price.to_s)
+  def mock_back_request_response(order, state)
+    valid_payload = {
+      "id" => order.payment_id,
+      "state" => state,
+    }
 
-    order
+    headers = {
+      "Authorization" => "Basic #{Base64.strict_encode64("#{Rails.application.credentials.dig(:espago, :app_id)}:#{Rails.application.credentials.dig(:espago, :password)}")}",
+      "Content-Type" => "application/json",
+    }
+
+    post "/back_request", params: valid_payload.to_json, headers: headers
   end
 
   context "when payment is successful" do
-    it "updates order status to Preparing for Shipment and payment status to Paid" do
-      order = start_checkout_flow
+    let!(:order) { start_checkout_flow }
 
+    it "redirects to Espago payment website and confirms order information (order_number, price, payment_id)" do
+      expect(current_url).to match(/secure_web_page/)
+
+      expect(page).to have_content(order.order_number)
+      expect(page).to have_content(order.total_price.to_s)
+      expect(page).to have_content(order.payment_id)
+    end
+
+    it "redirects to order show page and shows payment success notice after successful payment (after redirect from Espago)" do
       visit payment_success_path(order_number: order.order_number)
 
-      order.reload
-      expect(order.payment_status).to eq("Paid")
-      expect(order.status).to eq("Preparing for Shipment")
-
       expect(current_path).to eq(order_path(order))
+
       expect(page).to have_content("Payment successful!")
     end
-  end
-
-  context "when payment fails" do
-    it "updates order status to Payment Failed and payment status to Failed" do
-      order = start_checkout_flow
-
-      visit payment_failure_path(order_number: order.order_number)
-
+    it "updates order payment status to executed and order status to Preparing for Shipment based on back_request and shows payment status Paid to user" do
+      mock_back_request_response(order, "executed")
       order.reload
-      expect(order.payment_status).to eq("Failed")
-      expect(order.status).to eq("Payment Failed")
+      expect(order.payment_status).to eq("executed")
+      expect(order.status).to eq("Preparing for Shipment")
 
-      expect(current_path).to eq(order_path(order))
-      expect(page).to have_content("Payment failed. Please try again.")
+      visit order_path(order)
+      expect(page).to have_content("Preparing for Shipment")
+      expect(page).to have_content("Paid")
     end
   end
 
-  context "when payment is abandoned" do
-    it "sets payment status to Processing... and order status to Created" do
-      order = start_checkout_flow
+  context "when payment is rejected" do
+    let!(:order) { start_checkout_flow }
 
-      visit order_path(order)  # simulate user skipping payment
+    it "redirects to Espago payment website and confirms order information (order_number, price, payment_id)" do
+      expect(current_url).to match(/secure_web_page/)
 
+      expect(page).to have_content(order.order_number)
+      expect(page).to have_content(order.total_price.to_s)
+      expect(page).to have_content(order.payment_id)
+    end
+
+    it "redirects to order show page and shows payment failure notice after unsuccessful payment (after redirect from Espago)" do
+      visit payment_failure_path(order_number: order.order_number)
+
+      expect(current_path).to eq(order_path(order))
+
+      expect(page).to have_content("Payment failed!")
+    end
+
+    it "updates order payment status to rejected and order status to Payment Failed based on back_request and shows payment status Failed to user" do
+      mock_back_request_response(order, "rejected")
       order.reload
-      expect(order.payment_status).to eq("Processing...")
-      expect(order.status).to eq("Created")
+
+      expect(order.payment_status).to eq("rejected")
+      expect(order.status).to eq("Payment Failed")
+
+      visit order_path(order)
+
+      expect(page).to have_content("Failed")
+    end
+  end
+
+  context "when payment is abandoned via cancel form option on Espago website" do
+    let!(:order) { start_checkout_flow }
+
+    it "redirects to Espago payment website and confirms order information (order_number, price, payment_id)" do
+      expect(current_url).to match(/secure_web_page/)
+
+      expect(page).to have_content(order.order_number)
+      expect(page).to have_content(order.total_price.to_s)
+      expect(page).to have_content(order.payment_id)
+    end
+
+    it "redirects to order show page and shows payment failure notice after user resignes from payment with payment status Processing and status Created" do
+      expect(current_url).to match(/secure_web_page/)
+      visit payment_failure_path(order_number: order.order_number)
+
+      expect(page).to have_content("Created")
+      expect(page).to have_content("Processing")
+      expect(page).to have_content("Payment failed!")
+    end
+
+    it "updates order payment status to resign and order status to Payment Failed based on back_request and shows payment status Failed to user" do
+      mock_back_request_response(order, "resigned")
+      order.reload
+
+      expect(order.payment_status).to eq("resigned")
+      expect(order.status).to eq("Payment Failed")
+
+      visit order_path(order)
+
+      expect(page).to have_content("Failed")
+    end
+  end
+  context "when payment is abandoned by leaving Espago website (for example by closing browser or changing URL)" do
+    let!(:order) { start_checkout_flow }
+
+    it "redirects to Espago payment website and confirms order information (order_number, price, payment_id)" do
+      expect(current_url).to match(/secure_web_page/)
+
+      expect(page).to have_content(order.order_number)
+      expect(page).to have_content(order.total_price.to_s)
+      expect(page).to have_content(order.payment_id)
+    end
+
+    it "order show page displays payment status as Processing and status as created" do
+      expect(current_url).to match(/secure_web_page/)
+      visit root_path
+      visit order_path(order)
+
+      expect(page).to have_content("Created")
+      expect(page).to have_content("Processing")
+    end
+    # this will not happen while using the website since Espago sandbox doesn't issue back_responses in such scenarios
+    it "updates order payment status to resign and order status to Payment Failed based on back_request and shows payment status Failed to user" do
+      mock_back_request_response(order, "resigned")
+      order.reload
+
+      expect(order.payment_status).to eq("resigned")
+      expect(order.status).to eq("Payment Failed")
+
+      visit order_path(order)
+
+      expect(page).to have_content("Failed")
     end
   end
 end
