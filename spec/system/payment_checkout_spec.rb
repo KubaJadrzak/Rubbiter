@@ -47,6 +47,7 @@ RSpec.describe "Payment Flow", type: :system do
     end
 
     it "redirects to order show page and shows payment success notice after successful payment (after redirect from Espago)" do
+      expect(current_url).to match(/secure_web_page/)
       visit payment_success_path(order_number: order.order_number)
 
       expect(current_path).to eq(order_path(order))
@@ -77,6 +78,8 @@ RSpec.describe "Payment Flow", type: :system do
     end
 
     it "redirects to order show page and shows payment failure notice after unsuccessful payment (after redirect from Espago)" do
+      expect(current_url).to match(/secure_web_page/)
+
       visit payment_failure_path(order_number: order.order_number)
 
       expect(current_path).to eq(order_path(order))
@@ -110,6 +113,7 @@ RSpec.describe "Payment Flow", type: :system do
 
     it "redirects to order show page and shows payment failure notice after user resignes from payment with payment status Processing and status Created" do
       expect(current_url).to match(/secure_web_page/)
+
       visit payment_failure_path(order_number: order.order_number)
 
       expect(page).to have_content("Created")
@@ -142,6 +146,7 @@ RSpec.describe "Payment Flow", type: :system do
 
     it "order show page displays payment status as Processing and status as created" do
       expect(current_url).to match(/secure_web_page/)
+
       visit root_path
       visit order_path(order)
 

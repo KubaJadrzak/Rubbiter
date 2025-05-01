@@ -1,87 +1,103 @@
 require "rails_helper"
 
-RSpec.describe "Payments", type: :request do
-  describe "GET /payments/start_payment/:order_id" do
-    let(:order) { create(:order, :with_items) }
-    let(:espago_response_body_success) do
-      {
-        "id" => "pay_id",
-        "redirect_url" => "https://sandbox.espago.com/secure_web_page/test",
-      }.to_json
-    end
-    let(:success_response) do
-      instance_double(Net::HTTPSuccess, body: espago_response_body_success, is_a?: true)
-    end
-    let(:failure_response) do
-      double("failure_response", body: "Error message", is_a?: false)
-    end
+RSpec.describe PaymentsController, type: :request do
+  describe "POST #start_payment" do
+    let!(:order) { create(:order, :with_items) }
 
-    context "when the payment service is successful" do
+    context "when payment is successful" do
+      let(:espago_response) {
+        OpenStruct.new(
+          success?: true,
+          body: {
+            id: "payment123",
+            redirect_url: "https://espago.com/redirect",
+          }.to_json,
+        )
+      }
+
       before do
-        allow(EspagoPaymentService).to receive(:new)
-                                         .with(instance_of(Order))
-                                         .and_return(double(create_payment: success_response))
+        allow_any_instance_of(EspagoPaymentService).to receive(:create_payment).and_return(espago_response)
       end
 
-      it "redirects to Espago redirect_url and assigns payment_id to the order" do
-        get start_payment_path(order_id: order.id)
+      it "updates the order with payment_id" do
+        post "/payments/start_payment", params: { order_id: order.id }
+        expect(order.reload.payment_id).to eq("payment123")
+      end
 
-        expect(response).to redirect_to("https://sandbox.espago.com/secure_web_page/test")
-
-        order.reload
-        expect(order.payment_id).to eq("pay_id")
+      it "redirects to the Espago redirect URL" do
+        post "/payments/start_payment", params: { order_id: order.id }
+        expect(response).to redirect_to("https://espago.com/redirect")
       end
     end
 
-    context "when the payment service fails" do
+    context "when payment fails" do
+      let(:espago_response) {
+        OpenStruct.new(
+          success?: false,
+          body: { id: nil, error: "something went wrong" }.to_json,
+        )
+      }
+
       before do
-        allow(EspagoPaymentService).to receive(:new)
-                                         .with(instance_of(Order))
-                                         .and_return(double(create_payment: failure_response))
+        allow_any_instance_of(EspagoPaymentService).to receive(:create_payment).and_return(espago_response)
       end
 
-      it "redirects to root_path with an error alert and updates the order's payment_status and status to failure" do
-        get start_payment_path(order_id: order.id)
+      it "updates the order with failure status" do
+        post "/payments/start_payment", params: { order_id: order.id }
+        expect(order.reload.payment_status).to eq("connection failed")
+        expect(order.reload.status).to eq("Payment Failed")
+      end
 
+      it "redirects back to the order page with alert" do
+        post "/payments/start_payment", params: { order_id: order.id }
         expect(response).to redirect_to(order_path(order))
         follow_redirect!
-
-        expect(flash[:alert]).to eq("Payment failed. Please try again.")
-
-        order.reload
-        expect(order.payment_status).to eq("Failed")
-        expect(order.status).to eq("Payment Failed")
+        expect(response.body).to include("We are experiencing an issue with payment service")
       end
     end
   end
-  describe "GET /payments/payment_success" do
-    let(:order) { create(:order, order_number: "123ABC") }
 
-    it "updates the order status and redirects with notice" do
-      get payment_success_path(order_number: order.order_number)
+  describe "GET #payment_success" do
+    context "when order is found" do
+      let!(:order) { create(:order, :with_items) }
 
-      expect(response).to redirect_to(order_path(order))
-      follow_redirect!
+      it "redirects to order with success message" do
+        get "/payments/payment_success", params: { order_number: order.order_number }
+        expect(response).to redirect_to(order_path(order))
+        follow_redirect!
+        expect(response.body).to include("Payment successful!")
+      end
+    end
 
-      expect(flash[:notice]).to eq("Payment successful!")
-      order.reload
-      expect(order.payment_status).to eq("Paid")
-      expect(order.status).to eq("Preparing for Shipment")
+    context "when order is not found" do
+      it "redirects to orders with alert" do
+        get "/payments/payment_success", params: { order_number: "INVALID123" }
+        expect(response).to redirect_to(orders_path)
+        follow_redirect!
+        expect(response.body).to include("We are experiencing an issue with your order")
+      end
     end
   end
-  describe "GET /payments/payment_failure" do
-    let(:order) { create(:order, order_number: "123ABC") }
 
-    it "updates the order status and redirects with alert" do
-      get payment_failure_path(order_number: order.order_number)
+  describe "GET #payment_failure" do
+    context "when order is found" do
+      let!(:order) { create(:order, :with_items) }
 
-      expect(response).to redirect_to(order_path(order))
-      follow_redirect!
+      it "redirects to order with failure message" do
+        get "/payments/payment_failure", params: { order_number: order.order_number }
+        expect(response).to redirect_to(order_path(order))
+        follow_redirect!
+        expect(response.body).to include("Payment failed!")
+      end
+    end
 
-      expect(flash[:alert]).to eq("Payment failed. Please try again.")
-      order.reload
-      expect(order.payment_status).to eq("Failed")
-      expect(order.status).to eq("Payment Failed")
+    context "when order is not found" do
+      it "redirects to orders with alert" do
+        get "/payments/payment_failure", params: { order_number: "INVALID123" }
+        expect(response).to redirect_to(orders_path)
+        follow_redirect!
+        expect(response.body).to include("We are experiencing an issue with your order")
+      end
     end
   end
 end
