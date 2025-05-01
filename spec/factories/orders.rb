@@ -3,9 +3,8 @@ FactoryBot.define do
     association :user
     shipping_address { "Poland, Main Street 123, 00-000" }
     status { "Created" }
-    payment_status { "Initialized" }
+    payment_status { "Processing" }
     ordered_at { Time.current }
-    payment_id { nil }
     total_price { 0 }
 
     trait :without_items do

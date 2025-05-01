@@ -28,8 +28,8 @@ require "rspec/rails"
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 require "capybara/rspec"
-require "capybara/cuprite"
-require "webmock/rspec"
+require "selenium/webdriver"
+
 RSpec.configure do |config|
   config.before(:each) do |example|
     if example.metadata[:type] == :system
@@ -46,12 +46,12 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 
-Capybara.register_driver :cuprite do |app|
-  Capybara::Cuprite::Driver.new(app, { headless: true })
-end
+Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.default_driver = :selenium_chrome_headless
 
-Capybara.default_driver = :cuprite
-Capybara.javascript_driver = :cuprite
+Capybara.server_host = "0.0.0.0"
+Capybara.server_port = 3001
+Capybara.app_host = "http://localhost:3001"
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
@@ -92,4 +92,5 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Shoulda::Matchers::ActiveModel, type: :model
   config.include Shoulda::Matchers::ActiveRecord, type: :model
+  config.include Devise::Test::IntegrationHelpers, type: :system
 end

@@ -24,6 +24,10 @@ module OrdersHelper
       { class: "bg-warning", text: order.user_facing_payment_status }
     when "Refunded"
       { class: "bg-primary", text: order.user_facing_payment_status }
+    when "Resigned"
+      { class: "bg-secondary", text: order.user_facing_payment_status }
+    when "Reversed"
+      { class: "bg-secondary", text: order.user_facing_payment_status }
     when "Processing"
       { class: "bg-secondary", text: order.user_facing_payment_status }
     else

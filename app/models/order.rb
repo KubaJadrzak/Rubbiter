@@ -26,8 +26,12 @@ class Order < ApplicationRecord
     case payment_status
     when "executed"
       "Paid"
-    when "rejected", "failed", "resigned", "reversed", "connection failed"
+    when "rejected", "failed", "connection failed"
       "Failed"
+    when "resigned"
+      "Resigned"
+    when "reversed"
+      "Reversed"
     when "preauthorized", "tds2_challenge", "tds_redirected", "dcc_decision", "blik_redirected", "transfer_redirected", "new"
       "Awaiting Confirmation"
     when "refunded"

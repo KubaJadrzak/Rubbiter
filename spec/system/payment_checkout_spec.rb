@@ -4,8 +4,11 @@ RSpec.describe "Payment Flow", type: :system do
   let(:user) { create(:user) }
   let(:cart) { create(:cart, :with_items, user: user, items_count: 2) }
 
+  before do
+    sign_in user
+  end
+
   def start_checkout_flow
-    login_as(user, scope: :user)
     visit cart_path(cart)
 
     expect(page).to have_content("Your Cart")
@@ -47,11 +50,27 @@ RSpec.describe "Payment Flow", type: :system do
     end
 
     it "redirects to order show page and shows payment success notice after successful payment (after redirect from Espago)" do
-      expect(current_url).to match(/secure_web_page/)
-      visit payment_success_path(order_number: order.order_number)
+      expect(page).to have_content(order.order_number)
+
+      fill_in "transaction[credit_card_attributes][first_name]", with: "John"
+      fill_in "transaction[credit_card_attributes][last_name]", with: "Doe"
+      fill_in "transaction[credit_card_attributes][number]", with: "4012000000020006"
+      fill_in "transaction[credit_card_attributes][month]", with: "01"
+      fill_in "transaction[credit_card_attributes][year]", with: "28"
+      fill_in "transaction[credit_card_attributes][verification_value]", with: "123"
+      find("#submit_payment").click
+      expect(page).to have_css("#challenge_iframe", visible: true)
+      within_frame("challenge_iframe") do
+        sleep 5
+        expect(page).to have_content("3D-Secure 2 Payment - simulation")
+        expect(page).to have_css("#confirm-btn", visible: true)
+        page.execute_script("document.querySelector('#confirm-btn').click()")
+      end
+      sleep 5
+      expect(page).to have_content("Payment successful!")
+      click_button "Back to shop"
 
       expect(current_path).to eq(order_path(order))
-
       expect(page).to have_content("Payment successful!")
     end
     it "updates order payment status to executed and order status to Preparing for Shipment based on back_request and shows payment status Paid to user" do
@@ -80,10 +99,25 @@ RSpec.describe "Payment Flow", type: :system do
     it "redirects to order show page and shows payment failure notice after unsuccessful payment (after redirect from Espago)" do
       expect(current_url).to match(/secure_web_page/)
 
-      visit payment_failure_path(order_number: order.order_number)
+      fill_in "transaction[credit_card_attributes][first_name]", with: "John"
+      fill_in "transaction[credit_card_attributes][last_name]", with: "Doe"
+      fill_in "transaction[credit_card_attributes][number]", with: "4012000000020006"
+      fill_in "transaction[credit_card_attributes][month]", with: "12"
+      fill_in "transaction[credit_card_attributes][year]", with: "28"
+      fill_in "transaction[credit_card_attributes][verification_value]", with: "683"
+      find("#submit_payment").click
+      expect(page).to have_css("#challenge_iframe", visible: true)
+      within_frame("challenge_iframe") do
+        sleep 5
+        expect(page).to have_content("3D-Secure 2 Payment - simulation")
+        expect(page).to have_css("#confirm-btn", visible: true)
+        page.execute_script("document.querySelector('#confirm-btn').click()")
+      end
+      sleep 5
+      expect(page).to have_content("Payment declined!")
+      click_button "Back to shop"
 
       expect(current_path).to eq(order_path(order))
-
       expect(page).to have_content("Payment failed!")
     end
 
@@ -113,11 +147,12 @@ RSpec.describe "Payment Flow", type: :system do
 
     it "redirects to order show page and shows payment failure notice after user resignes from payment with payment status Processing and status Created" do
       expect(current_url).to match(/secure_web_page/)
+      accept_confirm do
+        click_link "❮ Cancel"
+      end
+      expect(page).to have_content("Back to shop")
+      click_button("Back to shop")
 
-      visit payment_failure_path(order_number: order.order_number)
-
-      expect(page).to have_content("Created")
-      expect(page).to have_content("Processing")
       expect(page).to have_content("Payment failed!")
     end
 
@@ -126,11 +161,12 @@ RSpec.describe "Payment Flow", type: :system do
       order.reload
 
       expect(order.payment_status).to eq("resigned")
-      expect(order.status).to eq("Payment Failed")
+      expect(order.status).to eq("Payment Resigned")
 
       visit order_path(order)
 
-      expect(page).to have_content("Failed")
+      expect(page).to have_content("Resigned")
+      expect(page).to have_content("Payment Resigned")
     end
   end
   context "when payment is abandoned by leaving Espago website (for example by closing browser or changing URL)" do
@@ -154,16 +190,17 @@ RSpec.describe "Payment Flow", type: :system do
       expect(page).to have_content("Processing")
     end
     # this will not happen while using the website since Espago sandbox doesn't issue back_responses in such scenarios
-    it "updates order payment status to resign and order status to Payment Failed based on back_request and shows payment status Failed to user" do
+    it "updates order payment status to resign and order status to Payment Failed based on back_request and shows payment status Failed to user*" do
       mock_back_request_response(order, "resigned")
       order.reload
 
       expect(order.payment_status).to eq("resigned")
-      expect(order.status).to eq("Payment Failed")
+      expect(order.status).to eq("Payment Resigned")
 
       visit order_path(order)
 
-      expect(page).to have_content("Failed")
+      expect(page).to have_content("Resigned")
+      expect(page).to have_content("Payment Resigned")
     end
   end
 end

@@ -14,8 +14,8 @@ RSpec.describe "EspagoBackRequests", type: :request do
       "dcc_decision" => { status: "Waiting for Payment", payment_status: "dcc_decision" },
       "blik_redirected" => { status: "Waiting for Payment", payment_status: "blik_redirected" },
       "transfer_redirected" => { status: "Waiting for Payment", payment_status: "transfer_redirected" },
-      "resigned" => { status: "Payment Failed", payment_status: "resigned" },
-      "reversed" => { status: "Payment Failed", payment_status: "reversed" },
+      "resigned" => { status: "Payment Resigned", payment_status: "resigned" },
+      "reversed" => { status: "Payment Reversed", payment_status: "reversed" },
       "refunded" => { status: "Payment Refunded", payment_status: "refunded" },
       "new" => { status: "Waiting for Payment", payment_status: "new" },
     }

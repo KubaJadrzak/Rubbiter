@@ -1,4 +1,6 @@
 class PaymentsController < ApplicationController
+  before_action :authenticate_user!
+
   def start_payment
     @order = Order.find(params[:order_id])
 
