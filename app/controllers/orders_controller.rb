@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: [:show]
+  before_action :ensure_cart_has_items, only: [:new, :create]
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def new
     @order = Order.new
@@ -15,8 +17,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    shipping_address = "#{params[:order][:country]}, #{params[:order][:street]}, #{params[:order][:postal_code]}"
-
+    shipping_address = "#{order_params[:country]}, #{order_params[:street]}, #{order_params[:postal_code]}"
     @order = current_user.orders.new(
       shipping_address: shipping_address,
       total_price: current_user.cart.total_price,
@@ -43,5 +44,11 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:country, :street, :postal_code)
+  end
+
+  def ensure_cart_has_items
+    if current_user.cart.cart_items.empty?
+      redirect_to cart_path
+    end
   end
 end

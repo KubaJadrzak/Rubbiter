@@ -5,12 +5,9 @@ class Order < ApplicationRecord
   validates :total_price, presence: true
   validates :status, presence: true
   validates :ordered_at, presence: true
+  validate :must_have_order_items
 
   before_create :generate_order_number
-
-  def calculate_total_price
-    self.total_price = order_items.sum("quantity * price_at_purchase")
-  end
 
   def build_order_items_from_cart(cart)
     cart.cart_items.each do |cart_item|
@@ -44,6 +41,12 @@ class Order < ApplicationRecord
   end
 
   private
+
+  def must_have_order_items
+    if order_items.empty?
+      errors.add(:order_items, "must have at least one item.")
+    end
+  end
 
   def generate_order_number
     self.order_number = SecureRandom.hex(10).upcase

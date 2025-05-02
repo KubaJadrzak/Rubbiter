@@ -2,25 +2,33 @@ require "rails_helper"
 
 RSpec.describe "Payment Flow", type: :system do
   let(:user) { create(:user) }
-  let(:cart) { create(:cart, :with_items, user: user, items_count: 2) }
-
+  let!(:product) { create(:product) }
   before do
     sign_in user
   end
 
   def start_checkout_flow
-    visit cart_path(cart)
+    visit products_path
+    expect(page).to have_content("Add to Cart")
+    click_button "Add to Cart"
+    visit cart_path
 
     expect(page).to have_content("Your Cart")
-    expect(page).to have_selector(".cart-item", count: 2)
+    expect(page).to have_selector(".cart-item", count: 1)
 
     click_link "Place Order"
-    expect(current_path).to eq(new_order_path)
+
+    expect(page).to have_content("Email")
+    expect(page).to have_selector('input[type="submit"][value="Purchase"]', visible: true)
 
     fill_in "Country", with: "France"
     fill_in "Street Address", with: "123 Rails Ave"
     fill_in "Postal Code", with: "75001"
+
     click_button "Purchase"
+
+    expect(current_url).to match(/secure_web_page/)
+
     Order.first
   end
 
@@ -50,7 +58,7 @@ RSpec.describe "Payment Flow", type: :system do
     end
 
     it "redirects to order show page and shows payment success notice after successful payment (after redirect from Espago)" do
-      expect(page).to have_content(order.order_number)
+      expect(current_url).to match(/secure_web_page/)
 
       fill_in "transaction[credit_card_attributes][first_name]", with: "John"
       fill_in "transaction[credit_card_attributes][last_name]", with: "Doe"
@@ -59,6 +67,7 @@ RSpec.describe "Payment Flow", type: :system do
       fill_in "transaction[credit_card_attributes][year]", with: "28"
       fill_in "transaction[credit_card_attributes][verification_value]", with: "123"
       find("#submit_payment").click
+
       expect(page).to have_css("#challenge_iframe", visible: true)
       within_frame("challenge_iframe") do
         sleep 5
@@ -66,8 +75,8 @@ RSpec.describe "Payment Flow", type: :system do
         expect(page).to have_css("#confirm-btn", visible: true)
         page.execute_script("document.querySelector('#confirm-btn').click()")
       end
-      sleep 5
-      expect(page).to have_content("Payment successful!")
+
+      expect(page).to have_content("Payment successful!", wait: 20)
       click_button "Back to shop"
 
       expect(current_path).to eq(order_path(order))
@@ -113,8 +122,7 @@ RSpec.describe "Payment Flow", type: :system do
         expect(page).to have_css("#confirm-btn", visible: true)
         page.execute_script("document.querySelector('#confirm-btn').click()")
       end
-      sleep 5
-      expect(page).to have_content("Payment declined!")
+      expect(page).to have_content("Payment declined!", wait: 20)
       click_button "Back to shop"
 
       expect(current_path).to eq(order_path(order))

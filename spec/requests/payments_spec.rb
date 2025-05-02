@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe PaymentsController, type: :request do
-  let!(:user) { create(:user) }
-  let!(:order) { create(:order, :with_items, user: user) }
+  let(:user) { create(:user) }
+  let(:order) { create(:order, user: user) }
 
   before do
     sign_in user

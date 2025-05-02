@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "EspagoBackRequests", type: :request do
-  let(:order) { create(:order, :with_items, payment_id: "pay_12345") }
+  let(:user) { create(:user) }
+  let(:order) { create(:order, payment_id: "pay_12345") }
 
   describe "POST /back_request with correct authorization" do
     states = {

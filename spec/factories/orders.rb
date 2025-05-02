@@ -5,25 +5,14 @@ FactoryBot.define do
     status { "Created" }
     payment_status { "Processing" }
     ordered_at { Time.current }
-    total_price { 0 }
+    total_price { 30 }
 
-    trait :without_items do
-      after(:create) do |order|
-        order.calculate_total_price
-        order.save!
-      end
-    end
+    after(:build) do |order|
+      product1 = create(:product, price: 15)
+      product2 = create(:product, price: 15)
 
-    trait :with_items do
-      after(:create) do |order|
-        product1 = create(:product, price: 10)
-        product2 = create(:product, price: 20)
-        create(:order_item, order: order, product: product1, quantity: 2, price_at_purchase: product1.price)
-        create(:order_item, order: order, product: product2, quantity: 1, price_at_purchase: product2.price)
-
-        order.calculate_total_price
-        order.save!
-      end
+      order.order_items << build(:order_item, order: order, product: product1, quantity: 1, price_at_purchase: 15)
+      order.order_items << build(:order_item, order: order, product: product2, quantity: 1, price_at_purchase: 15)
     end
   end
 end
