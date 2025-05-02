@@ -43,6 +43,8 @@ gem "kamal", require: false
 gem "thruster", require: false
 gem "faraday"
 gem "dotenv-rails"
+gem "factory_bot_rails"
+gem "faker"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -54,8 +56,7 @@ group :development, :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers", "~> 5.0"
   gem "capybara"
-  gem "factory_bot_rails"
-  gem "faker"
+
   gem "webmock"
   gem "selenium-webdriver", "~> 4.31"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
