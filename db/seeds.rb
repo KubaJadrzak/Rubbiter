@@ -1,3 +1,11 @@
+Rubit.destroy_all
+Like.destroy_all
+Hashtag.destroy_all
+OrderItem.destroy_all
+Order.destroy_all
+Product.destroy_all
+User.destroy_all
+
 user = []
 
 20.times do |i|
