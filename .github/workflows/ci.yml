@@ -60,6 +60,7 @@ jobs:
       RAILS_ENV: test
       CAPYBARA_SERVER_PORT: 3001
       APP_HOST_URL: http://localhost:3001
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
       - name: Checkout code
