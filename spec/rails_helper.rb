@@ -52,6 +52,7 @@ Capybara.default_driver = :selenium_chrome_headless
 Capybara.server_host = "0.0.0.0"
 Capybara.server_port = 3001
 Capybara.app_host = "http://localhost:3001"
+Capybara.run_server = true
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
