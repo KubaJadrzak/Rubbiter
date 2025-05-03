@@ -75,7 +75,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libsqlite3-dev chromium-browser chromium-chromedriver
-          sudo rm -f /usr/bin/chromedriver  # Remove existing symbolic link or file
+          sudo rm -f /usr/bin/chromedriver
           sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
 
       - name: Install gems
@@ -83,8 +83,8 @@ jobs:
 
       - name: Set up test database
         run: |
-          RAILS_ENV=test bundle exec rake db:reset # This ensures the test DB is cleaned
-          RAILS_ENV=test bundle exec rake db:schema:load # Only load the schema, no seeds
+          RAILS_ENV=test bundle exec rake db:reset
+          RAILS_ENV=test bundle exec rake db:schema:load
 
       - name: Run RSpec tests
         run: bundle exec rspec
