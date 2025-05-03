@@ -53,7 +53,7 @@ jobs:
         run: bin/rubocop -f github
 
   test:
-    name: Run RSpec tests (with Capybara + SQLite)
+    name: Run RSpec tests
     runs-on: ubuntu-latest
 
     env:
@@ -73,8 +73,8 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libsqlite3-dev chromium-browser chromium-chromedriver
-          sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+          sudo apt-get install -y libsqlite3-dev chromium-browser chromium-chromedriver || true
+          which chromedriver
 
       - name: Install gems
         run: bundle install
