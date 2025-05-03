@@ -7,11 +7,13 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 # Layout/SpaceInsideArrayLiteralBrackets:
 #   Enabled: false
 
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
 
 Style/TrailingCommaInHashLiteral:
+  Enabled: true
   EnforcedStyleForMultiline: comma
 
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: comma
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: false
