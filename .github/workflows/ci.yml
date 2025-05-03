@@ -82,7 +82,9 @@ jobs:
         run: bundle install
 
       - name: Set up test database
-        run: bundle exec rails db:prepare
+        run: |
+          RAILS_ENV=test bundle exec rake db:reset # This ensures the test DB is cleaned
+          RAILS_ENV=test bundle exec rake db:schema:load # Only load the schema, no seeds
 
       - name: Run RSpec tests
         run: bundle exec rspec
