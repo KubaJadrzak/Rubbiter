@@ -12,6 +12,7 @@ class EspagoClientService
 
     @conn = Faraday.new(url: BASE_URL) do |faraday|
       faraday.request :json
+      faraday.response :json
       faraday.response :raise_error
       faraday.response :logger if Rails.env.development?
       faraday.adapter Faraday.default_adapter
@@ -22,9 +23,8 @@ class EspagoClientService
     response = @conn.send(method) do |req|
       req.url path
       req.headers["Accept"] = "application/vnd.espago.v3+json"
-      req.headers["Content-Type"] = "application/json"
       req.headers["Authorization"] = "Basic #{encoded_credentials}"
-      req.body = body.to_json if body
+      req.body = body if body
     end
 
     response

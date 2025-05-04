@@ -10,11 +10,11 @@ class PaymentsController < ApplicationController
     Rails.logger.info "Espago Payment Response: #{response.inspect}"
 
     if response.success?
-      data = JSON.parse(response.body)
+      data = response.body
       @order.update(payment_id: data["id"])
       redirect_to data["redirect_url"], allow_other_host: true
     else
-      error_data = JSON.parse(response.body) rescue {}
+      error_data = response.body
       @order.update(payment_id: error_data["id"], payment_status: "connection failed", status: "Payment Failed")
       redirect_to order_path(@order), alert: "We are experiencing an issue with payment service"
     end
