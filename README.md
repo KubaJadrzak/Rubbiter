@@ -35,7 +35,7 @@ The test suite uses Rspec, Capybara and Selenium. To run the full test suite loc
 
 - Google Chrome or Chromium installed
 - Chromedriver installed
-- .env.test file with necessary variables (APP_HOST_URL)
+- .env.test file with necessary variables (APP_HOST_URL), credentials are also required for testing
 
 Running tests: 
 
