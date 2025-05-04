@@ -1,24 +1,42 @@
-# README
+Requirements: 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- Ruby 3.4.2
+- Rails 8.0.2
+- SQLite3
 
-Things you may want to cover:
 
-* Ruby version
+Install dependencies:
 
-* System dependencies
+bundle install
 
-* Configuration
+Set up the database:
 
-* Database creation
+rails db:setup
 
-* Database initialization
+Sensitive credentials (app_id, password, checksum_key) are stored using Rails Encrypted Credentials with structure:
 
-* How to run the test suite
+espago:
+  app_id: app_id
+  password: password
+  checksum_key: checksum_key
 
-* Services (job queues, cache servers, search engines, etc.)
+Application uses the dotenv-rails gem to manage environment variables for development and test environments. Required env variable is APP_HOST_URL, by default:
 
-* Deployment instructions
+APP_HOST_URL=http://localhost:3000 for dev
+APP_HOST_URL=http://localhost:3001 for test
 
-* ...
+These have to included in the root .env and .env.test files respectively
+
+Running app:
+
+rails s
+
+The test suite uses Rspec, Capybara and Selenium. To run the full test suite locally, ensure you have:
+
+- Google Chrome or Chromium installed
+- Chromedriver installed
+- `.env.test` file with necessary variables (APP_HOST_URL)
+
+Running tests: 
+
+bundle exec rspec
