@@ -29,7 +29,7 @@ These have to included in the root .env and .env.test files respectively
 
 Running app:
 
--rails s
+- rails s
 
 The test suite uses Rspec, Capybara and Selenium. To run the full test suite locally, ensure you have:
 
