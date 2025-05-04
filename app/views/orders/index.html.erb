@@ -4,73 +4,70 @@
     <div class="row mt-4">
       <% @orders.each do |order| %>
         <div class="col-md-12 mb-4">
-          <!-- Order Card -->
-          <div class="card shadow-sm border-light">
-            <div class="card-body">
-              <h5 class="card-title mb-3">Order #<%= order.order_number %></h5>
-              <!-- Order Summary Section -->
-              <div class="mb-3">
-                <div class="row">
-                  <!-- Status Section -->
-                  <div class="col-md-6">
-                    <div class="d-flex justify-content-between">
-                      <span><strong>Status:</strong></span>
-                      <!-- Badge with manually specified color -->
-                      <span class="badge <%= order.status == 'completed' ? 'bg-success' : 'bg-warning' %> w-50 text-center">
-                        <%= order.status.capitalize %>
-                      </span>
+          <!-- Clickable Order Card -->
+          <%= link_to order_path(order), class: "text-decoration-none text-dark" do %>
+            <div class="card shadow-sm border-light hover-shadow">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Order #<%= order.order_number %></h5>
+                <div class="mb-3">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span><strong>Status:</strong></span>
+                        <span class="badge <%= order_status_badge(order)[:class] %> w-50 text-center">
+                          <%= order_status_badge(order)[:text] %>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span><strong>Payment Status:</strong></span>
+                        <% badge = payment_status_badge(order) %>
+                        <span class="badge <%= badge[:class] %> w-50 text-center">
+                          <%= order.payment_status.present? ? badge[:text] : "Pending" %>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <!-- Payment Status Section -->
-                  <div class="col-md-6">
-                    <div class="d-flex justify-content-between">
-                      <span><strong>Payment Status:</strong></span>
-                      <!-- Manually specify the color for payment status -->
-                      <span class="badge <%= order.payment_status == 'payed' ? 'bg-success' : (order.payment_status == 'failed' ? 'bg-danger' : 'bg-secondary') %> w-50 text-center">
-                        <%= order.payment_status.present? ? order.payment_status.capitalize : "Pending" %>
-                      </span>
-                    </div>
+                  <div class="d-flex justify-content-between mt-3">
+                    <span><strong>Shipping Address:</strong></span>
+                    <span><%= order.shipping_address %></span>
                   </div>
-                </div>
-                <div class="d-flex justify-content-between mt-3">
-                  <span><strong>Shipping Address:</strong></span>
-                  <span><%= order.shipping_address %></span>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                  <span><strong>Total:</strong></span>
-                  <span>$<%= order.total_price %></span>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                  <span><strong>Ordered At:</strong></span>
-                  <span><%= order.ordered_at.strftime("%b %e, %Y %l:%M %p") %></span>
+                  <div class="d-flex justify-content-between mt-2">
+                    <span><strong>Total:</strong></span>
+                    <span>$<%= order.total_price %></span>
+                  </div>
+                  <div class="d-flex justify-content-between mt-2">
+                    <span><strong>Ordered At:</strong></span>
+                    <span><%= order.ordered_at.strftime("%b %e, %Y %l:%M %p") %></span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- Order Items Table inside the Card -->
-            <div class="card-footer bg-light mt-4">
-              <h6><strong>Order Items:</strong></h6>
-              <table class="table table-striped table-sm">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% order.order_items.each do |order_item| %>
+              <div class="card-footer bg-light mt-4">
+                <h6><strong>Order Items:</strong></h6>
+                <table class="table table-striped table-sm">
+                  <thead>
                     <tr>
-                      <td><%= order_item.product.title %></td>
-                      <td>$<%= order_item.price_at_purchase %></td>
-                      <td><%= order_item.quantity %></td>
-                      <td>$<%= order_item.total_price %></td>
+                      <th>Product</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>Total</th>
                     </tr>
-                  <% end %>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <% order.order_items.each do |order_item| %>
+                      <tr>
+                        <td><%= order_item.product.title %></td>
+                        <td>$<%= order_item.price_at_purchase %></td>
+                        <td><%= order_item.quantity %></td>
+                        <td>$<%= order_item.total_price %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
     </div>

@@ -1,5 +1,8 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, only: [:index]
+  before_action :authenticate_user!
+  before_action :set_order, only: [:show]
+  before_action :ensure_cart_has_items, only: [:new, :create]
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def new
     @order = Order.new
@@ -9,23 +12,25 @@ class OrdersController < ApplicationController
     @orders = current_user.orders.order(ordered_at: :desc)
   end
 
-  def create
-    shipping_address = "#{params[:order][:country]}, #{params[:order][:street]}, #{params[:order][:postal_code]}"
+  def show
+    @order
+  end
 
+  def create
+    shipping_address = "#{order_params[:country]}, #{order_params[:street]}, #{order_params[:postal_code]}"
     @order = current_user.orders.new(
       shipping_address: shipping_address,
       total_price: current_user.cart.total_price,
-      status: "pending",
-      payment_status: "payed",
+      status: "Created",
+      payment_status: "Processing",
       ordered_at: Time.current,
     )
 
-    # Build order items from cart
     @order.build_order_items_from_cart(current_user.cart)
 
     if @order.save
       current_user.cart.cart_items.destroy_all
-      redirect_to orders_path, notice: "Order placed successfully!"
+      redirect_to start_payment_path(order_id: @order.id)
     else
       render :new
     end
@@ -33,7 +38,17 @@ class OrdersController < ApplicationController
 
   private
 
+  def set_order
+    @order = Order.find_by!(id: params[:id])
+  end
+
   def order_params
     params.require(:order).permit(:country, :street, :postal_code)
+  end
+
+  def ensure_cart_has_items
+    if current_user.cart.cart_items.empty?
+      redirect_to cart_path
+    end
   end
 end

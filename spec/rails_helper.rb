@@ -27,18 +27,37 @@ require "rspec/rails"
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
+require "capybara/rspec"
+require "selenium/webdriver"
+
+RSpec.configure do |config|
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      WebMock.allow_net_connect!
+    else
+      WebMock.disable_net_connect!(allow_localhost: true)
+    end
+  end
+end
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
-RSpec.configure do |config|
 
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_paths = [
-    Rails.root.join("spec/fixtures"),
-  ]
+Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.default_driver = :selenium_chrome_headless
+
+Capybara.server_host = "0.0.0.0"
+Capybara.server_port = 3001
+Capybara.app_host = "http://localhost:3001"
+Capybara.run_server = true
+
+RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  config.include Warden::Test::Helpers
+  config.after(:each, type: :system) { Warden.test_reset! }
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -72,4 +91,7 @@ RSpec.configure do |config|
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Shoulda::Matchers::ActiveModel, type: :model
+  config.include Shoulda::Matchers::ActiveRecord, type: :model
+  config.include Devise::Test::IntegrationHelpers, type: :system
 end

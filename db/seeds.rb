@@ -1,4 +1,10 @@
-# db/seeds.rb
+Rubit.destroy_all
+Like.destroy_all
+Hashtag.destroy_all
+OrderItem.destroy_all
+Order.destroy_all
+Product.destroy_all
+User.destroy_all
 
 user = []
 
@@ -157,8 +163,7 @@ users = User.all.to_a
 rubits = Rubit.all.to_a
 
 rubits.each do |rubit|
-  # Random number of likes for each rubit, between 0 and 10
-  likers = users.sample(rand(0..10))  # Randomly pick unique users to like this rubit
+  likers = users.sample(rand(0..10))
 
   likers.each do |user|
     rubit.likes.create!(user: user)
@@ -224,5 +229,19 @@ Product.create!(
   content: "Protect your phone with a Rubitter-inspired case, designed to fit most modern smartphones while showing off your love for the language.",
   price: 16.49,
 )
+
+first_user = User.first
+
+products = Product.limit(3)
+
+products.each do |product|
+  FactoryBot.create(
+    :cart_item,
+    cart: first_user.cart,
+    product: product,
+    quantity: rand(1..3),
+    price: product.price,
+  )
+end
 
 puts "Seed data created!"

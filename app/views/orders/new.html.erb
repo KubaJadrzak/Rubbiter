@@ -1,39 +1,31 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-sm">
-        <div class="card-header text-white text-center" style="background-color: #9B111E;">
-          <h3>Order Information</h3>
-        </div>
-        <div class="card-body">
-          <%= form_with model: @order, url: orders_path, method: :post do |form| %>
-            <!-- Email -->
-            <div class="form-group mb-3">
-              <%= form.label :email, "Email", class: "form-label" %>
-              <%= form.email_field :email, value: current_user.email, class: "form-control", required: true %>
-            </div>
-            <!-- Country -->
-            <div class="form-group mb-3">
-              <%= form.label :country, "Country", class: "form-label" %>
-              <%= form.text_field :country, class: "form-control", required: true %>
-            </div>
-            <!-- Street -->
-            <div class="form-group mb-3">
-              <%= form.label :street, "Street Address", class: "form-label" %>
-              <%= form.text_field :street, class: "form-control", required: true %>
-            </div>
-            <!-- Postal Code -->
-            <div class="form-group mb-3">
-              <%= form.label :postal_code, "Postal Code", class: "form-label" %>
-              <%= form.text_field :postal_code, class: "form-control", required: true %>
-            </div>
-            <!-- Submit Button -->
-            <div class="form-group text-center">
-              <%= form.submit "Place Order", class: "btn btn-primary btn-lg" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
+<%= form_with model: @order, url: orders_path, data: { turbo: false }, method: :post, html: { id: 'order-form' } do |form| %>
+  <!-- Email -->
+  <div class="form-group mb-3">
+    <%= form.label :email, "Email", class: "form-label" %>
+    <%= form.email_field :email, value: current_user.email, class: "form-control", required: true %>
   </div>
-</div>
+  <!-- Country -->
+  <div class="form-group mb-3">
+    <%= form.label :country, "Country", class: "form-label" %>
+    <%= form.text_field :country, class: "form-control", required: true %>
+  </div>
+  <!-- Street -->
+  <div class="form-group mb-3">
+    <%= form.label :street, "Street Address", class: "form-label" %>
+    <%= form.text_field :street, class: "form-control", required: true %>
+  </div>
+  <!-- Postal Code -->
+  <div class="form-group mb-3">
+    <%= form.label :postal_code, "Postal Code", class: "form-label" %>
+    <%= form.text_field :postal_code, class: "form-control", required: true %>
+  </div>
+  <!-- Submit Button -->
+  <div class="form-group text-center">
+    <%= form.submit "Purchase", class: "btn btn-primary btn-lg", id: "submit-btn" %>
+  </div>
+<% end %>
+<script>
+  document.getElementById('order-form').addEventListener('submit', function () {
+    document.getElementById('submit-btn').disabled = true;
+  });
+</script>
