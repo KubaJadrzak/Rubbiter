@@ -3,6 +3,6 @@ FactoryBot.define do
     association :cart
     association :product
     quantity { 1 }
-    price { product.price } # Set the price at creation time to product's price
+    price { product.price }
   end
 end

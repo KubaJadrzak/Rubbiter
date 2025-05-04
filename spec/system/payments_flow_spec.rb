@@ -29,7 +29,7 @@ RSpec.describe "Payment Flow", type: :system do
 
     expect(current_url).to match(/secure_web_page/)
 
-    Order.first
+    Order.last
   end
 
   def mock_back_request_response(order, state)

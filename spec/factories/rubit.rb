@@ -1,9 +1,6 @@
 FactoryBot.define do
   factory :rubit do
-    content do
-      sentence = Faker::Lorem.sentence(word_count: 9)
-      sentence + " ##{Faker::Lorem.word}"
-    end
+    content { "This is an example Rubit #example" }
     association :user
   end
 end
