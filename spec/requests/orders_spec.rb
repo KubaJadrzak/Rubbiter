@@ -43,9 +43,7 @@ RSpec.describe "OrdersController", type: :request do
                  street: "123 Rails Ave",
                  postal_code: "75001",
                },
-             },
-             headers: {
-               "X-CSRF-Token" => token,
+               authenticity_token: token,
              }
 
         expect(Order.count).to eq(1)
@@ -70,9 +68,7 @@ RSpec.describe "OrdersController", type: :request do
                  street: "123 Rails Ave",
                  postal_code: "75001",
                },
-             },
-             headers: {
-               "X-CSRF-Token" => token,
+               authenticity_token: token,
              }
       end
     end
