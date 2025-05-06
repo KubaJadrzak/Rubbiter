@@ -2,7 +2,6 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_order, only: [:show]
   before_action :ensure_cart_has_items, only: [:new, :create]
-  skip_before_action :verify_authenticity_token, only: [:create]
 
   def new
     @order = Order.new
@@ -43,7 +42,7 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:country, :street, :postal_code)
+    params.require(:order).permit(:email, :country, :street, :postal_code)
   end
 
   def ensure_cart_has_items

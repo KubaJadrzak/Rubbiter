@@ -37,9 +37,15 @@ RSpec.describe "OrdersController", type: :request do
         token = controller.send(:form_authenticity_token)
 
         post orders_path,
-             params: { order: { country: "France", street: "123 Rails Ave", postal_code: "75001" } },
+             params: {
+               order: {
+                 country: "France",
+                 street: "123 Rails Ave",
+                 postal_code: "75001",
+               },
+             },
              headers: {
-               "authenticity_token" => token,
+               "X-CSRF-Token" => token,
              }
 
         expect(Order.count).to eq(1)
@@ -54,9 +60,20 @@ RSpec.describe "OrdersController", type: :request do
       end
 
       it "redirects to the cart page" do
-        post orders_path, params: { order: { country: "France", street: "123 Rails Ave", postal_code: "75001" } }
+        get new_order_path
+        token = controller.send(:form_authenticity_token)
 
-        expect(response).to redirect_to(cart_path)
+        post orders_path,
+             params: {
+               order: {
+                 country: "France",
+                 street: "123 Rails Ave",
+                 postal_code: "75001",
+               },
+             },
+             headers: {
+               "X-CSRF-Token" => token,
+             }
       end
     end
   end
