@@ -14,7 +14,6 @@ class EspagoClientService
       faraday.request :json
       faraday.response :raise_error
       faraday.response :json
-
       faraday.response :logger if Rails.env.development?
       faraday.adapter Faraday.default_adapter
     end
@@ -37,17 +36,17 @@ class EspagoClientService
         error_message = e.response[:body]["error"]
         return OpenStruct.new(success?: false, status: 401, body: { error: error_message }.to_json)
       when 422
-        error_messages = e.response[:body]["errors"] || []
+        error_messages = e.response[:body]["errors"]
         return OpenStruct.new(success?: false, status: 422, body: { errors: error_messages }.to_json)
       when 500
         error_message = e.response[:body]["error"]
         return OpenStruct.new(success?: false, status: 500, body: { error: error_message }.to_json)
       else
-        Rails.logger.error("EspagoClientService status: #{e.repsonse[:status]}, body:  #{e.message}")
+        Rails.logger.error("EspagoClientService status: #{e.response[:status]}, body:  #{e.message}")
         return OpenStruct.new(success?: false, status: e.response[:status], body: { error: e.message }.to_json)
       end
     end
-
+    Rails.logger.error("EspagoClientService status: 500, body:  #{e.message}")
     OpenStruct.new(success?: false, status: 500, body: { error: e.message }.to_json)
   end
 
