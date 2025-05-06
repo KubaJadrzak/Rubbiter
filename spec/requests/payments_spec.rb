@@ -17,6 +17,21 @@ RSpec.describe PaymentsController, type: :request do
         expect(response).to redirect_to("https://sandbox.espago.com/secure_web_page/#{order.payment_id}")
       end
     end
+
+    context "when incorrect auth data is used" do
+      it "redirect to order show page, shows payment service error and failed payment status" do
+        error_response = OpenStruct.new(success?: false, status: 401, body: { error: "Unauthorized" }.to_json)
+        allow_any_instance_of(EspagoClientService).to receive(:send).and_return(error_response)
+        get "/payments/start_payment/#{order.id}"
+        order.reload
+        expect(order.payment_id).to be_nil
+        expect(response).to redirect_to(order_path(order))
+        follow_redirect!
+        expect(response.body).to include("Payment Failed")
+        expect(response.body).to include("Failed")
+        expect(response.body).to include("We are experiencing an issue with payment service")
+      end
+    end
   end
 
   describe "GET #payment_success" do

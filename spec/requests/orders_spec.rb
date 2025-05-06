@@ -80,8 +80,7 @@ RSpec.describe "OrdersController", type: :request do
 
   describe "GET /orders" do
     it "shows a list of orders" do
-      create(:order, user: user, status: "Created")
-      create(:order, user: user, status: "Processing")
+      create(:order, user: user)
 
       get orders_path
       expect(response).to have_http_status(:ok)
@@ -91,7 +90,7 @@ RSpec.describe "OrdersController", type: :request do
   end
 
   describe "GET /orders/:id" do
-    let!(:order) { create(:order, user: user, status: "Created") }
+    let!(:order) { create(:order, user: user) }
 
     it "shows the order details" do
       get order_path(order)
