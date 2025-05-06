@@ -38,5 +38,27 @@ RSpec.describe "CartItemsController", type: :request do
         expect(response.body).to include("You need to sign in or sign up before continuing.")
       end
     end
+    describe "DELETE /cart_items/:id" do
+      context "when CartItem is removed" do
+        let(:cart_item) { create(:cart_item, cart: user.cart, product: product, quantity: 1, price: product.price) }
+        before do
+          sign_in user
+        end
+        it "shows item removed from cart message" do
+          expect(CartItem.count).to eq(0)
+          get cart_path(user.cart)
+          token = controller.send(:form_authenticity_token)
+
+          delete cart_item_path(cart_item),
+                 params: {
+                   authenticity_token: token,
+                 }
+          expect(response).to redirect_to(cart_path)
+          expect(CartItem.count).to eq(0)
+          follow_redirect!
+          expect(response.body).to include("Item removed from cart.")
+        end
+      end
+    end
   end
 end

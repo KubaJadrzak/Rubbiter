@@ -16,8 +16,6 @@ class CartItemsController < ApplicationController
     redirect_to products_path, notice: "#{@product.title} added to cart!"
   end
 
-  before_action :authenticate_user!
-
   def destroy
     cart_item = current_user.cart.cart_items.find(params[:id])
     cart_item.destroy
