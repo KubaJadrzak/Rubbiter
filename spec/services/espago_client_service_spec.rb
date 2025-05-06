@@ -3,6 +3,7 @@ require "webmock/rspec"
 
 RSpec.describe EspagoClientService, type: :service do
   let(:client) { described_class.new }
+  let(:base_host) { ENV.fetch("APP_HOST_URL") }
 
   let(:request_body) do
     {
@@ -13,8 +14,8 @@ RSpec.describe EspagoClientService, type: :service do
       checksum: "fake_checksum",
       title: "Order #1234",
       description: "Payment for Order #1234",
-      positive_url: "http://localhost:3001/payments/payment_success?order_number=1234",
-      negative_url: "http://localhost:3001/payments/payment_failure?order_number=1234",
+      positive_url: "#{base_host}/payments/payment_success?order_number=1234",
+      negative_url: "#{base_host}/payments/payment_failure?order_number=1234",
     }
   end
 

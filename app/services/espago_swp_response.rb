@@ -1,4 +1,3 @@
-# app/services/espago_swp_response.rb
 class EspagoSwpResponse
   attr_reader :success, :status, :body
 
