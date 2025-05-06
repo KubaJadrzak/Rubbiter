@@ -20,8 +20,10 @@ RSpec.describe PaymentsController, type: :request do
 
     context "when incorrect auth data is used" do
       it "redirect to order show page, shows payment service error and failed payment status" do
-        error_response = OpenStruct.new(success?: false, status: 401, body: { error: "Unauthorized" }.to_json)
+        error_response = EspagoSwpResponse.new(success: false, status: 401, body: { error: "Unauthorized" })
+
         allow_any_instance_of(EspagoClientService).to receive(:send).and_return(error_response)
+
         get "/payments/start_payment/#{order.id}"
         order.reload
         expect(order.payment_id).to be_nil

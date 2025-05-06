@@ -7,8 +7,6 @@ class PaymentsController < ApplicationController
     payment_service = EspagoPaymentService.new(@order)
     response = payment_service.create_payment
 
-    Rails.logger.info "Espago Payment Response status: #{response[:status]}, body: #{response[:body]}"
-
     if response.success?
       data = response.body
       @order.update(payment_id: data["id"])

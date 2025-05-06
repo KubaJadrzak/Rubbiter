@@ -27,27 +27,18 @@ class EspagoClientService
       req.body = body if body
     end
 
-    OpenStruct.new(success?: true, status: response.status, body: response.body)
+    EspagoSwpResponse.new(success: true, status: response.status, body: response.body)
   rescue Faraday::Error => e
-    if e.respond_to?(:response)
-      Rails.logger.error("EspagoClientService status: #{e.response[:status]}, body: #{e.response[:body]}")
-      case e.response[:status]
-      when 401
-        error_message = e.response[:body]["error"]
-        return OpenStruct.new(success?: false, status: 401, body: { error: error_message }.to_json)
-      when 422
-        error_messages = e.response[:body]["errors"]
-        return OpenStruct.new(success?: false, status: 422, body: { errors: error_messages }.to_json)
-      when 500
-        error_message = e.response[:body]["error"]
-        return OpenStruct.new(success?: false, status: 500, body: { error: error_message }.to_json)
-      else
-        Rails.logger.error("EspagoClientService status: #{e.response[:status]}, body:  #{e.message}")
-        return OpenStruct.new(success?: false, status: e.response[:status], body: { error: e.message }.to_json)
-      end
+    if e.respond_to?(:response) && e.response
+      status = e.response[:status]
+      body = e.response[:body]
+
+      Rails.logger.error("EspagoClientService status: #{status}, body: #{body}")
+      return EspagoSwpResponse.new(success: false, status: status, body: body)
     end
-    Rails.logger.error("EspagoClientService status: 500, body:  #{e.message}")
-    OpenStruct.new(success?: false, status: 500, body: { error: e.message }.to_json)
+
+    Rails.logger.error("EspagoClientService connection issue: #{e.message}")
+    EspagoSwpResponse.new(success: false, status: :connection_failed, body: e.message)
   end
 
   private
