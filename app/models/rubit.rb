@@ -6,8 +6,6 @@ class Rubit < ApplicationRecord
   has_many :liked_by_users, through: :likes, source: :user
   has_many :hashtaggings, dependent: :destroy
   has_many :hashtags, through: :hashtaggings
-  has_many :seen_rubits, dependent: :destroy
-  has_many :seen_by_users, through: :seen_rubits, source: :user
 
   validates :content, presence: true, length: { maximum: 204 }
 

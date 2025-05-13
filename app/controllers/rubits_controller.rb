@@ -4,16 +4,8 @@ class RubitsController < ApplicationController
   before_action :set_rubit, only: [:show, :destroy]
 
   def index
-    # Fetch the paginated root rubits ordered by likes (20 per page) and exclude seen rubits
-    if current_user
-      seen_rubits = current_user.seen_rubits.select(:rubit_id)
-    else
-      seen_rubits = Rubit.none  # Returns an empty relation when user is nil
-    end
-
     @rubits = Rubit
       .root_rubits
-      .where.not(id: seen_rubits)
       .left_joins(:likes)
       .group("rubits.id")
       .order("COUNT(likes.id) DESC")
@@ -60,11 +52,6 @@ class RubitsController < ApplicationController
     else
       redirect_to root_path, flash[:alert] = "You are not authorized to delete this rubit."
     end
-  end
-
-  def mark_seen
-    SeenRubit.find_or_create_by(user: current_user, rubit_id: params[:id])
-    head :ok
   end
 
   private
