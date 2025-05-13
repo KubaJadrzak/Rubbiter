@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_13_160349) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_13_171353) do
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id", null: false
     t.integer "product_id", null: false
@@ -68,7 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_160349) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.decimal "total_price"
     t.string "status"
     t.string "payment_status"
@@ -122,7 +122,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_13_160349) do
   add_foreign_key "likes", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
-  add_foreign_key "orders", "users"
+  add_foreign_key "orders", "users", on_delete: :nullify
   add_foreign_key "rubits", "rubits", column: "parent_rubit_id"
   add_foreign_key "rubits", "users"
 end

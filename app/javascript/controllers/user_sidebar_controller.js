@@ -6,10 +6,10 @@ export default class extends Controller {
 
   }
   static targets = [
-    "emailForm",
     "rubitsSection",
     "commentsSection",
-    "likedRubitsSection"
+    "likedRubitsSection",
+    "orderHistorySection"
   ]
 
   toggleRubitsSection() {
@@ -23,26 +23,30 @@ export default class extends Controller {
   toggleLikedRubitsSection() {
     this.toggleContent("likedRubits")
   }
+  toggleOrderHistorySection() {
+    this.toggleContent("orderHistory")
+  }
 
 
   toggleContent(contentType) {
-    // Hide all content sections first
     this.hideAllSections();
 
-    // Show the requested section
     if (contentType === "rubits") {
       this.rubitsSectionTarget.classList.remove("d-none");
     } else if (contentType === "comments") {
       this.commentsSectionTarget.classList.remove("d-none");
     } else if (contentType === "likedRubits") {
       this.likedRubitsSectionTarget.classList.remove("d-none");
+    } else if (contentType === "orderHistory") {
+      this.orderHistorySectionTarget.classList.remove("d-none");
     }
   }
 
-  // Helper function to hide all sections
+
   hideAllSections() {
     this.rubitsSectionTarget.classList.add("d-none");
     this.commentsSectionTarget.classList.add("d-none");
     this.likedRubitsSectionTarget.classList.add("d-none");
+    this.orderHistorySectionTarget.classList.add("d-none");
   }
 }

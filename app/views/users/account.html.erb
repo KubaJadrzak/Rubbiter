@@ -1,0 +1,39 @@
+<div data-controller="user-sidebar">
+  <div class="row">
+    <div class="col-lg-3" style="margin-bottom: 20px;">
+      <div class="list-group">
+        <button class="list-group-item list-group-item-action"
+                data-action="click->user-sidebar#toggleRubitsSection">
+          Rubits
+        </button>
+        <button class="list-group-item list-group-item-action"
+                data-action="click->user-sidebar#toggleCommentsSection">
+          Comments
+        </button>
+        <button class="list-group-item list-group-item-action"
+                data-action="click->user-sidebar#toggleLikedRubitsSection">
+          Liked Rubits
+        </button>
+        <button class="list-group-item list-group-item-action"
+                data-action="click->user-sidebar#toggleOrderHistorySection">
+          Order History
+        </button>
+        <%= button_to "Edit Account", edit_user_registration_path, method: :get,
+                                                                      class: "list-group-item list-group-item-action" %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete,
+                                                           class: "list-group-item list-group-item-action text-danger",
+                                                           data: { turbo: "false" } %>
+        <%= button_to "Delete Account", user_registration_path, method: :delete,
+                                                                data: { confirm: "Are you sure you want to delete your account? This action cannot be undone.", 
+                                                                turbo: "false" },
+                                                                class: "list-group-item list-group-item-action text-danger" %>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <%= render "users/account_sidebar/rubits_section" %>
+      <%= render "users/account_sidebar/comments_section" %>
+      <%= render "users/account_sidebar/liked_rubits_section" %>
+      <%= render "users/account_sidebar/order_history_section" %>
+    </div>
+  </div>
+</div>

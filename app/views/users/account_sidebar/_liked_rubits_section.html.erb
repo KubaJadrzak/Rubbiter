@@ -1,0 +1,10 @@
+<div id="liked-rubits-section" class="content-section d-none" data-user-sidebar-target="likedRubitsSection">
+  <h4>Your Liked Rubits</h4>
+  <% if @liked_rubits.any? %>
+    <% @liked_rubits.each do |rubit| %>
+      <%= render partial: "rubits/rubit", locals: { rubit: rubit } %>
+    <% end %>
+  <% else %>
+    <p>You haven't liked any rubits yet.</p>
+  <% end %>
+</div>

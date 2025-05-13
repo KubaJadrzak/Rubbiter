@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :rubits, dependent: :destroy
   has_many :likes, dependent: :destroy
-  has_many :liked_rubits, through: :likes, source: :rubit
+  has_many :liked_rubits, through: :likes, source: :rubit, dependent: :destroy
   has_many :orders
 
   validates :username, presence: true, uniqueness: true
