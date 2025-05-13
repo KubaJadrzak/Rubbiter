@@ -14,6 +14,19 @@
     <%= turbo_include_tags %>
   </head>
   <body >
+    <script>
+      document.addEventListener("turbo:visit", (event) => {
+        console.log("Turbo is handling a visit", event);
+      });
+
+      document.addEventListener("turbo:load", (event) => {
+        console.log("Turbo has finished loading", event);
+      });
+
+      document.addEventListener("turbo:before-visit", (event) => {
+        console.log("Turbo is about to visit", event);
+      });
+    </script>
     <%= render "layouts/flash" %>
     <div class="container mt-1 d-flex justify-content-center">
       <div class="w-100" style="max-width: 1400px;">
