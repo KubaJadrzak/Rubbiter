@@ -78,7 +78,7 @@ RSpec.describe "OrdersController", type: :request do
     it "shows a list of orders" do
       create(:order, user: user)
 
-      get orders_path
+      get account_path
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Created")
       expect(response.body).to include("Processing")

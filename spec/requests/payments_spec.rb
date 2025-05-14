@@ -50,7 +50,7 @@ RSpec.describe PaymentsController, type: :request do
     context "when order is not found" do
       it "redirects to orders path with payment service issue message" do
         get "/payments/payment_success", params: { order_number: "INVALID123" }
-        expect(response).to redirect_to(orders_path)
+        expect(response).to redirect_to(/\/account#orderHistory/)
         follow_redirect!
         expect(response.body).to include("We are experiencing an issue with your order")
       end
@@ -70,7 +70,7 @@ RSpec.describe PaymentsController, type: :request do
     context "when order is not found" do
       it "redirects to orders path with payment service issue message" do
         get "/payments/payment_failure", params: { order_number: "INVALID123" }
-        expect(response).to redirect_to(orders_path)
+        expect(response).to redirect_to(/\/account#orderHistory/)
         follow_redirect!
         expect(response.body).to include("We are experiencing an issue with your order")
       end

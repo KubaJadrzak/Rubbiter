@@ -23,7 +23,7 @@ class PaymentsController < ApplicationController
     if @order
       redirect_to order_path(@order), notice: "Payment successful!"
     else
-      redirect_to orders_path, alert: "We are experiencing an issue with your order"
+      redirect_to "#{account_path}#orderHistory", alert: "We are experiencing an issue with your order"
     end
   end
 
@@ -33,7 +33,7 @@ class PaymentsController < ApplicationController
     if @order
       redirect_to order_path(@order), alert: "Payment failed!"
     else
-      redirect_to orders_path, alert: "We are experiencing an issue with your order"
+      redirect_to "#{account_path}#orderHistory", alert: "We are experiencing an issue with your order"
     end
   end
 end

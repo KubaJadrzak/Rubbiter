@@ -26,8 +26,7 @@ RSpec.describe "Payment Flow", type: :system do
     fill_in "Postal Code", with: "75001"
 
     click_button "Purchase"
-
-    expect(current_url).to match(/secure_web_page/)
+    expect(page).to have_current_path(/secure_web_page/, wait: 10)
 
     Order.last
   end
@@ -50,7 +49,7 @@ RSpec.describe "Payment Flow", type: :system do
     let!(:order) { start_checkout_flow }
 
     it "redirects to Espago payment website and confirms order information (order_number, price, payment_id)" do
-      expect(current_url).to match(/secure_web_page/)
+      expect(page).to have_current_path(/secure_web_page/, wait: 10)
 
       expect(page).to have_content(order.order_number)
       expect(page).to have_content(order.total_price.to_s)
@@ -58,7 +57,7 @@ RSpec.describe "Payment Flow", type: :system do
     end
 
     it "redirects to order show page and shows payment success notice after successful payment (after redirect from Espago)" do
-      expect(current_url).to match(/secure_web_page/)
+      expect(page).to have_current_path(/secure_web_page/, wait: 10)
 
       fill_in "transaction[credit_card_attributes][first_name]", with: "John"
       fill_in "transaction[credit_card_attributes][last_name]", with: "Doe"
@@ -98,7 +97,7 @@ RSpec.describe "Payment Flow", type: :system do
     let!(:order) { start_checkout_flow }
 
     it "redirects to Espago payment website and confirms order information (order_number, price, payment_id)" do
-      expect(current_url).to match(/secure_web_page/)
+      expect(page).to have_current_path(/secure_web_page/, wait: 10)
 
       expect(page).to have_content(order.order_number)
       expect(page).to have_content(order.total_price.to_s)
@@ -106,7 +105,7 @@ RSpec.describe "Payment Flow", type: :system do
     end
 
     it "redirects to order show page and shows payment failure notice after unsuccessful payment (after redirect from Espago)" do
-      expect(current_url).to match(/secure_web_page/)
+      expect(page).to have_current_path(/secure_web_page/, wait: 10)
 
       fill_in "transaction[credit_card_attributes][first_name]", with: "John"
       fill_in "transaction[credit_card_attributes][last_name]", with: "Doe"

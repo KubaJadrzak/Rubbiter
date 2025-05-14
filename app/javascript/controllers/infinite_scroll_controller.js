@@ -22,7 +22,7 @@ export default class extends Controller {
     if (nearBottom) {
       const link = document.getElementById("load-more-link");
       if (link) {
-        link.click(); // Auto-click the link to load more
+        link.click();
       }
     }
   };

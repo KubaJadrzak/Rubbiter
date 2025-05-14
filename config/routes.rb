@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   resources :cart_items, only: [:destroy]
   resources :orders, only: [:index, :show, :new, :create]
 
-  get "profile", to: "users#profile", as: "profile"
+  get "account", to: "users#account", as: "account"
 
   # Start Espago payment flow for specific order
   get "payments/start_payment/:order_id", to: "payments#start_payment", as: "start_payment"

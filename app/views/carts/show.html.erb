@@ -20,19 +20,17 @@
             <td>$<%= item.total_price %></td>
             <td>
               <%= button_to cart_item_path(item), method: :delete,
-                                      class: "btn btn-sm text-dark p-0 m-0" do %>
+                            class: "btn btn-sm text-dark p-0 m-0" do %>
                 <i class="bi bi-trash" style="font-size: 1.0rem; color: black;"></i>
               <% end %>
             </td>
           </tr>
         <% end %>
-
       </tbody>
     </table>
-    <div class="text-right">
-      <h3>Total: $<%= @cart.cart_items.sum(&:total_price) %></h3>
-      <!-- Button to create an order -->
-      <%= link_to new_order_path, class: "btn btn-success btn-lg" do %>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Total: $<%= @cart.cart_items.sum(&:total_price) %></h3>
+      <%= link_to new_order_path, class: "btn btn-primary btn-lg" do %>
         Place Order
       <% end %>
     </div>
