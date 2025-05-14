@@ -16,6 +16,7 @@ RSpec.describe "Order Creation Flow", type: :system do
       expect(page).to have_content("Add to Cart")
       click_button "Add to Cart"
       expect(page).to have_text("added to cart!")
+      expect(page).to_not have_text("added to cart!", wait: 10)
       find('img[alt="Cart"]').click
 
       expect(page).to have_content("Your Cart")
