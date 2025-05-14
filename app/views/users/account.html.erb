@@ -19,12 +19,13 @@
           Order History
         </button>
         <%= button_to "Edit Account", edit_user_registration_path, method: :get,
-                                                                      class: "list-group-item list-group-item-action"
-                                                                      %>
+                                                                      class: "list-group-item list-group-item-action",
+                                                                      data: { turbo: "false" } %>
         <%= button_to "Logout", destroy_user_session_path, method: :delete,
-                                                           class: "list-group-item list-group-item-action text-danger"
-                                                           %>
+                                                           class: "list-group-item list-group-item-action text-danger",
+                                                           data: { turbo: "false" } %>
         <%= button_to "Delete Account", user_registration_path, method: :delete,
+                                                                data: { turbo: "false" },
                                                                 class: "list-group-item list-group-item-action text-danger" %>
       </div>
     </div>
