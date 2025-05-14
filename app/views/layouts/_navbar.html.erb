@@ -1,28 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #fdfdff;">
   <div class="container-fluid">
     <div class="d-none d-lg-flex w-100 justify-content-between align-items-center">
-      <a href="/" class="navbar-brand" data-turbo="false">
+      <a href="/" class="navbar-brand" >
         <%= image_tag "logo.svg", alt: "Rubitter Logo", class: "navbar-icon" %>
       </a>
-      <% unless controller_name == "sessions" && action_name == "new" %>
-        <div class="text-center flex-grow-1 ps-5">
-          <%= button_to "PURCHASE MERCHANDISE", products_path, method: :get,
-                        class: "btn btn-primary mx-auto", data: { turbo: false } %>
-        </div>
-      <% end %>
+      <div class="text-center flex-grow-1 ps-5">
+        <%= button_to "PURCHASE MERCHANDISE", products_path, method: :get,
+                        class: "btn btn-primary mx-auto" %>
+      </div>
       <div class="d-flex">
         <% if user_signed_in? %>
-          <a class="navbar-brand me-2" href="<%= cart_path %>" data-turbo="false">
+          <a class="navbar-brand me-2" href="<%= cart_path %>" >
             <%= image_tag "shopping_cart.svg", alt: "Cart", class: "navbar-icon" %>
           </a>
-          <a class="navbar-brand" href="<%= account_path %>" data-turbo="false">
+          <a class="navbar-brand" href="<%= account_path %>" >
             <%= image_tag "account.svg", alt: "Account", class: "navbar-icon" %>
           </a>
         <% else %>
-          <a class="navbar-brand me-2" href="<%= new_user_session_path %>" data-turbo="false">
+          <a class="navbar-brand me-2" href="<%= new_user_session_path %>" >
             <%= image_tag "shopping_cart.svg", alt: "Login", class: "navbar-icon" %>
           </a>
-          <a class="navbar-brand" href="<%= new_user_session_path %>" data-turbo="false">
+          <a class="navbar-brand" href="<%= new_user_session_path %>" >
             <%= image_tag "account.svg", alt: "Login", class: "navbar-icon" %>
           </a>
         <% end %>
@@ -30,33 +28,31 @@
     </div>
     <div class="d-block d-lg-none w-100">
       <div class="d-flex justify-content-between align-items-center w-100">
-        <a href="/" class="navbar-brand" data-turbo="false">
+        <a href="/" class="navbar-brand" >
           <%= image_tag "logo.svg", alt: "Rubitter Logo", class: "navbar-icon" %>
         </a>
         <div class="d-flex">
           <% if user_signed_in? %>
-            <a class="navbar-brand me-2" href="<%= cart_path %>" data-turbo="false">
+            <a class="navbar-brand me-2" href="<%= cart_path %>" >
               <%= image_tag "shopping_cart.svg", alt: "Cart", class: "navbar-icon" %>
             </a>
-            <a class="navbar-brand" href="<%= account_path %>" data-turbo="false">
+            <a class="navbar-brand" href="<%= account_path %>" >
               <%= image_tag "account.svg", alt: "Account", class: "navbar-icon" %>
             </a>
           <% else %>
-            <a class="navbar-brand me-2" href="<%= new_user_session_path %>" data-turbo="false">
+            <a class="navbar-brand me-2" href="<%= new_user_session_path %>">
               <%= image_tag "shopping_cart.svg", alt: "Login", class: "navbar-icon" %>
             </a>
-            <a class="navbar-brand" href="<%= new_user_session_path %>" data-turbo="false">
+            <a class="navbar-brand" href="<%= new_user_session_path %>" >
               <%= image_tag "account.svg", alt: "Login", class: "navbar-icon" %>
             </a>
           <% end %>
         </div>
       </div>
-      <% unless controller_name == "sessions" && action_name == "new" %>
-        <div class="mt-3 d-flex justify-content-center">
-          <%= button_to "PURCHASE MERCHANDISE", products_path, method: :get,
-                        class: "btn btn-primary px-4", data: { turbo: false } %>
-        </div>
-      <% end %>
+      <div class="mt-3 d-flex justify-content-center">
+        <%= button_to "PURCHASE MERCHANDISE", products_path, method: :get,
+                        class: "btn btn-primary px-4" %>
+      </div>
     </div>
   </div>
 </nav>

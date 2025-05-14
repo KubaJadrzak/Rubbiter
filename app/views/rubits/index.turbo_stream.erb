@@ -4,7 +4,6 @@
     <%= link_to "", rubits_path(page: @rubits.next_page),
                 data: {
                   turbo_action: "replace",
-                  turbo_stream: true,
                   action: "infinite-scroll#loadMore",
                   "infinite-scroll-target": "loadMoreLink",
                 },

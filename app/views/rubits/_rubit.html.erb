@@ -1,5 +1,5 @@
 <div class="card mt-3 ml-3"  id="rubit_<%= rubit.id %>">
-  <%= link_to rubit_path(rubit), data: { turbo: false }, class: "card-body d-block text-decoration-none text-dark p-2" do %>
+  <%= link_to rubit_path(rubit), class: "card-body d-block text-decoration-none text-dark p-2" do %>
     <h5 class="card-title text-muted" style="font-size: 0.8rem;">
       @<%= rubit.user.username %>
     </h5>
@@ -10,7 +10,6 @@
     <%= render partial: "likes/like_section", locals: { rubit: rubit } %>
     <% if rubit.user == current_user %>
       <%= button_to rubit_path(rubit), method: :delete,
-                                       data: { turbo_stream: true, confirm: "Are you sure?" },
                                        class: "btn btn-sm text-dark p-1" do %>
         <i class="bi bi-trash" style="font-size: 1.5rem; color: black;"></i>
       <% end %>

@@ -41,17 +41,16 @@ class RubitsController < ApplicationController
   end
 
   def destroy
-    @rubit = Rubit.find(params[:id])
+    @rubit = current_user.rubits.find(params[:id])
 
-    if @rubit.user == current_user
-      @rubit.destroy
-      flash.now[:notice] = "Rubit deleted successfully."
-      respond_to do |format|
-        format.turbo_stream
-      end
-    else
-      redirect_to root_path, flash[:alert] = "You are not authorized to delete this rubit."
+    @rubit.destroy
+    flash.now[:notice] = "Rubit deleted successfully."
+
+    respond_to do |format|
+      format.turbo_stream
     end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: "You are not authorized to delete this rubit."
   end
 
   private
