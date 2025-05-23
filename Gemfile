@@ -58,7 +58,7 @@ group :development, :test do
   gem "capybara"
 
   gem "webmock"
-  gem "selenium-webdriver", "~> 4.31"
+  gem "selenium-webdriver", "~> 4.33"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
